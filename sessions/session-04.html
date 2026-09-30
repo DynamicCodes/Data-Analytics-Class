@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 04: Data Visualization and Data-Driven Decisions | Data-Class</title>
+  <meta name="description" content="Exploring and visualizing data, and case studies of Amazon, Netflix, Starbucks, Walmart and Uber making decisions with data." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>04</div>
+      <h1>Data Visualization and Data-Driven Decisions</h1>
+      <p class="lead">How analysts explore a dataset and choose the right chart to show what they find, followed by five companies that made major business decisions based on data.</p>
+      <ul class="lesson-meta">
+        <li>6 topics</li>
+        <li>4 interactive visuals</li>
+        <li>About 35 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-04/hero.jpg" alt="Light background with scattered charts and data icons" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#exploration">Exploring data</a></li>
+          <li><a href="#visualization">What is data visualization</a></li>
+          <li><a href="#together">Exploration and visualization together</a></li>
+          <li><a href="#dddm">Data-driven decision making</a></li>
+          <li><a href="#cases">Five company case studies</a></li>
+          <li><a href="#lessons">Lessons learned</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="exploration">
+          <h2>Exploring data</h2>
+          <p class="section-sub">Getting to know a dataset before modeling it</p>
+
+          <p>Data exploration and visualization are the first and most important steps in any analysis. They help analysts understand patterns, detect anomalies, test hypotheses and communicate findings. Before building complex models, analysts explore the data to understand its structure, trends and relationships.</p>
+
+          <h3>Objectives of data exploration</h3>
+          <ol class="steps">
+            <li><h4>Understand the structure</h4><p>How many variables there are, and what type each one is.</p></li>
+            <li><h4>Detect problems</h4><p>Find missing values, outliers and errors.</p></li>
+            <li><h4>Identify patterns</h4><p>Look at distributions and relationships between variables.</p></li>
+            <li><h4>Generate questions</h4><p>Form hypotheses for deeper analysis.</p></li>
+            <li><h4>Guide modeling</h4><p>Inform which features to select and how to build models.</p></li>
+          </ol>
+
+          <h3>Techniques for data exploration</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>What it does</th><th>Example tools</th></tr></thead>
+            <tbody>
+              <tr><td><b>Descriptive statistics</b></td><td>Summarizes data with mean, median, mode, variance and so on</td><td>Excel, R, Python (pandas)</td></tr>
+              <tr><td><b>Correlation analysis</b></td><td>Measures relationships between variables</td><td>SPSS, Python, R</td></tr>
+              <tr><td><b>Cross-tabulation</b></td><td>Compares categorical variables against each other</td><td>Excel, Power BI</td></tr>
+              <tr><td><b>Data profiling</b></td><td>Assesses data quality and consistency</td><td>Talend, SAS</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="visualization">
+          <h2>What is data visualization</h2>
+          <p class="section-sub">Making data easier to see, understand and share</p>
+
+          <div class="definition">
+            <strong>Data visualization</strong>
+            Representing data graphically so information is easier to understand, interpret and communicate. It turns numbers or text into charts, graphs and dashboards.
+          </div>
+
+          <h3>Objectives</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Simplify</h4><p>Make complex data easier to understand.</p></div>
+            <div class="point"><h4>Highlight</h4><p>Show patterns, trends and outliers quickly.</p></div>
+            <div class="point"><h4>Tell the story</h4><p>Support data-driven storytelling for decisions.</p></div>
+            <div class="point"><h4>Explore</h4><p>Let people interact with data for deeper insight.</p></div>
+          </div>
+
+          <h3>Common types of visualization</h3>
+          <p>Each chart type answers a particular kind of question. Choosing the wrong one hides the pattern you are trying to show.</p>
+
+          <div class="viz" id="viz-charts">
+            <div class="viz-head">
+              <h4>Pick the question, get the chart</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Choose what you want to show. The chart that fits that purpose is drawn with example data.</p>
+            <div class="controls" role="group" aria-label="What do you want to show?"></div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Example chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Modern visualization tools</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Tool</th><th>Strength</th></tr></thead>
+            <tbody>
+              <tr><td><b>Tableau</b></td><td>Drag-and-drop dashboard creation</td></tr>
+              <tr><td><b>Power BI</b></td><td>Real-time visual analytics from many data sources</td></tr>
+              <tr><td><b>Python (Matplotlib, Seaborn, Plotly)</b></td><td>Advanced visualizations written in code</td></tr>
+              <tr><td><b>R (ggplot2, Shiny)</b></td><td>Statistical and interactive visualizations</td></tr>
+              <tr><td><b>Google Data Studio / Looker</b></td><td>Cloud-based, collaborative dashboards</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="together">
+          <h2>Exploration and visualization together</h2>
+          <p class="section-sub">Understanding, then communicating</p>
+
+          <div class="split">
+            <img src="../assets/img/session-04/network.jpg" alt="Connected points forming an abstract network" loading="lazy" />
+            <div>
+              <p><b>Exploration</b> helps you understand what is in the data. <b>Visualization</b> helps you communicate what you discovered.</p>
+              <p>Together they form the foundation of intelligent data analysis, guiding data cleaning, feature engineering and model design.</p>
+            </div>
+          </div>
+          <p class="note">Modern tools make it easier than ever to explore complex datasets, find hidden insights, and share them clearly with both technical and non-technical audiences.</p>
+        </section>
+
+        <section id="dddm">
+          <h2>Data-driven decision making</h2>
+          <p class="section-sub">Deciding with evidence instead of instinct alone</p>
+
+          <p>In a competitive market, organizations rely on data-driven decision making (DDDM) to guide strategy, operations and innovation. Rather than depending only on intuition or past experience, businesses analyze real-time data to make decisions that are more accurate, objective and profitable.</p>
+
+          <div class="definition">
+            <strong>Data-driven decision making</strong>
+            Collecting, analyzing and interpreting data to guide strategic and operational business actions.
+          </div>
+
+          <h3>Seven key steps</h3>
+          <ol class="steps">
+            <li><h4>Define the business problem</h4><p>Identify the decision area, such as sales, customer retention or logistics.</p></li>
+            <li><h4>Collect relevant data</h4><p>Internal (sales records, transactions) or external (market trends, social media).</p></li>
+            <li><h4>Clean and prepare the data</h4><p>Ensure accuracy, remove duplicates and handle missing values.</p></li>
+            <li><h4>Analyze the data</h4><p>Apply statistics, predictive modeling or visualization tools.</p></li>
+            <li><h4>Interpret the results</h4><p>Translate patterns and metrics into business insight.</p></li>
+            <li><h4>Implement decisions</h4><p>Take action guided by the analysis.</p></li>
+            <li><h4>Evaluate outcomes</h4><p>Measure the impact and refine the strategy if needed.</p></li>
+          </ol>
+        </section>
+
+        <section id="cases">
+          <h2>Five company case studies</h2>
+          <p class="section-sub">Making the right business decisions based on data</p>
+
+          <div class="viz" id="viz-cases">
+            <div class="viz-head">
+              <h4>Compare how five companies used data</h4>
+              <span class="viz-tag">Browse</span>
+            </div>
+            <div class="controls" role="tablist" aria-label="Companies">
+              <button class="btn" role="tab" data-tab="amazon" aria-pressed="true">Amazon</button>
+              <button class="btn" role="tab" data-tab="netflix" aria-pressed="false">Netflix</button>
+              <button class="btn" role="tab" data-tab="starbucks" aria-pressed="false">Starbucks</button>
+              <button class="btn" role="tab" data-tab="walmart" aria-pressed="false">Walmart</button>
+              <button class="btn" role="tab" data-tab="uber" aria-pressed="false">Uber</button>
+            </div>
+
+            <div data-panel="amazon" role="tabpanel">
+              <h3 style="margin-top:0">Amazon: personalized recommendations</h3>
+              <p><b>Background.</b> Amazon serves millions of customers worldwide and wanted to increase sales and engagement.<br /><b>Business problem.</b> How to recommend relevant products to each customer to boost purchases and satisfaction.</p>
+              <div class="company-panel">
+                <div class="point"><h4>Data used</h4><ul><li>Purchase history</li><li>Browsing patterns</li><li>Ratings and reviews</li><li>Clickstream data</li></ul></div>
+                <div class="point"><h4>Analysis and tools</h4><ul><li>Machine learning (collaborative filtering, neural networks)</li><li>Big data analytics on AWS, Hadoop and Spark</li></ul></div>
+              </div>
+              <h4 style="margin-top:1rem">Decision and outcome</h4>
+              <p>Amazon built a personalized recommendation engine, which improved customer satisfaction and retention significantly.</p>
+              <div class="big-stat"><b>35–40%</b><span>of total sales came from recommendations</span></div>
+            </div>
+
+            <div data-panel="netflix" role="tabpanel" hidden>
+              <h3 style="margin-top:0">Netflix: data-driven content and recommendations</h3>
+              <p><b>Background.</b> Netflix competes in a crowded streaming market and needed to keep subscribers and improve their viewing experience.<br /><b>Business problem.</b> How to recommend content people love, and decide which shows to produce next.</p>
+              <div class="company-panel">
+                <div class="point"><h4>Data used</h4><ul><li>Viewing habits (time spent, likes and dislikes)</li><li>Device usage patterns</li><li>Demographics and search queries</li></ul></div>
+                <div class="point"><h4>Analysis and tools</h4><ul><li>Predictive analytics and AI models of user preference</li><li>A/B testing of personalized recommendations</li><li>Big data analytics with Apache Spark and Python (pandas, scikit-learn)</li></ul></div>
+              </div>
+              <h4 style="margin-top:1rem">Decision and outcome</h4>
+              <p>Netflix commissioned <i>House of Cards</i> and other originals based on viewing data, increasing engagement and subscription retention, and showing that data can guide creative decisions too.</p>
+            </div>
+
+            <div data-panel="starbucks" role="tabpanel" hidden>
+              <h3 style="margin-top:0">Starbucks: location and menu optimization</h3>
+              <p><b>Background.</b> Starbucks needed to decide where to open new stores and how to shape its menu.<br /><b>Business problem.</b> How to choose profitable locations and tailor products to local tastes.</p>
+              <div class="company-panel">
+                <div class="point"><h4>Data used</h4><ul><li>Demographics (income, population density)</li><li>Location analytics (traffic patterns, competitors)</li><li>Customer purchasing behavior</li></ul></div>
+                <div class="point"><h4>Analysis and tools</h4><ul><li>Geospatial analytics, predictive modeling and AI simulation</li><li>Tableau, Python, ArcGIS</li></ul></div>
+              </div>
+              <h4 style="margin-top:1rem">Decision and outcome</h4>
+              <p>Starbucks opened stores in predicted high-profit zones and launched region-specific menu items, improving sales forecasting and customer satisfaction.</p>
+            </div>
+
+            <div data-panel="walmart" role="tabpanel" hidden>
+              <h3 style="margin-top:0">Walmart: inventory and supply chain optimization</h3>
+              <p><b>Background.</b> Walmart runs one of the world's largest retail supply chains.<br /><b>Business problem.</b> How to predict demand accurately and keep inventory at the right level.</p>
+              <div class="company-panel">
+                <div class="point"><h4>Data used</h4><ul><li>Sales and seasonal data</li><li>Weather forecasts</li><li>Local events and holidays</li></ul></div>
+                <div class="point"><h4>Analysis and tools</h4><ul><li>Predictive analytics with Hadoop, SAS and machine learning</li><li>Real-time monitoring with IoT sensors</li></ul></div>
+              </div>
+              <h4 style="margin-top:1rem">Decision and outcome</h4>
+              <p>Better inventory management and on-shelf availability, less waste and lower logistics costs, and happier customers thanks to data-driven stocking. Try the simulation below.</p>
+            </div>
+
+            <div data-panel="uber" role="tabpanel" hidden>
+              <h3 style="margin-top:0">Uber: dynamic pricing</h3>
+              <p><b>Background.</b> Uber wanted to set prices based on demand, supply and location.<br /><b>Business problem.</b> How to balance driver availability with rider demand as it changes minute by minute.</p>
+              <div class="company-panel">
+                <div class="point"><h4>Data used</h4><ul><li>GPS and traffic data</li><li>Rider and driver availability</li><li>Time of day and event information</li></ul></div>
+                <div class="point"><h4>Analysis and tools</h4><ul><li>Real-time analytics and AI-driven algorithms</li><li>Python, Spark, AWS</li></ul></div>
+              </div>
+              <h4 style="margin-top:1rem">Decision and outcome</h4>
+              <p>Uber introduced surge (dynamic) pricing, balancing driver supply with rider demand and increasing revenue and operational stability. Try the simulation below.</p>
+            </div>
+          </div>
+
+          <h3>Try it: Walmart's demand-based stocking</h3>
+          <figure class="figure">
+            <img src="../assets/img/session-04/warehouse.jpg" alt="Warehouse aisle with boxes stacked on tall racks" loading="lazy" />
+          </figure>
+          <div class="viz" id="viz-stock">
+            <div class="viz-head">
+              <h4>Stock a store for the next eight weeks</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Weekly demand for bottled water at one store. Add the events the forecast knows about, then compare fixed stocking with stocking based on the forecast.</p>
+            <div class="controls">
+              <b style="font-size:.9rem;min-width:7.5rem">Known events</b>
+              <button class="btn" data-ev="heat" aria-pressed="false">Heatwave in weeks 3–4</button>
+              <button class="btn" data-ev="fest" aria-pressed="false">Festival in week 6</button>
+              <button class="btn" data-ev="rain" aria-pressed="false">Heavy rain in week 8</button>
+            </div>
+            <div class="controls" role="group" aria-label="Stocking strategy">
+              <b style="font-size:.9rem;min-width:7.5rem">Stocking strategy</b>
+              <button class="btn" data-mode="fixed" aria-pressed="true">Fixed stock level</button>
+              <button class="btn" data-mode="data" aria-pressed="false">Data-driven stock</button>
+            </div>
+            <svg viewBox="0 0 640 270" role="img" aria-label="Weekly demand and stock chart"></svg>
+            <div class="legend">
+              <span><i style="background:#9fd5ce"></i>Stock on shelf</span>
+              <span><i style="background:#1b2a41"></i>Actual demand</span>
+              <span><i style="background:#d94f70"></i>Shortfall</span>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="avail">–</b><span>On-shelf availability</span></div>
+              <div class="stat"><b data-stat="short">–</b><span>Units short (lost sales)</span></div>
+              <div class="stat"><b data-stat="over">–</b><span>Excess units (waste)</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Try it: Uber's dynamic pricing</h3>
+          <div class="viz" id="viz-surge">
+            <div class="viz-head">
+              <h4>Balance riders and drivers</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Set demand and supply for one area over ten minutes. The pricing model raises fares when demand outstrips supply, which draws more drivers in and eases demand.</p>
+            <div class="controls">
+              <label class="range">Ride requests <span data-out="d">90</span><input type="range" min="20" max="220" value="90" data-in="d" /></label>
+              <label class="range">Drivers nearby <span data-out="s">80</span><input type="range" min="20" max="160" value="80" data-in="s" /></label>
+            </div>
+            <div class="controls">
+              <button class="btn" data-event aria-pressed="false">Concert just ended</button>
+            </div>
+            <svg viewBox="0 0 640 140" role="img" aria-label="Riders served with and without dynamic pricing"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="mult">–</b><span>Price multiplier</span></div>
+              <div class="stat"><b data-stat="fare">–</b><span>Fare for an 8 km trip</span></div>
+              <div class="stat"><b data-stat="wait">–</b><span>Typical wait</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="lessons">
+          <h2>Lessons learned</h2>
+          <p class="section-sub">What the five cases have in common</p>
+
+          <div class="point-grid">
+            <div class="point"><h4>Data is an asset</h4><p>Collecting and analyzing it well drives innovation.</p></div>
+            <div class="point"><h4>The right tools matter</h4><p>Tableau, Python, Spark and Power BI make insight scalable.</p></div>
+            <div class="point"><h4>Visualization communicates</h4><p>Dashboards make complex results simple to grasp.</p></div>
+            <div class="point"><h4>Monitor continuously</h4><p>Feedback loops improve decisions over time.</p></div>
+            <div class="point"><h4>Human + data</h4><p>Data supports human judgment; it doesn't replace it.</p></div>
+          </div>
+
+          <div class="split">
+            <img src="../assets/img/session-04/growth.jpg" alt="Rising orange bar chart with a line trend on a dark background" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">Session 4 in summary</h3>
+              <p>Exploration reveals the quality, structure and relationships in data; visualization turns those findings into clear visuals that drive decisions.</p>
+              <p>Amazon, Netflix, Starbucks, Walmart and Uber show that combining reliable data, modern tools and careful interpretation makes decisions smarter, faster and more profitable.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="4"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-03.html">Previous: Session 03</a>
+      <a href="session-05.html">Next: Session 05</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-04.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

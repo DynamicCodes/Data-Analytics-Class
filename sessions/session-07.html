@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 07: Random Variables, Distributions and the Central Limit Theorem | Data-Class</title>
+  <meta name="description" content="Random variables, probability distributions and data, the binomial, Poisson and normal distributions, and the central limit theorem." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>07</div>
+      <h1>Random Variables, Distributions and the Central Limit Theorem</h1>
+      <p class="lead">How random outcomes become numbers, how a distribution describes which numbers are likely, the three distributions you will meet most often, and why averages of almost anything end up following a bell curve.</p>
+      <ul class="lesson-meta">
+        <li>7 topics</li>
+        <li>8 interactive visuals</li>
+        <li>About 45 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-07/hero.jpg" alt="Chalkboard covered in mathematical formulas" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#random-variable">Random variables</a></li>
+          <li><a href="#distribution">Probability distributions</a></li>
+          <li><a href="#data">Distributions and data</a></li>
+          <li><a href="#three">Binomial, Poisson and normal</a></li>
+          <li><a href="#choose">Choosing the right distribution</a></li>
+          <li><a href="#connections">How the three connect</a></li>
+          <li><a href="#clt">The central limit theorem</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="random-variable">
+          <h2>Random variables</h2>
+          <p class="section-sub">Turning the outcomes of an experiment into numbers</p>
+
+          <div class="definition">
+            <strong>Random variable</strong>
+            A variable whose numerical value depends on the outcome of a random experiment. Formally, it is a function that assigns a real number to each outcome in a sample space S: X : S → ℝ, so each outcome s ∈ S gets the number X(s).
+          </div>
+          <p>Random variables connect random events to numbers, which lets us apply mathematics to probability.</p>
+
+          <div class="point-grid">
+            <div class="point">
+              <h4>Example 1: coin toss</h4>
+              <p>S = {H, T}. Define X(H) = 1 and X(T) = 0, so X is 1 for a head and 0 for a tail.</p>
+            </div>
+            <div class="point">
+              <h4>Example 2: rolling a die</h4>
+              <p>S = {1, 2, 3, 4, 5, 6}. Define X(s) = s, so X takes the values 1 to 6, each with probability 1/6.</p>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-rv">
+            <div class="viz-head">
+              <h4>From outcomes to numbers</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Pick an experiment and run it. Watch the outcome get mapped to its number, and see the probability of each value, the expected value and the variance.</p>
+            <div class="controls" role="group" aria-label="Experiment">
+              <button class="btn" data-exp="coin" aria-pressed="true">Toss a coin</button>
+              <button class="btn" data-exp="die" aria-pressed="false">Roll a die</button>
+              <button class="btn" data-exp="three" aria-pressed="false">Heads in 3 tosses</button>
+              <button class="btn" data-exp="sum" aria-pressed="false">Sum of two dice</button>
+            </div>
+            <div class="controls">
+              <button class="btn is-on" data-run>Run the experiment</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Mapping of outcomes to values and probability chart"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="ex">–</b><span>Expected value E[X]</span></div>
+              <div class="stat"><b data-stat="var">–</b><span>Variance Var(X)</span></div>
+              <div class="stat"><b data-stat="sd">–</b><span>Standard deviation σ</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Types of random variables</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td><b>Discrete</b></td><td>Takes a countable number of values</td><td>Number of heads in 3 tosses; customers arriving per hour</td></tr>
+              <tr><td><b>Continuous</b></td><td>Takes uncountably many values within an interval</td><td>Height, weight, time, temperature</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Real-world examples</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Situation</th><th>Random variable X</th><th>Type</th></tr></thead>
+            <tbody>
+              <tr><td>Cars passing a toll gate per minute</td><td>Count of cars</td><td>Discrete</td></tr>
+              <tr><td>Rainfall in a day</td><td>Millimeters of rain</td><td>Continuous</td></tr>
+              <tr><td>Marks obtained by a student</td><td>Marks from 0 to 100</td><td>Continuous (treated as continuous; strictly, whole marks are discrete)</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="distribution">
+          <h2>Probability distributions</h2>
+          <p class="section-sub">How likely each value of a random variable is</p>
+
+          <p>Every random variable has a probability distribution describing how its values are spread. How it is written depends on the type of variable.</p>
+
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>Discrete: probability mass function (PMF)</h4>
+              <div class="formula">P(X = x<sub>i</sub>)</div>
+              <p>Gives the probability of each exact value. The probabilities must add up to 1: Σ P(X = x<sub>i</sub>) = 1. For a fair die, P(X = x) = 1/6 for x = 1 to 6.</p>
+            </div>
+            <div class="measure">
+              <h4>Continuous: probability density function (PDF)</h4>
+              <div class="formula">P(a ≤ X ≤ b) = ∫<sub>a</sub><sup>b</sup> f(x) dx</div>
+              <p>Probabilities are areas under the curve f(x), and the total area is 1. The probability of any single exact value is 0, so only intervals make sense.</p>
+            </div>
+          </div>
+
+          <div class="split">
+            <img src="../assets/img/session-07/stairs.jpg" alt="Rising line graph drawn above a concrete staircase" loading="lazy" style="aspect-ratio:3/4" />
+            <div>
+              <h3 style="margin-top:0">Expected value (mean)</h3>
+              <p>The long-run average value of a random variable.</p>
+              <div class="formula">Discrete: E[X] = Σ x<sub>i</sub> P(X = x<sub>i</sub>)</div>
+              <div class="formula">Continuous: E[X] = ∫ x f(x) dx</div>
+              <h3>Variance and standard deviation</h3>
+              <p>How spread out the values are around the mean.</p>
+              <div class="formula">Var(X) = E[(X − E[X])²] &nbsp;&nbsp; σ = √Var(X)</div>
+            </div>
+          </div>
+
+          <p>A common example of a continuous distribution is the normal distribution, whose density is f(x) = (1 ÷ σ√(2π)) · e<sup>−(x − μ)² ÷ 2σ²</sup>, where μ is the mean and σ the standard deviation.</p>
+
+          <div class="viz" id="viz-area">
+            <div class="viz-head">
+              <h4>Probability as bars and as area</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Choose a range from a to b. For a discrete variable you add up bars; for a continuous one you measure the area under the curve. Switch to the CDF to see P(X ≤ x) instead.</p>
+            <div class="controls" role="group" aria-label="Variable type">
+              <button class="btn" data-t="disc" aria-pressed="true">Discrete: sum of two dice</button>
+              <button class="btn" data-t="cont" aria-pressed="false">Continuous: height (μ 165, σ 8 cm)</button>
+              <button class="btn" data-cdf aria-pressed="false">Show CDF</button>
+            </div>
+            <div class="controls">
+              <label class="range">a <span data-out="a"></span><input type="range" data-in="a" /></label>
+              <label class="range">b <span data-out="b"></span><input type="range" data-in="b" /></label>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Distribution chart with shaded range"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="data">
+          <h2>Distributions and data</h2>
+          <p class="section-sub">The bridge between theory and what we observe</p>
+
+          <div class="split">
+            <img src="../assets/img/session-07/pins.jpg" alt="Colored pins connected by thread on a white surface" loading="lazy" />
+            <div>
+              <p>A probability distribution describes how likely each possible value of a random variable is. It is the bridge between theoretical probability and real-world data: data collected from experiments or observations can be used to estimate a distribution.</p>
+            </div>
+          </div>
+
+          <ol class="steps">
+            <li><h4>Collect data</h4><p>From experiments, surveys, sensors and so on.</p></li>
+            <li><h4>Organize data</h4><p>Into frequency tables or histograms.</p></li>
+            <li><h4>Approximate probabilities</h4><p>Relative frequency = count of an outcome ÷ total outcomes.</p></li>
+            <li><h4>Fit a theoretical distribution</h4><p>Such as binomial, Poisson or normal.</p></li>
+          </ol>
+
+          <p><b>Example:</b> toss a coin 10 times and get 6 heads and 4 tails. The estimated probabilities (0.6, 0.4) form an <b>empirical</b> distribution, which you can compare with the <b>theoretical</b> distribution (0.5, 0.5).</p>
+
+          <div class="viz" id="viz-lln">
+            <div class="viz-head">
+              <h4>Estimate a distribution from data</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Toss a fair coin or roll a fair die. With little data the relative frequencies wander; with more they settle on the theoretical probabilities.</p>
+            <div class="controls" role="group" aria-label="Experiment">
+              <button class="btn" data-e="coin" aria-pressed="true">Coin</button>
+              <button class="btn" data-e="die" aria-pressed="false">Die</button>
+            </div>
+            <div class="controls">
+              <button class="btn" data-add="10">+10 trials</button>
+              <button class="btn" data-add="100">+100</button>
+              <button class="btn is-on" data-add="1000">+1,000</button>
+              <button class="btn ghost" data-add="0">Reset</button>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Empirical vs theoretical distribution"></svg>
+            <div class="legend"><span><i style="background:#0e8c7f"></i>Observed relative frequency</span><span><i style="background:#6b5fd3"></i>Theoretical probability</span></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Common probability distributions</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Distribution</th><th>Describes</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="2">Discrete</td><td><b>Binomial</b></td><td>Successes in n independent yes/no trials</td><td>Heads in 10 tosses</td></tr>
+              <tr><td><b>Poisson</b></td><td>Events in a fixed interval</td><td>Arrivals per hour</td></tr>
+              <tr><td rowspan="3">Continuous</td><td><b>Normal</b></td><td>Bell-shaped curve</td><td>Heights, weights</td></tr>
+              <tr><td><b>Uniform</b></td><td>Equal probability everywhere</td><td>A random number between 0 and 1</td></tr>
+              <tr><td><b>Exponential</b></td><td>Time between events</td><td>Waiting time in a queue</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Describing and visualizing a distribution</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Measure</th><th>Formula</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>Mean (expected value)</b></td><td>E[X] = Σ x<sub>i</sub> P(x<sub>i</sub>) or ∫ x f(x) dx</td><td>Center</td></tr>
+              <tr><td><b>Variance</b></td><td>Var(X) = E[(X − E[X])²]</td><td>Spread</td></tr>
+              <tr><td><b>Standard deviation</b></td><td>σ = √Var(X)</td><td>Dispersion, in the data's units</td></tr>
+            </tbody>
+          </table></div>
+          <p>Distributions are usually shown as a <b>histogram</b> (for data), a <b>PMF or PDF plot</b> (for the theoretical distribution), or a <b>cumulative distribution function (CDF)</b>, which shows P(X ≤ x). Their typical shapes: the normal is a bell curve, the uniform a flat line, the binomial symmetric when p = 0.5, and the Poisson skewed right for small λ.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Concept</th><th>Discrete</th><th>Continuous</th></tr></thead>
+            <tbody>
+              <tr><th>Function</th><td>PMF, P(X = x)</td><td>PDF, f(x)</td></tr>
+              <tr><th>Probability</th><td>Sum of probabilities</td><td>Area under the curve</td></tr>
+              <tr><th>Example</th><td>Die roll, coin toss</td><td>Height, weight</td></tr>
+              <tr><th>Link to data</th><td>Frequency count</td><td>Histogram</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="three">
+          <h2>Binomial, Poisson and normal</h2>
+          <p class="section-sub">The three distributions you will meet most often</p>
+
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>Binomial (discrete)</h4>
+              <p>The number of successes in n independent trials, each with two outcomes (success or failure) and success probability p.</p>
+              <div class="formula">P(X = k) = C(n, k) p<sup>k</sup> (1 − p)<sup>n − k</sup></div>
+              <p>Mean np, variance np(1 − p). Symmetric when p = 0.5, skewed otherwise.</p>
+              <p><b>Example:</b> toss a fair coin 3 times. P(X = 2) = C(3, 2)(0.5)²(0.5) = 3 × 0.125 = 0.375.</p>
+            </div>
+            <div class="measure">
+              <h4>Poisson (discrete)</h4>
+              <p>The number of events in a fixed interval of time or space, when events occur independently at an average rate λ.</p>
+              <div class="formula">P(X = k) = e<sup>−λ</sup> λ<sup>k</sup> ÷ k!</div>
+              <p>Mean and variance are both λ.</p>
+              <p><b>Example:</b> a clinic averages 4 patients an hour. P(X = 2) = e<sup>−4</sup> × 4² ÷ 2! = 8e<sup>−4</sup> ≈ 0.146.</p>
+            </div>
+            <div class="measure">
+              <h4>Normal (continuous)</h4>
+              <p>Continuous data that clusters around a mean: the bell curve.</p>
+              <div class="formula">f(x) = e<sup>−(x − μ)² ÷ 2σ²</sup> ÷ σ√(2π)</div>
+              <p>Symmetric and bell-shaped; mean = median = mode; total area 1. About 68%, 95% and 99.7% of values lie within 1, 2 and 3 standard deviations of the mean.</p>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-dist">
+            <div class="viz-head">
+              <h4>Distribution explorer</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Pick a distribution and change its parameters. Tap a bar, or move the marker, to see the probability calculated with the formula.</p>
+            <div class="controls" role="group" aria-label="Distribution"></div>
+            <div class="controls" data-params></div>
+            <svg viewBox="0 0 640 270" role="img" aria-label="Distribution chart"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="mean">–</b><span>Mean</span></div>
+              <div class="stat"><b data-stat="var">–</b><span>Variance</span></div>
+              <div class="stat"><b data-stat="shape">–</b><span>Shape</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>The standard normal distribution</h3>
+          <div class="split reverse">
+            <img src="../assets/img/session-07/conveyor.jpg" alt="Parcels moving along a conveyor belt with red scanning lights" loading="lazy" />
+            <div>
+              <p>A normal distribution with μ = 0 and σ = 1 is the <b>standard normal</b>. Any normal value can be converted to it with a <b>z-score</b>, which counts how many standard deviations the value lies from the mean:</p>
+              <div class="formula">Z = (X − μ) ÷ σ</div>
+              <p>Heights, blood pressure, test scores and machine errors approximately follow a normal distribution, so z-scores let you compare them on one scale. The area explorer above shows z-scores for any height range.</p>
+            </div>
+          </div>
+
+          <h3>Comparison summary</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Feature</th><th>Binomial</th><th>Poisson</th><th>Normal</th></tr></thead>
+            <tbody>
+              <tr><th>Type</th><td>Discrete</td><td>Discrete</td><td>Continuous</td></tr>
+              <tr><th>Use</th><td>Successes in n trials</td><td>Rare events per interval</td><td>Continuous natural data</td></tr>
+              <tr><th>Parameters</th><td>n, p</td><td>λ</td><td>μ, σ</td></tr>
+              <tr><th>Mean</th><td>np</td><td>λ</td><td>μ</td></tr>
+              <tr><th>Variance</th><td>np(1 − p)</td><td>λ</td><td>σ²</td></tr>
+              <tr><th>Shape</th><td>Symmetric or skewed</td><td>Right-skewed</td><td>Symmetric</td></tr>
+              <tr><th>Example</th><td>Heads in 10 tosses</td><td>Calls per hour</td><td>Human height</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="choose">
+          <h2>Choosing the right distribution</h2>
+          <p class="section-sub">A few questions narrow it down</p>
+
+          <div class="viz" id="viz-choose">
+            <div class="viz-head">
+              <h4>Which distribution fits?</h4>
+              <span class="viz-tag">Decision guide</span>
+            </div>
+            <p class="viz-hint">Answer the questions for your own data, or pick a scenario to see how it is reasoned through.</p>
+            <div class="controls" role="group" aria-label="Scenarios" data-scen></div>
+            <div data-qa aria-live="polite"></div>
+          </div>
+
+          <h3>Where they show up in analytics</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Hypothesis testing</h4><p>Uses the normal distribution to judge whether differences between groups are significant.</p></div>
+            <div class="point"><h4>Fraud detection</h4><p>Uses the Poisson distribution to flag unusual spikes in transaction counts.</p></div>
+            <div class="point"><h4>Churn prediction</h4><p>Models use Bernoulli (yes/no) outcomes as their target.</p></div>
+            <div class="point"><h4>Customer lifetime value</h4><p>Uses the exponential distribution for time until a customer leaves.</p></div>
+            <div class="point"><h4>A/B testing</h4><p>At companies like Google and Netflix, built on binomial probabilities.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Distribution</th><th>Common applications</th></tr></thead>
+            <tbody>
+              <tr><td><b>Binomial</b></td><td>Quality control (defective or not), coin tosses, survey responses</td></tr>
+              <tr><td><b>Poisson</b></td><td>Arrivals, accidents or defects per unit of time or area</td></tr>
+              <tr><td><b>Normal</b></td><td>Test scores, heights, weights, blood pressure, machine errors</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="connections">
+          <h2>How the three connect</h2>
+          <p class="section-sub">From discrete counts to a continuous curve</p>
+
+          <div class="point-grid">
+            <div class="point"><h4>Binomial → Poisson</h4><p>For large n and small p, with np = λ, the binomial becomes a Poisson distribution.</p></div>
+            <div class="point"><h4>Poisson → Normal</h4><p>For large λ, the Poisson distribution looks normal, with mean and variance λ.</p></div>
+            <div class="point"><h4>A progression</h4><p>All three are mathematically linked, moving from discrete to continuous behavior.</p></div>
+          </div>
+
+          <div class="viz" id="viz-limit">
+            <div class="viz-head">
+              <h4>Watch one distribution turn into another</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <div class="controls" role="group" aria-label="Approximation">
+              <button class="btn" data-lm="bp" aria-pressed="true">Binomial → Poisson</button>
+              <button class="btn" data-lm="pn" aria-pressed="false">Poisson → Normal</button>
+            </div>
+            <div class="controls">
+              <label class="range"><span data-lab></span> <span data-out="v"></span><input type="range" data-in="v" /></label>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Distribution approximation chart"></svg>
+            <div class="legend" data-legend></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="clt">
+          <h2>The central limit theorem</h2>
+          <p class="section-sub">Why the bell curve is everywhere</p>
+
+          <p>The central limit theorem (CLT) is one of the most important results in statistics. It explains how the distribution of sample means behaves when we take repeated samples from any population, whatever the population's shape.</p>
+
+          <div class="definition">
+            <strong>Central limit theorem</strong>
+            When independent random samples of size n are taken from any population with mean μ and standard deviation σ, the sampling distribution of the sample mean approaches a normal distribution as n becomes large.
+          </div>
+
+          <h3>Mathematical expression</h3>
+          <p>If X₁, X₂, …, Xₙ are independent random variables with mean μ and variance σ², the sample mean is X̄ = (1/n) Σ X<sub>i</sub>, and</p>
+          <div class="formula" style="text-align:center">Z = (X̄ − μ) ÷ (σ / √n) → N(0, 1) as n → ∞</div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Key idea</h4><p>No matter how skewed or non-normal the population, the distribution of sample means becomes approximately normal for large n. The larger n is, the closer it gets. In most practical cases, n ≥ 30 is large enough.</p></div>
+            <div class="measure"><h4>Parameters of the sampling distribution</h4><div class="formula">μ<sub>X̄</sub> = μ</div><div class="formula">σ<sub>X̄</sub> = σ / √n</div><p>The spread of sample means, σ/√n, is called the <b>standard error</b>.</p></div>
+          </div>
+
+          <div class="viz" id="viz-clt">
+            <div class="viz-head">
+              <h4>CLT simulator</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Choose a population, even a very skewed one, and a sample size. Each sample's mean adds one to the histogram on the right. The purple curve is what the CLT predicts.</p>
+            <div class="controls" role="group" aria-label="Population shape">
+              <button class="btn" data-pop="exp" aria-pressed="true">Skewed (waiting times)</button>
+              <button class="btn" data-pop="unif" aria-pressed="false">Uniform</button>
+              <button class="btn" data-pop="bim" aria-pressed="false">Two peaks</button>
+              <button class="btn" data-pop="die" aria-pressed="false">Die rolls</button>
+            </div>
+            <div class="controls">
+              <label class="range">Sample size n <span data-out="n">5</span><input type="range" min="1" max="50" value="5" data-in="n" /></label>
+              <button class="btn" data-draw="1">Draw 1 sample</button>
+              <button class="btn is-on" data-draw="1000">Draw 1,000 samples</button>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Population and sampling distribution"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="k">0</b><span>Samples drawn</span></div>
+              <div class="stat"><b data-stat="mm">–</b><span>Mean of sample means (μ = <span data-mu></span>)</span></div>
+              <div class="stat"><b data-stat="sm">–</b><span>SD of sample means (σ/√n = <span data-se></span>)</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Worked example</h3>
+          <p>A population has μ = 70 and σ = 10. For samples of n = 36, the sample mean has mean 70 and standard error 10 ÷ √36 = 10 ÷ 6 ≈ 1.67.</p>
+
+          <div class="viz" id="viz-se">
+            <div class="viz-head">
+              <h4>How sample size shrinks uncertainty</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Population μ = 70, σ = 10. Change n and a cut-off value to see the standard error and the probability that a sample mean exceeds it.</p>
+            <div class="controls">
+              <label class="range">Sample size n <span data-out="n">36</span><input type="range" min="1" max="100" value="36" data-in="n" /></label>
+              <label class="range">Cut-off <span data-out="c">72</span><input type="range" min="66" max="80" step="0.5" value="72" data-in="c" /></label>
+            </div>
+            <svg viewBox="0 0 640 230" role="img" aria-label="Population and sampling distributions"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Why the CLT matters</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Enables inference</h4><p>Lets us use normal models for hypothesis tests and confidence intervals.</p></div>
+            <div class="point"><h4>Simplifies problems</h4><p>Works even when the population is not normal.</p></div>
+            <div class="point"><h4>A foundation</h4><p>Underpins regression, ANOVA and control charts.</p></div>
+          </div>
+          <p><b>Real-world applications:</b> estimating population parameters from samples, quality control and process monitoring, election polling and surveys, and financial modeling and risk estimation.</p>
+
+          <div class="takeaways">
+            <h3>Session 7 in summary</h3>
+            <ul>
+              <li>A random variable maps each outcome to a number; it can be discrete (counts) or continuous (measurements).</li>
+              <li>Discrete distributions use a PMF where probabilities add to 1; continuous ones use a PDF where probability is area under the curve.</li>
+              <li>Data estimates a distribution through relative frequencies, which settle on the true probabilities as data grows.</li>
+              <li>Binomial counts successes in n trials, Poisson counts events in an interval, and the normal describes continuous data around a mean. They are linked as limits of one another.</li>
+              <li>The CLT says sample means are approximately normal for large samples, with mean μ and standard error σ/√n, whatever the population's shape. That is why the normal distribution is the backbone of statistical inference.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="7"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-06.html">Previous: Session 06</a>
+      <a href="session-08.html">Next: Session 08</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-07.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

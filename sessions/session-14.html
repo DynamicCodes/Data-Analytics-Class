@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 14: Supervised Segmentation, Tree Rules and Probability Estimation | Data-Class</title>
+  <meta name="description" content="Supervised segmentation, visualizing segmentations, decision trees as sets of rules, and probability estimation in trees." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>14</div>
+      <h1>Supervised Segmentation, Tree Rules and Probability Estimation</h1>
+      <p class="lead">How target-guided segments are built, how to show them so people can act on them, how every decision tree can be read as a set of if–then rules, and how its leaves turn those rules into probabilities.</p>
+      <ul class="lesson-meta">
+        <li>4 topics</li>
+        <li>4 interactive visuals</li>
+        <li>About 40 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-14/hero.jpg" alt="Connected rings on a surface, like linked decision steps" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#supervised">Supervised segmentation</a></li>
+          <li><a href="#visualizing">Visualizing segmentations</a></li>
+          <li><a href="#rules">Trees as a set of rules</a></li>
+          <li><a href="#probability">Probability estimation</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="supervised">
+          <h2>Supervised segmentation</h2>
+          <p class="section-sub">Segments guided by a known outcome</p>
+
+          <p>Supervised segmentation divides data into distinct, meaningful groups based on a known target variable. It is called <b>supervised</b> because known outcomes guide the segmentation, unlike clustering, which relies only on similarities in the data. In essence, it identifies how the predictors explain differences in the target.</p>
+
+          <div class="point-grid">
+            <div class="point"><h4>Purpose</h4><p>Understand which features influence the target, form homogeneous subgroups that behave similarly, and enable targeted decisions such as risk-based strategies or personalized interventions.</p></div>
+            <div class="point"><h4>Key concept</h4><p>It combines predictive modelling (to estimate outcomes) with segmentation (to divide the population by them): a predictive model with interpretable group boundaries.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Feature</th><th>Supervised</th><th>Unsupervised</th></tr></thead>
+            <tbody>
+              <tr><th>Target variable</th><td>Known, and guides the segmentation</td><td>Not used</td></tr>
+              <tr><th>Objective</th><td>Explain variation in the target</td><td>Find natural patterns</td></tr>
+              <tr><th>Approach</th><td>Classification or regression trees, rule-based methods</td><td>Clustering (k-means, hierarchical)</td></tr>
+              <tr><th>Interpretation</th><td>Segments defined by predictive rules</td><td>Segments defined by similarity</td></tr>
+              <tr><th>Use case</th><td>Predictive analytics, risk scoring</td><td>Market research, exploration</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Theoretical foundation</h3>
+          <p>Given predictors X₁, X₂, …, Xₙ and a target Y, supervised segmentation finds segments S₁, S₂, …, S<sub>k</sub> of the predictor space such that the expected outcome differs between them:</p>
+          <div class="formula" style="text-align:center">E[Y | X ∈ S<sub>i</sub>] is distinct from E[Y | X ∈ S<sub>j</sub>] for every i ≠ j</div>
+          <p>Each segment is defined by conditions on X, and within a segment the outcome should be as uniform as possible.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Step</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td>1. Define the target</td><td>Choose the dependent variable Y</td><td>Churn = Yes/No</td></tr>
+              <tr><td>2. Select predictors</td><td>Choose independent variables X</td><td>Age, income, tenure, usage</td></tr>
+              <tr><td>3. Measure relationships</td><td>Find which variables relate most to Y</td><td>Chi-square, ANOVA, correlation</td></tr>
+              <tr><td>4. Split into segments</td><td>Divide on the strongest predictors</td><td>Decision tree or rule-based segmentation</td></tr>
+              <tr><td>5. Evaluate purity</td><td>Check each segment is internally homogeneous</td><td>High churn in one group, low in another</td></tr>
+              <tr><td>6. Interpret</td><td>Describe each group's profile</td><td>"Young, low-income customers → high churn risk"</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Conceptual example: churn</h3>
+          <p>The most informative attribute is <b>subscription length</b>: long subscriptions (over 12 months) churn little, short ones (under 6 months) a lot. Within the short-term group, <b>complaint frequency</b> splits further. The segments:</p>
+          <div class="point-grid">
+            <div class="point" style="background:var(--accent-soft)"><h4>Segment A</h4><p>Long subscription → low churn.</p></div>
+            <div class="point" style="background:#fdf0dc"><h4>Segment B</h4><p>Short subscription + few complaints → medium churn.</p></div>
+            <div class="point" style="background:#fde7ec"><h4>Segment C</h4><p>Short subscription + frequent complaints → high churn.</p></div>
+          </div>
+          <p class="note">As in the slides, customers with 6–12 month subscriptions don't fall into any of these three segments. A complete segmentation must cover everyone, for example by making the first split "12 months or less" vs. "more than 12 months".</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>Description</th><th>Outcome</th></tr></thead>
+            <tbody>
+              <tr><td><b>Decision trees (CART, CHAID, C5.0)</b></td><td>Hierarchical, target-guided splits</td><td>Simple, interpretable segments</td></tr>
+              <tr><td><b>Logistic regression with binning</b></td><td>Continuous features binned into target-based groups</td><td>Segments with probability ranges</td></tr>
+              <tr><td><b>Random forests</b></td><td>An ensemble of trees</td><td>More accurate, less interpretable</td></tr>
+              <tr><td><b>Gradient boosting (XGBoost, LightGBM)</b></td><td>Sequential tree-based refinement</td><td>Strong performance, complex segments</td></tr>
+              <tr><td><b>Hybrid segmentation</b></td><td>Supervised plus unsupervised methods</td><td>Balances interpretability and discovery</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Evaluation metric</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><b>Purity (homogeneity)</b></td><td>How similar target values are within a segment</td></tr>
+              <tr><td><b>Separation (heterogeneity)</b></td><td>How distinct segments are from one another</td></tr>
+              <tr><td><b>Information gain / Gini reduction</b></td><td>Improvement in prediction from a split</td></tr>
+              <tr><td><b>Lift and gain charts</b></td><td>Predictive performance by segment</td></tr>
+              <tr><td><b>Population stability index (PSI)</b></td><td>Whether segments stay consistent over time</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Effective segmentation</h4><p>Segments differ significantly in outcomes, are interpretable and actionable, are large enough to be reliable, stay stable over time, and improve decisions.</p></div>
+            <div class="measure"><h4>Advantages</h4><p>Data-driven and target-specific; supports precision marketing and personalization; interpretable through rules; focuses on relevant patterns; bridges descriptive and predictive analytics.</p></div>
+            <div class="measure"><h4>Challenges</h4><p>Needs labeled data; segments drift over time; too many attributes risk overfitting; can be expensive on large data; may ignore relationships not linked to the target.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Purpose</th><th>Example segments</th></tr></thead>
+            <tbody>
+              <tr><td><b>Banking</b></td><td>Credit risk analysis</td><td>High, medium, low-risk borrowers</td></tr>
+              <tr><td><b>Marketing</b></td><td>Customer targeting</td><td>Likely, occasional and non-buyers</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Patient risk stratification</td><td>High, moderate, low-risk patients</td></tr>
+              <tr><td><b>Education</b></td><td>Student performance</td><td>Likely to excel, average, at risk</td></tr>
+              <tr><td><b>Retail</b></td><td>Product affinity</td><td>Frequent, seasonal, one-time buyers</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Case study:</b> a telecom company predicting churn from tenure, usage, service calls and billing found three segments: long tenure with few service calls (loyal), new users with many calls (high churn risk), and medium tenure with moderate calls (at risk, ideal for retention offers). <b>Future trends</b> include explainable segmentation, real-time dynamic segments, hybrid models, AutoML-chosen thresholds, and fairness checks.</p>
+        </section>
+
+        <section id="visualizing">
+          <h2>Visualizing segmentations</h2>
+          <p class="section-sub">Making segments interpretable, communicable and actionable</p>
+
+          <p>Once data is segmented, visualization turns numerical results into intuitive patterns that show how segments differ in behavior, composition and outcomes. It helps you understand the differences, evaluate whether segments are well separated, communicate with non-technical audiences, and guide actions such as targeted marketing or risk management.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Aspect</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Structure</b></td><td>How data is divided into segments</td><td>Decision tree diagram</td></tr>
+              <tr><td><b>Composition</b></td><td>What each segment contains</td><td>Pie or bar charts of segment make-up</td></tr>
+              <tr><td><b>Performance</b></td><td>How each segment behaves on the target</td><td>Box plots, gains charts</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-gallery">
+            <div class="viz-head">
+              <h4>One loan segmentation, ten ways to see it</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A bank split 900 borrowers into three segments. Every chart below shows the same segmentation, colored consistently. Pick a view to see what it reveals.</p>
+            <div class="controls" role="group" aria-label="Chart type"></div>
+            <svg viewBox="0 0 640 290" role="img" aria-label="Segmentation visualization"></svg>
+            <div class="legend"><span><i style="background:#0e8c7f"></i>A: high income, long credit history</span><span><i style="background:#d98a0b"></i>B: moderate income, stable job</span><span><i style="background:#d94f70"></i>C: low income, short credit history</span></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>In supervised segmentation</h4><p>Focus on the target: how segments differ in predicted outcomes, where the decision boundaries fall, and whether predictions are consistent. Typical visuals: tree diagrams, partial dependence plots, confusion matrices by segment, target rate per segment.</p></div>
+            <div class="measure"><h4>In unsupervised segmentation</h4><p>Help give meaning to groups found without a label: 2D or 3D cluster plots, dendrograms, attribute profiles per cluster, and segment size and density charts, leading to names like "high-value customers".</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Visualization</th><th>What it tests</th><th>Interpretation</th></tr></thead>
+            <tbody>
+              <tr><td><b>Box plots / histograms</b></td><td>Within-group homogeneity</td><td>Narrow spread = consistent segment</td></tr>
+              <tr><td><b>Scatter / PCA plots</b></td><td>Between-group heterogeneity</td><td>Wide separation = distinct segments</td></tr>
+              <tr><td><b>Heatmaps</b></td><td>Attribute strength</td><td>Reveal the key differentiators</td></tr>
+              <tr><td><b>Lift charts</b></td><td>Predictive power</td><td>Higher lift in top segments = better model</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Best practices</h3>
+          <ol class="steps">
+            <li><h4>Consistent colors</h4><p>Use the same color for a segment in every chart.</p></li>
+            <li><h4>Clear labels and legends</h4><p>Make every chart readable on its own.</p></li>
+            <li><h4>Show segment size</h4><p>Display relative proportions alongside the metrics.</p></li>
+            <li><h4>Combine summary and analysis</h4><p>Pair pie or bar charts with scatter or tree views.</p></li>
+            <li><h4>Go interactive</h4><p>Use dashboards for deeper exploration.</p></li>
+          </ol>
+          <p><b>Future directions:</b> interactive visual analytics, explainable AI visuals that show why models split data, 3D embeddings, and temporal maps showing how segment membership evolves.</p>
+        </section>
+
+        <section id="rules">
+          <h2>Trees as a set of rules</h2>
+          <p class="section-sub">Every path from root to leaf is an if–then rule</p>
+
+          <p>Decision trees are among the most intuitive and interpretable predictive models. The <b>root node</b> represents the whole dataset, <b>branches</b> are decisions on feature values, and <b>leaves</b> are the final predictions. Each split is a rule learned from the data that partitions it into more homogeneous subsets, so the whole tree is a set of if–then rules.</p>
+
+          <div class="viz" id="viz-tree">
+            <div class="viz-head">
+              <h4>Will this person buy a computer?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Describe a person, or tap a leaf, to see the path through the tree, the rule it corresponds to, and the probability from that leaf's training data.</p>
+            <div class="controls">
+              <b style="font-size:.9rem">Age</b>
+              <button class="btn" data-age="young" aria-pressed="true">30 or under</button>
+              <button class="btn" data-age="old" aria-pressed="false">Over 30</button>
+            </div>
+            <div class="controls">
+              <b style="font-size:.9rem">Student</b>
+              <button class="btn" data-stu="yes" aria-pressed="true">Yes</button>
+              <button class="btn" data-stu="no" aria-pressed="false">No</button>
+              <b style="font-size:.9rem;margin-left:.5rem">Income</b>
+              <button class="btn" data-inc="high" aria-pressed="false">High</button>
+              <button class="btn" data-inc="medium" aria-pressed="true">Medium</button>
+              <button class="btn" data-inc="low" aria-pressed="false">Low</button>
+            </div>
+            <div class="controls">
+              <button class="btn" data-lap aria-pressed="false">Apply Laplace smoothing</button>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Decision tree"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+            <div class="table-wrap"><table data-rules></table></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Why rules?</th><th>Explanation</th></tr></thead>
+            <tbody>
+              <tr><td><b>Interpretability</b></td><td>Rules are simple, human-readable and explainable</td></tr>
+              <tr><td><b>Transparency</b></td><td>Every prediction can be traced along a clear decision path</td></tr>
+              <tr><td><b>Segmented understanding</b></td><td>Shows how attributes combine to influence outcomes</td></tr>
+              <tr><td><b>Flexibility</b></td><td>Rules can be modified, pruned or merged easily</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>From splits to rules</h3>
+          <p>Algorithms such as CART, ID3 and C4.5 choose each split with a measure like <b>information gain</b> (entropy reduction), the <b>Gini index</b> or the <b>chi-square statistic</b>. If "Age ≤ 30" produces the most homogeneous subsets, it becomes the root split, and the first condition of every rule.</p>
+          <ol class="steps">
+            <li><h4>Train a decision tree</h4><p>On labeled data.</p></li>
+            <li><h4>Trace each path</h4><p>From the root node to every leaf.</p></li>
+            <li><h4>Combine the conditions</h4><p>Join the split conditions along the path with AND.</p></li>
+            <li><h4>Assign the conclusion</h4><p>The leaf's class or value becomes the rule's THEN part.</p></li>
+          </ol>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Easy to visualize and interpret; handles numerical and categorical data; needs little preprocessing; converts directly into rule-based decision systems; great for segmenting customers, risks or behaviors.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Large trees produce too many, complex rules; overfitting without pruning; small data changes can produce different rules (instability).</p></div>
+          </div>
+
+          <h3>Example: loan approval rules</h3>
+          <div class="viz" id="viz-loan">
+            <div class="viz-head">
+              <h4>Test the bank's rule set</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Three rules extracted from a tree. Move an applicant around and see which rule fires. Watch for applicants no rule covers.</p>
+            <div class="controls">
+              <label class="range">Income (₹) <span data-out="i">65,000</span><input type="range" min="20000" max="100000" step="1000" value="65000" data-in="i" /></label>
+              <label class="range">Credit score <span data-out="c">720</span><input type="range" min="450" max="850" step="5" value="720" data-in="c" /></label>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Rule regions"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+          <p>Rules like these can run directly in a rule-based system or support explainable AI, because every decision comes with its reason.</p>
+        </section>
+
+        <section id="probability">
+          <h2>Probability estimation</h2>
+          <p class="section-sub">Trees give probabilities, not just labels</p>
+
+          <p>Every leaf of a decision tree holds a subset of the training data that share similar characteristics. Each leaf stores a <b>predicted class</b> (the majority class) and a <b>probability estimate</b>: the fraction of its samples in each class. That makes trees probabilistic models, not just rule-based classifiers.</p>
+          <div class="formula" style="text-align:center">P(c | L) = number of training samples of class c in leaf L ÷ total samples in L</div>
+          <p>For example, a leaf with 8 "Buy = Yes" and 2 "Buy = No" customers predicts Yes with P = 8 ÷ 10 = 0.8. The same calculation applies at every node during training (P(c | N) = n<sub>c</sub> ÷ n), and the probabilities in a node always sum to 1.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Why it matters</th><th>Explanation</th></tr></thead>
+            <tbody>
+              <tr><td><b>Uncertainty</b></td><td>Gives confidence in a prediction instead of a bare yes/no</td></tr>
+              <tr><td><b>Threshold-based decisions</b></td><td>For example, approve a loan only if P(default) &lt; 0.3</td></tr>
+              <tr><td><b>Ranking</b></td><td>Sort cases by likelihood, useful in marketing and fraud detection</td></tr>
+              <tr><td><b>Calibration</b></td><td>Combines well with ensembles such as random forests and gradient boosting</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>In ensembles</h4><div class="formula">P(c | X) = (1/T) Σ<sub>t</sub> P<sub>t</sub>(c | X)</div><p>A random forest averages the leaf probabilities from its T trees, which gives smoother, more reliable estimates than one tree.</p></div>
+            <div class="measure"><h4>Laplace smoothing</h4><div class="formula">P(c | L) = (n<sub>c</sub> + 1) ÷ (n + k)</div><p>n<sub>c</sub> is the class count in the leaf, n the leaf size and k the number of classes. It stops small leaves from claiming certainty: a leaf with 3 of 3 "Yes" becomes 4/5 = 0.8 instead of 1.0.</p></div>
+          </div>
+
+          <div class="viz" id="viz-prob">
+            <div class="viz-head">
+              <h4>Leaf probabilities: smoothing and averaging</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <div class="controls" role="group" aria-label="Mode">
+              <button class="btn" data-pm="leaf" aria-pressed="true">One leaf, with and without smoothing</button>
+              <button class="btn" data-pm="forest" aria-pressed="false">A forest of trees</button>
+            </div>
+            <div class="controls" data-pctl></div>
+            <svg viewBox="0 0 640 240" role="img" aria-label="Probability chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="takeaways">
+            <h3>Session 14 in summary</h3>
+            <ul>
+              <li>Supervised segmentation uses a known target to form segments whose expected outcomes differ, then evaluates their purity, separation and stability.</li>
+              <li>Visualizations reveal a segmentation's structure, composition and performance; use consistent colors and show segment sizes.</li>
+              <li>Each root-to-leaf path in a decision tree is an if–then rule; rule sets should cover every case without contradiction.</li>
+              <li>Leaves estimate probabilities as class fractions; ensembles average them, and Laplace smoothing keeps small leaves from being overconfident.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="14"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-13.html">Previous: Session 13</a>
+      <a href="session-15.html">Next: Session 15</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-14.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

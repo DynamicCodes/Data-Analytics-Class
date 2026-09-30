@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 11: Chi-Square Test, Information Gain and Skewness | Data-Class</title>
+  <meta name="description" content="The chi-square goodness-of-fit and independence tests, entropy, information gain and mutual information, and skewness." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>11</div>
+      <h1>Chi-Square Test, Information Gain and Skewness</h1>
+      <p class="lead">Three tools for understanding categorical data and distributions: the chi-square test for whether counts match expectations, entropy-based measures of how much a feature tells you about a target, and skewness for how lopsided a distribution is.</p>
+      <ul class="lesson-meta">
+        <li>6 topics</li>
+        <li>6 interactive visuals</li>
+        <li>About 45 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-11/hero.jpg" alt="Connected points forming an abstract network" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#chi-square">The chi-square test</a></li>
+          <li><a href="#gof">Goodness of fit</a></li>
+          <li><a href="#independence">Test of independence</a></li>
+          <li><a href="#chi-dist">The chi-square distribution</a></li>
+          <li><a href="#information">Information gain and mutual information</a></li>
+          <li><a href="#skewness">Skewness</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="chi-square">
+          <h2>The chi-square test</h2>
+          <p class="section-sub">Do observed counts match what we'd expect?</p>
+
+          <div class="definition">
+            <strong>Chi-square (χ²) test</strong>
+            A non-parametric hypothesis test, developed by Karl Pearson in 1900, that checks whether there is a significant association between categorical variables, or whether observed frequencies differ from expected frequencies. It doesn't assume a normal distribution, and it is based on the chi-square distribution: the distribution of a sum of squared standard normal variables.
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Purpose</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Goodness of fit</b></td><td>Does an observed frequency distribution match an expected one?</td><td>Do dice rolls follow a uniform distribution?</td></tr>
+              <tr><td><b>Test of independence</b></td><td>Are two categorical variables related?</td><td>Is gender related to product preference?</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>The formula</h3>
+          <div class="formula" style="text-align:center">χ² = Σ (O<sub>i</sub> − E<sub>i</sub>)² ÷ E<sub>i</sub></div>
+          <p>O<sub>i</sub> is each observed frequency and E<sub>i</sub> the frequency expected if H₀ were true. Each term measures how far one cell is from expectation, scaled by its size; the terms are squared, so χ² is never negative.</p>
+
+          <h3>Computation steps</h3>
+          <ol class="steps">
+            <li><h4>State the hypotheses</h4><p>Goodness of fit: H₀, the observed frequencies fit the expected distribution; H₁, they don't. Independence: H₀, the variables are independent; H₁, they are associated.</p></li>
+            <li><h4>Find expected frequencies</h4><p>From the hypothesized distribution, or for a two-way table: E<sub>ij</sub> = (row total<sub>i</sub> × column total<sub>j</sub>) ÷ grand total.</p></li>
+            <li><h4>Compute χ²</h4><p>Add up (O − E)² ÷ E over every category or cell.</p></li>
+            <li><h4>Find the degrees of freedom</h4><p>Goodness of fit: df = k − 1 for k categories. Independence: df = (r − 1)(c − 1) for r rows and c columns.</p></li>
+            <li><h4>Decide</h4><p>If χ²<sub>calculated</sub> &gt; χ²<sub>table</sub> (or p ≤ α), reject H₀. Otherwise, fail to reject H₀.</p></li>
+          </ol>
+
+          <h3>Assumptions</h3>
+          <ul class="plain">
+            <li>Data are counts (frequencies), not percentages.</li>
+            <li>Observations are independent.</li>
+            <li>Categories are mutually exclusive and exhaustive.</li>
+            <li>Each expected frequency is generally at least 5.</li>
+            <li>The sample is randomly selected.</li>
+          </ul>
+        </section>
+
+        <section id="gof">
+          <h2>Goodness of fit</h2>
+          <p class="section-sub">Does the sample match a population distribution?</p>
+
+          <p>The goodness-of-fit test checks whether observed frequencies fit the expected ones. The classic example: is a die fair, with every face equally likely?</p>
+
+          <div class="viz" id="viz-gof">
+            <div class="viz-head">
+              <h4>Is this die fair?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A die is rolled 60 times, so a fair die should show each face about 10 times. Roll a fair or loaded die, or adjust any count with its + and − buttons.</p>
+            <div class="controls">
+              <button class="btn is-on" data-roll="fair">Roll a fair die 60 times</button>
+              <button class="btn" data-roll="loaded">Roll a loaded die 60 times</button>
+            </div>
+            <div class="controls" data-faces></div>
+            <svg viewBox="0 0 640 240" role="img" aria-label="Observed and expected counts"></svg>
+            <div class="legend"><span><i style="background:#0e8c7f"></i>Observed O</span><span><i style="background:#6b5fd3"></i>Expected E</span></div>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="chi">–</b><span>χ² calculated</span></div>
+              <div class="stat"><b data-stat="crit">11.07</b><span>χ² table (df 5, α 0.05)</span></div>
+              <div class="stat"><b data-stat="p">–</b><span>p-value</span></div>
+              <div class="stat"><b data-stat="d">–</b><span>Decision</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="independence">
+          <h2>Test of independence</h2>
+          <p class="section-sub">Are two categorical variables related?</p>
+
+          <p>The test of independence compares the distribution of one categorical variable across the levels of another. If gender and product preference are independent, each gender should split across the products in the same proportions.</p>
+
+          <div class="viz" id="viz-ind">
+            <div class="viz-head">
+              <h4>Gender vs. product preference</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Edit the observed counts or load an example. Expected counts, each cell's contribution to χ², and the decision update as you type.</p>
+            <div class="controls" role="group" aria-label="Examples">
+              <button class="btn ghost" data-ex="rel">Clearly related</button>
+              <button class="btn ghost" data-ex="ind">Nearly independent</button>
+              <button class="btn ghost" data-ex="small">Very small sample</button>
+            </div>
+            <div class="table-wrap"><table data-obs></table></div>
+            <div class="table-wrap"><table data-exp></table></div>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="chi">–</b><span>χ²</span></div>
+              <div class="stat"><b data-stat="df">2</b><span>df = (2 − 1)(3 − 1)</span></div>
+              <div class="stat"><b data-stat="p">–</b><span>p-value</span></div>
+              <div class="stat"><b data-stat="d">–</b><span>Decision (α = 0.05)</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Applications, advantages and limitations</h3>
+          <div class="measure-grid">
+            <div class="measure"><h4>Applications</h4><p>Independence of attributes (education level and employment type), goodness of fit of models, market research, genetics, psychology and social sciences, and checking the randomness of categorical data.</p></div>
+            <div class="measure"><h4>Advantages</h4><p>Simple and widely applicable, works with nominal (categorical) data, and doesn't require a normal distribution.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Sensitive to sample size: large samples can make tiny differences significant. Unreliable when expected frequencies are below 5, and can't be applied directly to continuous data.</p></div>
+          </div>
+        </section>
+
+        <section id="chi-dist">
+          <h2>The chi-square distribution</h2>
+          <p class="section-sub">What χ² looks like when H₀ is true</p>
+
+          <ul class="plain">
+            <li>It is positively skewed (asymmetric).</li>
+            <li>Its shape depends on the degrees of freedom.</li>
+            <li>As df increases, it approaches a normal distribution.</li>
+            <li>χ² values are never negative, since they are sums of squares.</li>
+          </ul>
+          <p>A <b>low</b> χ² means observed and expected frequencies agree (fail to reject H₀). A <b>high</b> χ² means a poor fit or a significant association (reject H₀).</p>
+
+          <div class="viz" id="viz-chidist">
+            <div class="viz-head">
+              <h4>Shape and critical value by degrees of freedom</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <div class="controls">
+              <label class="range">Degrees of freedom <span data-out="df">5</span><input type="range" min="1" max="30" value="5" data-in="df" /></label>
+              <label class="range">α <span data-out="a">0.05</span><input type="range" min="0" max="2" step="1" value="1" data-in="a" /></label>
+            </div>
+            <svg viewBox="0 0 640 240" role="img" aria-label="Chi-square distribution"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <p class="note">The chi-square test helps decide whether differences between observed and expected frequencies are due to chance or reflect a real relationship, making it one of the most useful tools for categorical data.</p>
+        </section>
+
+        <section id="information">
+          <h2>Information gain and mutual information</h2>
+          <p class="section-sub">Measuring how much a feature tells you about the target</p>
+
+          <p>To build effective models, we need to know how relevant each feature is to the target. Information gain (IG) and mutual information (MI) quantify that relevance and dependency, and are used in feature selection, dimensionality reduction and decision trees. Both are built on <b>entropy</b>, a measure of uncertainty.</p>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Entropy</h4><div class="formula">H(D) = −Σ P(x<sub>i</sub>) log₂ P(x<sub>i</sub>)</div><p>0 when the outcome is certain; 1 bit for a 50/50 yes/no split.</p></div>
+            <div class="measure"><h4>Conditional entropy</h4><div class="formula">H(D | A) = Σ P(a<sub>j</sub>) H(D | a<sub>j</sub>)</div><p>The uncertainty left once feature A is known: a weighted average over A's values.</p></div>
+            <div class="measure"><h4>Information gain</h4><div class="formula">IG(D, A) = H(D) − H(D | A)</div><p>How much knowing A reduces uncertainty about the target. Decision trees split on the feature with the highest IG, giving more homogeneous nodes.</p></div>
+          </div>
+
+          <div class="viz" id="viz-entropy">
+            <div class="viz-head">
+              <h4>How entropy measures uncertainty</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Change the share of "Yes" in a group of 14 and see its entropy.</p>
+            <div class="controls">
+              <label class="range">Yes out of 14 <span data-out="k">9</span><input type="range" min="0" max="14" value="9" data-in="k" /></label>
+            </div>
+            <svg viewBox="0 0 640 220" role="img" aria-label="Entropy curve"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Worked example: should we play tennis?</h3>
+          <div class="viz" id="viz-ig">
+            <div class="viz-head">
+              <h4>Entropy, information gain and MI, step by step</h4>
+              <span class="viz-tag">Step through</span>
+            </div>
+            <div class="controls" role="group" aria-label="Feature">
+              <b style="font-size:.9rem">Feature</b>
+              <button class="btn" data-feat="w" aria-pressed="true">Weather</button>
+              <button class="btn" data-feat="wind" aria-pressed="false">Wind</button>
+              <button class="btn" data-feat="day" aria-pressed="false">Day number</button>
+            </div>
+            <div class="controls">
+              <button class="btn" data-dir="-1">Back</button>
+              <button class="btn is-on" data-dir="1">Next step</button>
+              <div class="step-dots" aria-hidden="true"></div>
+            </div>
+            <div data-step aria-live="polite"></div>
+          </div>
+
+          <h3>Mutual information</h3>
+          <p>Mutual information measures the mutual dependence between two random variables: how much information you get about one by observing the other. It is never negative, and higher MI means stronger dependence. For a feature and a target it is calculated exactly like information gain, and it is symmetric: MI(X; Y) = MI(Y; X).</p>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages of IG</h4><p>Simple to compute; effective for choosing splits in decision trees, which improves accuracy and reduces overfitting; intuitive to interpret.</p></div>
+            <div class="measure"><h4>Limitations of IG</h4><p>Looks at one feature at a time, so it misses interactions; biased toward features with many categories (try "Day number" above). The gain ratio corrects this bias.</p></div>
+            <div class="measure"><h4>Advantages of MI</h4><p>Captures linear and non-linear relationships; used in feature selection, clustering and dimensionality reduction; works with discrete and continuous variables.</p></div>
+            <div class="measure"><h4>Limitations of MI</h4><p>Estimates for continuous data depend on how values are binned or scaled; affected by noise; computationally heavy for large, high-dimensional data.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Criteria</th><th>Information gain (IG)</th><th>Mutual information (MI)</th></tr></thead>
+            <tbody>
+              <tr><th>Definition</th><td>Reduction in uncertainty about the target when a feature is known</td><td>Mutual dependence: how much information one variable gives about the other</td></tr>
+              <tr><th>Framing</th><td>Directional: feature → target</td><td>Symmetric between the two variables</td></tr>
+              <tr><th>Typical usage</th><td>Choosing splits in decision trees</td><td>Feature selection, clustering, dimensionality reduction</td></tr>
+              <tr><th>Applicability</th><td>Discrete features with clear categories</td><td>Discrete and continuous variables; linear and non-linear relationships</td></tr>
+              <tr><th>Computation</th><td>Simple</td><td>Can be intensive for large or high-dimensional data</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note">For a single feature and a target, IG and MI give the same number, as the worked example shows. Both measure one pair of variables at a time; capturing interactions between several features needs multivariate methods.</p>
+        </section>
+
+        <section id="skewness">
+          <h2>Skewness</h2>
+          <p class="section-sub">How lopsided is the distribution?</p>
+
+          <div class="definition">
+            <strong>Skewness</strong>
+            A measure of asymmetry in the distribution of a variable: how much, and in which direction, it deviates from perfect symmetry. In a symmetric distribution the mean, median and mode are equal; in a skewed one they differ.
+          </div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Population skewness</h4><div class="formula">Skewness = E[(X − μ)³] ÷ σ³</div><p>X is the variable, μ its mean, σ its standard deviation and E the expected value.</p></div>
+            <div class="measure"><h4>Sample skewness</h4><div class="formula">g₁ = n ÷ [(n − 1)(n − 2)] × Σ((X<sub>i</sub> − X̄) ÷ s)³</div><p>n is the sample size, X̄ the sample mean and s the sample standard deviation.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Shape</th><th>Mean, median and mode</th></tr></thead>
+            <tbody>
+              <tr><td><b>Zero skewness</b></td><td>Symmetric</td><td>Mean = median = mode</td></tr>
+              <tr><td><b>Positive (right) skew</b></td><td>Most values on the left, long tail on the right</td><td>Mean &gt; median &gt; mode</td></tr>
+              <tr><td><b>Negative (left) skew</b></td><td>Most values on the right, long tail on the left</td><td>Mean &lt; median &lt; mode</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Skewness value</th><th>Interpretation</th></tr></thead>
+            <tbody>
+              <tr><td>= 0</td><td>Perfectly symmetric</td></tr>
+              <tr><td>Between −0.5 and +0.5</td><td>Fairly symmetric</td></tr>
+              <tr><td>Between ±0.5 and ±1</td><td>Moderately skewed</td></tr>
+              <tr><td>Beyond ±1</td><td>Highly skewed</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-skew">
+            <div class="viz-head">
+              <h4>Measure and correct skewness</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Start with the slide's example, pick another dataset, or type your own values. Then try a transformation to reduce the skew.</p>
+            <div class="controls" role="group" aria-label="Dataset">
+              <button class="btn" data-sk="slide" aria-pressed="true">Slide example</button>
+              <button class="btn" data-sk="income" aria-pressed="false">Household incomes</button>
+              <button class="btn" data-sk="exam" aria-pressed="false">Scores on an easy exam</button>
+              <button class="btn" data-sk="sym" aria-pressed="false">Symmetric</button>
+            </div>
+            <input class="num-input" type="text" data-vals aria-label="Data values" />
+            <div class="controls" role="group" aria-label="Transformation" style="margin-top:1rem">
+              <b style="font-size:.9rem">Transform</b>
+              <button class="btn" data-tr="none" aria-pressed="true">None</button>
+              <button class="btn" data-tr="sqrt" aria-pressed="false">Square root</button>
+              <button class="btn" data-tr="log" aria-pressed="false">Log</button>
+            </div>
+            <svg viewBox="0 0 640 220" role="img" aria-label="Histogram with mean and median"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="g1">–</b><span>Skewness g₁</span></div>
+              <div class="stat"><b data-stat="mean">–</b><span>Mean</span></div>
+              <div class="stat"><b data-stat="med">–</b><span>Median</span></div>
+              <div class="stat"><b data-stat="int">–</b><span>Interpretation</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Why skewness matters</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Direction</h4><p>Shows which way data deviates from normality.</p></div>
+            <div class="point"><h4>Model choice</h4><p>Helps choose an appropriate statistical model.</p></div>
+            <div class="point"><h4>Finance</h4><p>Returns are often skewed, which matters for risk analysis.</p></div>
+            <div class="point"><h4>Transformation</h4><p>Guides log or square-root transforms before tests that assume normality.</p></div>
+          </div>
+          <p>For a normal distribution, skewness is 0; the further from 0, the more asymmetric the distribution. Skewness also makes the mean and standard deviation less reliable summaries, so correcting it matters before parametric tests like t-tests and ANOVA.</p>
+
+          <div class="takeaways">
+            <h3>Session 11 in summary</h3>
+            <ul>
+              <li>The chi-square test compares observed and expected counts: goodness of fit for one variable, independence for two.</li>
+              <li>χ² = Σ(O − E)²/E; compare it with the table value for the right degrees of freedom, and check that expected counts are at least 5.</li>
+              <li>Entropy measures uncertainty; information gain is how much a feature reduces it, and decision trees split on the highest gain.</li>
+              <li>Mutual information measures shared information between two variables; for a feature and a target it equals information gain.</li>
+              <li>Skewness measures asymmetry: positive skew has a long right tail (mean &gt; median); transformations like log or square root can reduce it.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="11"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-10.html">Previous: Session 10</a>
+      <a href="session-12.html">Next: Session 12</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-11.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

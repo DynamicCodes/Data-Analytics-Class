@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 01: Business Analytics and the Analytics Life Cycle | Data-Class</title>
+  <meta name="description" content="Business analytics, case studies, and the data analytics life cycle from discovery to documentation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>01</div>
+      <h1>Business Analytics and the Analytics Life Cycle</h1>
+      <p class="lead">How organizations turn data into decisions, seen through real industry case studies, followed by a walk through each phase of an analytics project from discovery to documentation.</p>
+      <ul class="lesson-meta">
+        <li>11 topics</li>
+        <li>6 interactive visuals</li>
+        <li>About 45 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-01/lifecycle.jpg" alt="Charts and data tables on a digital dashboard" />
+    </figure>
+
+    <ol class="phase-strip" aria-label="Analytics project phases covered in the course">
+      <li class="is-here">Discovery</li>
+      <li class="is-here">Data preparation</li>
+      <li class="is-here">Model planning</li>
+      <li class="is-here">Model building</li>
+      <li class="is-here">Quality assurance</li>
+      <li class="is-here">Documentation</li>
+      <li>Management approval</li>
+      <li>Installation</li>
+      <li>Acceptance and operation</li>
+    </ol>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#business-analytics">What is business analytics</a></li>
+          <li><a href="#types">Three types of analytics</a></li>
+          <li><a href="#case-studies">Industry case studies</a></li>
+          <li><a href="#tools-challenges">Tools and challenges</a></li>
+          <li><a href="#life-cycle">The data analytics life cycle</a></li>
+          <li><a href="#discovery">Discovery</a></li>
+          <li><a href="#preparation">Data preparation</a></li>
+          <li><a href="#planning">Model planning</a></li>
+          <li><a href="#building">Model building and implementation</a></li>
+          <li><a href="#qa">Quality assurance</a></li>
+          <li><a href="#documentation">Documentation</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+
+        <!-- 1 -->
+        <section id="business-analytics">
+          <h2>What is business analytics</h2>
+          <p class="section-sub">Understanding the foundations</p>
+
+          <div class="definition">
+            <strong>Business analytics</strong>
+            The practice of using statistical analysis and data mining to drive business decisions and strategies. It covers a range of techniques that help organizations understand their data and use it for competitive advantage.
+          </div>
+
+          <p>In today's data-driven environment, analytics is what keeps organizations competitive. It lets companies make informed decisions, optimize their operations and improve customer experiences, all based on insight drawn from data rather than instinct alone.</p>
+          <p>This session moves in two parts. First we look at the kinds of analytics a business can do and how three industries use them. Then we follow a data analytics project through its life cycle, one phase at a time.</p>
+        </section>
+
+        <!-- 2 -->
+        <section id="types">
+          <h2>Three types of analytics</h2>
+          <p class="section-sub">Each type answers a different business question</p>
+
+          <div class="point-grid">
+            <div class="point">
+              <h4>Descriptive</h4>
+              <p><b>What happened?</b> Summarizes historical data to find trends and patterns. Most reports and dashboards are descriptive.</p>
+            </div>
+            <div class="point">
+              <h4>Predictive</h4>
+              <p><b>What could happen?</b> Uses statistical models and machine learning to forecast future outcomes from historical data.</p>
+            </div>
+            <div class="point">
+              <h4>Prescriptive</h4>
+              <p><b>What should we do?</b> Combines descriptive and predictive insight to recommend the best action.</p>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-types">
+            <div class="viz-head">
+              <h4>One dataset, three questions</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Monthly sales for a store. Switch between the three types to see how each one uses the same data.</p>
+            <div class="controls" role="group" aria-label="Type of analytics">
+              <button class="btn" data-mode="descriptive" aria-pressed="true">Descriptive</button>
+              <button class="btn" data-mode="predictive" aria-pressed="false">Predictive</button>
+              <button class="btn" data-mode="prescriptive" aria-pressed="false">Prescriptive</button>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Monthly sales chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <!-- 3 -->
+        <section id="case-studies">
+          <h2>Industry case studies</h2>
+          <p class="section-sub">How analytics changes the way three industries work</p>
+
+          <article class="case">
+            <img src="../assets/img/session-01/retail.jpg" alt="Blurred aisle of a department store" loading="lazy" />
+            <div>
+              <h3>Case study 1: Retail analytics</h3>
+              <dl>
+                <dt>The industry</dt>
+                <dd>Retail moves fast, with constant shifts in consumer behavior and market conditions. Analytics helps retailers adapt to those shifts and run their operations more efficiently.</dd>
+                <dt>Data sources</dt>
+                <dd>Point-of-sale systems, customer transaction records, social media interactions and inventory management systems.</dd>
+                <dt>Findings and impact</dt>
+                <dd>Retailers have spotted trends in consumer preferences, tuned inventory levels and sharpened marketing, leading to clear gains in sales and customer satisfaction.</dd>
+              </dl>
+            </div>
+          </article>
+
+          <article class="case">
+            <img src="../assets/img/session-01/finance.jpg" alt="Financial analyst working at a laptop in front of market screens" loading="lazy" />
+            <div>
+              <h3>Case study 2: Financial services</h3>
+              <dl>
+                <dt>The industry</dt>
+                <dd>Financial services depend heavily on analytics to manage risk, optimize portfolios and improve customer experience. Analytics is built into everyday decision making.</dd>
+                <dt>Techniques applied</dt>
+                <dd>Risk modeling, credit scoring and fraud detection help firms assess potential risks and make informed investment decisions.</dd>
+                <dt>Results for risk management</dt>
+                <dd>Firms identify threats earlier and reduce them more effectively, protecting assets and improving profitability.</dd>
+              </dl>
+            </div>
+          </article>
+
+          <article class="case">
+            <img src="../assets/img/session-01/healthcare.jpg" alt="Tablet showing health charts beside a stethoscope" loading="lazy" />
+            <div>
+              <h3>Case study 3: Healthcare analytics</h3>
+              <dl>
+                <dt>The challenges</dt>
+                <dd>Healthcare data is fragmented, privacy-sensitive and complex, which calls for robust analytics to draw meaningful insight from it.</dd>
+                <dt>Methods used</dt>
+                <dd>Predictive modeling, patient segmentation and outcome analysis to improve care delivery and operational efficiency.</dd>
+                <dt>Outcomes</dt>
+                <dd>Better patient outcomes, lower costs and more efficient operations, which together raise the quality of care.</dd>
+              </dl>
+            </div>
+          </article>
+
+          <h3>More companies to study</h3>
+          <div class="point-grid">
+            <div class="point">
+              <h4>Netflix</h4>
+              <p>Uses viewing history to recommend titles and to decide which shows and films to produce.</p>
+            </div>
+            <div class="point">
+              <h4>Flipkart</h4>
+              <p>Uses customer and order data for pricing, demand forecasting and planning big sale events.</p>
+            </div>
+            <div class="point">
+              <h4>Amazon</h4>
+              <p>Uses purchase and browsing data for product recommendations, inventory placement and delivery routing.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4 -->
+        <section id="tools-challenges">
+          <h2>Tools and challenges</h2>
+          <p class="section-sub">Navigating the analytics landscape</p>
+
+          <h3>Choosing analytics tools</h3>
+          <p>Business analytics tools range from simple visualization software to complex machine learning platforms. When comparing them, look at ease of use, how well they integrate with your systems, how far they scale and how much advanced analysis they support.</p>
+          <p>The right tool depends on your business needs, your data infrastructure and the skills of the people who will use it. A tool only helps if it fits all three.</p>
+          <ul class="chips">
+            <li>Excel</li><li>Tableau</li><li>Power BI</li><li>Python (pandas, Matplotlib)</li><li>R</li><li>SAS</li>
+          </ul>
+
+          <h3>Challenges in implementing analytics</h3>
+          <div class="point-grid">
+            <div class="point">
+              <h4>Data quality issues</h4>
+              <p>Poor data quality undermines analytics. Data cleansing and validation need to be a priority.</p>
+            </div>
+            <div class="point">
+              <h4>Resistance to change</h4>
+              <p>Cultural resistance slows adoption. Build a data-driven culture and show people the benefits.</p>
+            </div>
+            <div class="point">
+              <h4>Skill gaps</h4>
+              <p>A shortage of skilled analysts is a real barrier. Invest in training to build capability in-house.</p>
+            </div>
+          </div>
+
+          <div class="split">
+            <img src="../assets/img/session-01/teamwork.jpg" alt="A team reviewing charts and reports around a table" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">Key takeaways and future trends</h3>
+              <p>The case studies show analytics improving performance and decisions across very different industries. Its future will be shaped by artificial intelligence, machine learning and big data, bringing more sophisticated analysis within reach.</p>
+              <p>Organizations that treat analytics as a core part of strategy, and invest in the tools, training and culture to support it, get the most from their data.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5 -->
+        <section id="life-cycle">
+          <h2>The data analytics life cycle</h2>
+          <p class="section-sub">Understanding the framework</p>
+
+          <div class="definition">
+            <strong>Data analytics</strong>
+            The systematic computational analysis of data sets to uncover patterns, correlations and insights that inform decision making.
+          </div>
+
+          <p>Analytics gives decision makers evidence to support strategic choices, improve operational efficiency and drive innovation. The life cycle organizes that work into stages. Each stage feeds the next, and the last one loops back to the first, because every result raises new questions.</p>
+
+          <div class="viz" id="viz-ring">
+            <div class="viz-head">
+              <h4>Explore the life cycle</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Select a stage to read what happens there. Use the arrow keys to move around the cycle.</p>
+            <div class="ring-wrap">
+              <div class="ring" role="group" aria-label="Life cycle stages">
+                <svg viewBox="0 0 100 100" aria-hidden="true"></svg>
+                <div class="ring-center">An iterative cycle</div>
+              </div>
+              <div class="viz-out" aria-live="polite" style="margin-top:0"></div>
+            </div>
+          </div>
+
+          <p>The stages are a general map. In the rest of this session and the next, we follow a more detailed version used in real projects: discovery, data preparation, model planning, model building, quality assurance, documentation, management approval, installation, and finally acceptance and operation.</p>
+        </section>
+
+        <!-- 6 -->
+        <section id="discovery">
+          <h2>Discovery</h2>
+          <p class="section-sub">Exploring data to find what is worth analyzing</p>
+
+          <div class="definition">
+            <strong>Discovery data analytics</strong>
+            Analyzing data to uncover patterns, trends and insights that inform decisions. It emphasizes exploration and generating hypotheses, not only confirming theories you already hold.
+          </div>
+
+          <figure class="figure">
+            <img src="../assets/img/session-01/discovery.jpg" alt="Magnifying glass over a bar chart" loading="lazy" />
+          </figure>
+
+          <h3>Key concepts</h3>
+          <div class="point-grid">
+            <div class="point">
+              <h4>Data sources and types</h4>
+              <p>Structured databases, unstructured social media data and sensor data from IoT devices.</p>
+            </div>
+            <div class="point">
+              <h4>Collection methods</h4>
+              <p>Surveys, web scraping and API integrations, each with its own strengths and weaknesses.</p>
+            </div>
+            <div class="point">
+              <h4>Data context</h4>
+              <p>When, where and under what circumstances the data was collected all shape how it should be read.</p>
+            </div>
+          </div>
+
+          <h3>Exploratory data analysis (EDA)</h3>
+          <p>EDA is how analysts get to know a dataset. Summary statistics, correlation analysis and clustering reveal its structure and the relationships between variables. Charts make those patterns visible, and help you spot trends over time and anomalies that may point to real events or to errors in collection.</p>
+
+          <div class="viz" id="viz-eda">
+            <div class="viz-head">
+              <h4>Spot the trend and the anomalies</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Weekly advertising spend against sales for 40 weeks. Turn on the trend line, then look for points that don't fit.</p>
+            <div class="controls">
+              <button class="btn" data-toggle="trend" aria-pressed="false">Show trend line</button>
+              <button class="btn" data-toggle="anomaly" aria-pressed="false">Highlight anomalies</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Scatter plot of ad spend and sales"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="r">–</b><span>Correlation (r)</span></div>
+              <div class="stat"><b data-stat="n">40</b><span>Weeks of data</span></div>
+              <div class="stat"><b data-stat="a">?</b><span>Anomalies found</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite">A strong positive correlation suggests ad spend and sales move together, but it doesn't prove one causes the other.</div>
+          </div>
+
+          <h3>Tools for discovery</h3>
+          <p>Tableau, Power BI and Python libraries such as pandas and Matplotlib are widely used. Compare them on visualization capability, ease of use, integration and scalability, and choose based on the complexity of your data, the skills of your users and what the analysis needs to deliver.</p>
+
+          <h3>Interpreting and acting on insights</h3>
+          <div class="split reverse">
+            <img src="../assets/img/session-01/eda.jpg" alt="Bar and line chart glowing on a dark background" loading="lazy" />
+            <div>
+              <p>The value of discovery lies in turning raw data into insight someone can act on. Organizations then build those insights into strategy, measure success with clear metrics and KPIs, and refine their approach through a continuous feedback loop.</p>
+              <p>Watch for common pitfalls: bias, and reading more into a pattern than the data supports. Both lead to flawed conclusions and poor decisions.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7 -->
+        <section id="preparation">
+          <h2>Data preparation</h2>
+          <p class="section-sub">The foundation of every analysis</p>
+
+          <div class="definition">
+            <strong>Data preparation</strong>
+            The process of cleaning, transforming and organizing raw data into a usable format for analysis.
+          </div>
+
+          <p>Data preparation involves collecting, cleaning, transforming and structuring data so it can be used for analysis, visualization and modeling. Well-prepared data leads to more accurate insights and more reliable business decisions. Poor data quality, on the other hand, leads to misleading conclusions.</p>
+
+          <h3>Six key steps</h3>
+          <ol class="steps">
+            <li>
+              <h4>Data collection</h4>
+              <p>Gather data from databases, APIs, spreadsheets, sensors, web logs and social media. Make sure it is relevant and accessible.</p>
+            </li>
+            <li>
+              <h4>Data cleaning</h4>
+              <p>Handle missing or inconsistent values, remove duplicates, correct typos, filter out irrelevant records, and detect and manage outliers.</p>
+            </li>
+            <li>
+              <h4>Data transformation</h4>
+              <p>Convert data into a consistent format. Apply normalization, scaling or encoding, and derive new variables (feature engineering).</p>
+            </li>
+            <li>
+              <h4>Data integration</h4>
+              <p>Merge data from several sources into one unified dataset, resolving schema mismatches and keeping references between tables intact.</p>
+            </li>
+            <li>
+              <h4>Data reduction</h4>
+              <p>Remove redundant features or records. Use dimensionality reduction (such as PCA) or sampling to improve performance.</p>
+            </li>
+            <li>
+              <h4>Data validation and quality assurance</h4>
+              <p>Check accuracy, completeness and consistency using validation rules and profiling checks before analysis starts.</p>
+            </li>
+          </ol>
+
+          <div class="viz" id="viz-clean">
+            <div class="viz-head">
+              <h4>Clean a messy customer table</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">This raw extract has duplicates, missing values, inconsistent text and an impossible age. Apply each cleaning step and watch the quality scores change.</p>
+            <div class="controls">
+              <button class="btn" data-step="dedupe" aria-pressed="false">Remove duplicates</button>
+              <button class="btn" data-step="standardize" aria-pressed="false">Standardize text</button>
+              <button class="btn" data-step="impute" aria-pressed="false">Fill missing values</button>
+              <button class="btn" data-step="outlier" aria-pressed="false">Handle outliers</button>
+              <button class="btn ghost" data-step="reset">Reset</button>
+            </div>
+            <div class="table-wrap">
+              <table class="sandbox">
+                <thead><tr><th>ID</th><th>Name</th><th>City</th><th>Age</th><th>Spend (₹)</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="meter" aria-live="polite"></div>
+            <div class="legend">
+              <span><i style="background:#fde7ec"></i>Problem</span>
+              <span><i style="background:#d9f1ee"></i>Fixed</span>
+            </div>
+          </div>
+
+          <h3>Why it matters</h3>
+          <ul class="plain">
+            <li>Improves model performance and makes models easier to interpret.</li>
+            <li>Reduces analysis time and computing cost.</li>
+            <li>Produces trustworthy, high-quality insights.</li>
+          </ul>
+
+          <h3>Tools commonly used</h3>
+          <div class="tool-rows">
+            <div class="tool-row"><b>ETL tools</b><ul class="chips"><li>Talend</li><li>Informatica</li><li>Alteryx</li></ul></div>
+            <div class="tool-row"><b>Programming</b><ul class="chips"><li>Python (pandas, NumPy)</li><li>R</li></ul></div>
+            <div class="tool-row"><b>Databases</b><ul class="chips"><li>SQL</li><li>NoSQL</li></ul></div>
+            <div class="tool-row"><b>Cloud platforms</b><ul class="chips"><li>AWS Glue</li><li>Azure Data Factory</li><li>Google DataPrep</li></ul></div>
+          </div>
+        </section>
+
+        <!-- 8 -->
+        <section id="planning">
+          <h2>Model planning</h2>
+          <p class="section-sub">Deciding how to approach the analytical problem</p>
+
+          <div class="definition">
+            <strong>Model planning</strong>
+            The stage where analysts decide which statistical, mathematical or machine learning models fit the problem. It sets the roadmap for building models that uncover patterns, make predictions or provide insight.
+          </div>
+
+          <h3>Objectives</h3>
+          <ul class="plain">
+            <li>Select the most suitable analytical technique for the problem.</li>
+            <li>Define the target variable and the predictors.</li>
+            <li>Plan how data will be split for training, validation and testing.</li>
+            <li>Choose evaluation metrics that match business goals.</li>
+          </ul>
+
+          <h3>Key steps</h3>
+          <ol class="steps">
+            <li>
+              <h4>Understand the business problem</h4>
+              <p>Clarify what needs to be predicted or optimized, and translate the business objective into a question data can answer.</p>
+            </li>
+            <li>
+              <h4>Select modeling techniques</h4>
+              <p>Pick a family of models that matches the question (see the table below).</p>
+            </li>
+            <li>
+              <h4>Define data requirements</h4>
+              <p>Identify the relevant features (independent variables) and specify the target variable and data format.</p>
+            </li>
+            <li>
+              <h4>Set up a validation strategy</h4>
+              <p>Split data into training, validation and test sets, and use cross-validation for reliability.</p>
+            </li>
+            <li>
+              <h4>Select evaluation metrics</h4>
+              <p>Decide in advance how success will be measured.</p>
+            </li>
+          </ol>
+
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Model family</th><th>Techniques</th><th>Answers</th></tr></thead>
+              <tbody>
+                <tr><td>Descriptive</td><td>Clustering, association rules</td><td>What groups or patterns exist?</td></tr>
+                <tr><td>Predictive</td><td>Regression, classification</td><td>What value or class is likely?</td></tr>
+                <tr><td>Prescriptive</td><td>Optimization, simulation</td><td>Which option is best?</td></tr>
+                <tr><td>Time series</td><td>Forecasting, trend analysis</td><td>How will it change over time?</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="viz" id="viz-split">
+            <div class="viz-head">
+              <h4>Plan a train, validation and test split</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Each dot is 1% of your data. Adjust the sliders to see how the three sets trade off.</p>
+            <div class="controls">
+              <label class="range">Training <span data-out="train">70%</span><input type="range" min="40" max="90" value="70" data-in="train" /></label>
+              <label class="range">Validation <span data-out="val">15%</span><input type="range" min="0" max="30" value="15" data-in="val" /></label>
+            </div>
+            <div class="dot-grid" aria-hidden="true"></div>
+            <div class="legend">
+              <span><i style="background:#0e8c7f"></i>Training</span>
+              <span><i style="background:#6b5fd3"></i>Validation</span>
+              <span><i style="background:#d98a0b"></i>Test</span>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Evaluation metrics</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Problem type</th><th>Common metrics</th></tr></thead>
+              <tbody>
+                <tr><td>Regression</td><td>RMSE, MAE, R²</td></tr>
+                <tr><td>Classification</td><td>Accuracy, precision, recall, F1-score, ROC-AUC</td></tr>
+                <tr><td>Clustering</td><td>Silhouette score, Davies-Bouldin index</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Why it matters</h3>
+          <p>Good planning makes sure the model fits business objectives, improves accuracy and reproducibility, and lowers the risk of bias and overfitting.</p>
+          <ul class="chips violet">
+            <li>Python (scikit-learn, statsmodels)</li><li>R</li><li>SAS</li><li>RapidMiner</li><li>IBM SPSS Modeler</li>
+          </ul>
+        </section>
+
+        <!-- 9 -->
+        <section id="building">
+          <h2>Model building and implementation</h2>
+          <p class="section-sub">From a plan to a working solution</p>
+
+          <div class="definition">
+            <strong>Model building and implementation</strong>
+            Creating, training, testing and deploying analytical models to produce actionable insights or predictions. This phase turns the planned approach into a working solution.
+          </div>
+
+          <figure class="figure">
+            <img src="../assets/img/session-01/model.jpg" alt="Connected cubes forming a network" loading="lazy" />
+          </figure>
+
+          <ol class="steps">
+            <li>
+              <h4>Model development</h4>
+              <ul>
+                <li>Apply the chosen algorithms, such as regression, decision trees, clustering or neural networks.</li>
+                <li>Use training data to teach the model the relationship between inputs and outputs.</li>
+                <li>Try several algorithms and compare them.</li>
+              </ul>
+            </li>
+            <li>
+              <h4>Testing and evaluation</h4>
+              <ul>
+                <li>Test performance on data the model hasn't seen (the validation and test sets).</li>
+                <li>Evaluate with suitable metrics such as accuracy, precision, recall or RMSE.</li>
+                <li>Tune hyperparameters for the best results.</li>
+              </ul>
+            </li>
+            <li>
+              <h4>Model optimization</h4>
+              <ul>
+                <li>Use feature selection and engineering to make the model more efficient.</li>
+                <li>Apply cross-validation, grid search and ensemble methods.</li>
+              </ul>
+            </li>
+            <li>
+              <h4>Implementation (deployment)</h4>
+              <ul>
+                <li>Integrate the model into production systems such as dashboards, web apps or APIs.</li>
+                <li>Monitor model performance and data drift.</li>
+                <li>Retrain with new data to keep it accurate.</li>
+              </ul>
+            </li>
+          </ol>
+
+          <div class="viz" id="viz-threshold">
+            <div class="viz-head">
+              <h4>Evaluate a classification model</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A model scores 40 loan applications for default risk. Anything above the threshold is flagged. Move the threshold and watch precision and recall pull against each other.</p>
+            <div class="controls">
+              <label class="range">Decision threshold <span data-out="t">0.50</span><input type="range" min="5" max="95" value="50" data-in="t" /></label>
+            </div>
+            <svg viewBox="0 0 640 170" role="img" aria-label="Model scores with decision threshold"></svg>
+            <div class="legend">
+              <span><i style="background:#d94f70"></i>Actually defaulted</span>
+              <span><i style="background:#0e8c7f"></i>Actually repaid</span>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="acc">–</b><span>Accuracy</span></div>
+              <div class="stat"><b data-stat="prec">–</b><span>Precision</span></div>
+              <div class="stat"><b data-stat="rec">–</b><span>Recall</span></div>
+              <div class="stat"><b data-stat="f1">–</b><span>F1-score</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Why it matters</h3>
+          <ul class="plain">
+            <li>Turns analytics into real business value.</li>
+            <li>Enables automation and predictive decision making.</li>
+            <li>Supports real-time insight and systems that adapt.</li>
+          </ul>
+          <ul class="chips violet">
+            <li>Python (scikit-learn, TensorFlow, PyTorch)</li><li>R</li><li>SAS</li><li>Azure ML</li><li>AWS SageMaker</li><li>Google Vertex AI</li>
+          </ul>
+        </section>
+
+        <!-- 10 -->
+        <section id="qa">
+          <h2>Quality assurance</h2>
+          <p class="section-sub">Making sure your insights can be trusted</p>
+
+          <div class="definition">
+            <strong>Quality assurance (QA)</strong>
+            Checking that the data, processes and outputs used for analysis are accurate, consistent, reliable and actionable.
+          </div>
+
+          <h3>Purpose</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Integrity</h4><p>Data is correct and intact.</p></div>
+            <div class="point"><h4>Fewer errors</h4><p>Mistakes in analysis and reporting are caught.</p></div>
+            <div class="point"><h4>Confidence</h4><p>Decision makers can rely on the results.</p></div>
+            <div class="point"><h4>Reproducibility</h4><p>Results can be produced again.</p></div>
+          </div>
+
+          <h3>Key areas of QA</h3>
+          <div class="split">
+            <img src="../assets/img/session-01/qa.jpg" alt="Sample being pipetted into a petri dish over colorful data strips" loading="lazy" />
+            <div>
+              <h4>Data quality</h4>
+              <ul class="plain">
+                <li><b>Accuracy:</b> reflects the real world correctly.</li>
+                <li><b>Completeness:</b> no gaps in critical fields.</li>
+                <li><b>Consistency:</b> uniform across sources.</li>
+                <li><b>Timeliness:</b> up to date and relevant.</li>
+                <li><b>Validity:</b> follows expected formats and rules.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="point-grid">
+            <div class="point">
+              <h4>Process quality</h4>
+              <p>ETL (extract, transform, load) pipelines work correctly, transformations and aggregations are validated, and checks for anomalies and duplicates run automatically.</p>
+            </div>
+            <div class="point">
+              <h4>Analytical quality</h4>
+              <p>Models and algorithms are verified, results are cross-checked with benchmark datasets, and dashboards are checked for accuracy and clarity.</p>
+            </div>
+            <div class="point">
+              <h4>Documentation and reproducibility</h4>
+              <p>Sources, cleaning steps, assumptions and methods are recorded so the analysis can be repeated with the same results.</p>
+            </div>
+          </div>
+          <p class="note">The quality meters in the data cleaning exercise above measure several of these dimensions. Try it again with QA in mind.</p>
+
+          <h3>QA techniques</h3>
+          <div class="table-wrap">
+            <table>
+              <tbody>
+                <tr><th>Data profiling</th><td>Understanding patterns, anomalies and distributions in a dataset.</td></tr>
+                <tr><th>Validation rules</th><td>Automated scripts that check for missing or inconsistent data.</td></tr>
+                <tr><th>Peer reviews</th><td>Analysts reviewing each other's code, queries and reports.</td></tr>
+                <tr><th>Testing pipelines</th><td>Unit tests for code and regression tests for models.</td></tr>
+                <tr><th>Audit trails</th><td>Tracking changes to data and reports.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Tools often used</h3>
+          <div class="tool-rows">
+            <div class="tool-row"><b>Data validation</b><ul class="chips"><li>Great Expectations</li><li>dbt</li><li>Talend</li></ul></div>
+            <div class="tool-row"><b>ETL pipelines</b><ul class="chips"><li>Apache Airflow</li><li>Informatica</li><li>AWS Glue</li></ul></div>
+            <div class="tool-row"><b>Analytics QA</b><ul class="chips"><li>Tableau Prep</li><li>Power BI dataflows</li><li>Python/R tests</li></ul></div>
+            <div class="tool-row"><b>Monitoring</b><ul class="chips"><li>Monte Carlo</li><li>Bigeye</li></ul></div>
+          </div>
+
+          <h3>Best practices</h3>
+          <ul class="plain">
+            <li>Start QA early by validating data as soon as it enters your system.</li>
+            <li>Automate checks wherever possible.</li>
+            <li>Use standard data formats and definitions.</li>
+            <li>Audit dashboards and models regularly.</li>
+            <li>Build a culture of data quality awareness in the team.</li>
+          </ul>
+        </section>
+
+        <!-- 11 -->
+        <section id="documentation">
+          <h2>Documentation</h2>
+          <p class="section-sub">A structured record of the whole data life cycle</p>
+
+          <p>Documentation is a critical part of quality assurance and reproducibility. It keeps data, processes and analyses transparent, understandable and reusable. It is more than writing notes: it is a structured record of everything that happened to the data.</p>
+
+          <figure class="figure">
+            <img src="../assets/img/session-01/docs.jpg" alt="Pen resting on a printed bar chart" loading="lazy" />
+          </figure>
+
+          <h3>Why document</h3>
+          <ul class="plain">
+            <li>Gives team members and stakeholders a clear picture.</li>
+            <li>Makes analyses and models reproducible.</li>
+            <li>Helps troubleshoot errors and inconsistencies.</li>
+            <li>Supports regulatory compliance and audits.</li>
+            <li>Preserves knowledge when people join or leave the team.</li>
+          </ul>
+
+          <h3>What to document</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Area</th><th>What it covers</th></tr></thead>
+              <tbody>
+                <tr><td><b>Data</b></td><td>Sources (databases, APIs, surveys, public datasets); a data dictionary with definitions, types, units, allowed values and constraints; data lineage showing origin and transformations; quality notes on known issues and how they were handled.</td></tr>
+                <tr><td><b>Process</b></td><td>ETL and pipeline steps; an explanation of SQL, Python or R scripts; business logic and statistical assumptions applied along the way.</td></tr>
+                <tr><td><b>Analysis</b></td><td>Methodology; parameter choices such as hyperparameters and thresholds; explanation of charts, dashboards and derived metrics; key findings and their context.</td></tr>
+                <tr><td><b>Versioning</b></td><td>A change log tracking changes to data, scripts and analyses, with versions of datasets, models and reports kept for reproducibility.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Best practices</h3>
+          <ul class="plain">
+            <li>Use standard templates for data dictionaries, analysis reports and dashboards.</li>
+            <li>Keep everything in one central place, such as Confluence, GitHub or SharePoint.</li>
+            <li>Update documentation whenever pipelines or models change.</li>
+            <li>Include examples and sample outputs.</li>
+            <li>Write so non-technical stakeholders can follow it too.</li>
+          </ul>
+
+          <h3>Tools often used</h3>
+          <div class="tool-rows">
+            <div class="tool-row"><b>Data dictionaries</b><ul class="chips"><li>dbt</li><li>Dataedo</li><li>Collibra</li></ul></div>
+            <div class="tool-row"><b>Code and workflow</b><ul class="chips"><li>Jupyter notebooks</li><li>R Markdown</li><li>GitHub README</li></ul></div>
+            <div class="tool-row"><b>Dashboards</b><ul class="chips"><li>Tableau</li><li>Power BI</li><li>Google Data Studio</li></ul></div>
+            <div class="tool-row"><b>Wikis</b><ul class="chips"><li>Confluence</li><li>Notion</li><li>SharePoint</li></ul></div>
+          </div>
+
+          <div class="takeaways">
+            <h3>Session 1 in summary</h3>
+            <ul>
+              <li>Business analytics turns data into decisions through descriptive, predictive and prescriptive analysis.</li>
+              <li>Retail, finance and healthcare each use analytics differently, but all rely on good data and skilled people.</li>
+              <li>An analytics project moves through a life cycle: discovery, preparation, planning, building, QA and documentation, with each stage feeding the next.</li>
+              <li>Clean data, a sound validation plan and careful documentation are what make results trustworthy.</li>
+              <li>Next session: getting management approval, installing the tools, and taking the solution into acceptance and operation.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="1"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <span></span>
+      <a href="session-02.html">Next: Session 02</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-01.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

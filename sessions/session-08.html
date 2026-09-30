@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 08: Sampling, Estimation and Statistical Inference | Data-Class</title>
+  <meta name="description" content="Sampling methods, point and interval estimation, confidence intervals, hypothesis testing, errors and power, and common statistical tests." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>08</div>
+      <h1>Sampling, Estimation and Statistical Inference</h1>
+      <p class="lead">How to choose a sample that represents the population, how to estimate what you can't measure directly, and how to test whether an effect in your data is real or just chance.</p>
+      <ul class="lesson-meta">
+        <li>7 topics</li>
+        <li>7 interactive visuals</li>
+        <li>About 45 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-08/hero.jpg" alt="Soft blue and green light dissolving into blurred circles" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#sampling">Sampling</a></li>
+          <li><a href="#estimation">Estimation</a></li>
+          <li><a href="#ci">Confidence intervals</a></li>
+          <li><a href="#inference">Statistical inference</a></li>
+          <li><a href="#hypothesis">Hypothesis testing</a></li>
+          <li><a href="#errors">Errors and power</a></li>
+          <li><a href="#tests">Common statistical tests</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="sampling">
+          <h2>Sampling</h2>
+          <p class="section-sub">Studying a part to learn about the whole</p>
+
+          <p>We often want to know the characteristics of a large group, the <b>population</b>, but studying every individual is usually impossible. Instead we collect data from a smaller group, a <b>sample</b>, and use it to estimate the population's characteristics. That process involves sampling and estimation.</p>
+
+          <div class="point-grid">
+            <div class="point"><h4>Population</h4><p>The entire set of individuals, items or data points of interest. Example: all students in a university.</p></div>
+            <div class="point"><h4>Sample</h4><p>A smaller subset selected for analysis. Example: 100 randomly chosen students from that university.</p></div>
+          </div>
+
+          <div class="definition">
+            <strong>Sampling</strong>
+            The process of selecting a subset from a population to gather information. It saves time, money and effort while still giving meaningful insight. Good sampling gives every individual a known and fair chance of being selected, so the conclusions can be trusted for the whole population.
+          </div>
+
+          <h3>Types of sampling methods</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Family</th><th>Method</th><th>How it works</th><th>Typical use</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="4"><b>Probability</b><br /><span style="color:var(--ink-soft)">Each member has a known chance of selection</span></td><td>Simple random</td><td>Every item has an equal chance</td><td>Surveys, opinion polls</td></tr>
+              <tr><td>Systematic</td><td>Select every k-th item from a list</td><td>Factory quality checks</td></tr>
+              <tr><td>Stratified</td><td>Divide into groups (strata) and sample from each</td><td>Salary studies by experience level</td></tr>
+              <tr><td>Cluster</td><td>Divide into clusters and select entire clusters at random</td><td>Studies across regions or schools</td></tr>
+              <tr><td rowspan="3"><b>Non-probability</b><br /><span style="color:var(--ink-soft)">Selection by convenience or judgment</span></td><td>Convenience</td><td>Choose easily available subjects</td><td>Quick pilot studies</td></tr>
+              <tr><td>Judgment</td><td>Select based on expert opinion</td><td>Expert panels</td></tr>
+              <tr><td>Quota</td><td>Take a fixed number from each group, not at random</td><td>Market research</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-methods">
+            <div class="viz-head">
+              <h4>Sample 50 of a company's 500 employees</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">The company has ten offices; teal dots are junior staff and purple dots senior staff, who earn more. Pick a method and draw samples. Watch whether the sample mean lands near the true mean salary and whether seniors are fairly represented.</p>
+            <div class="controls" role="group" aria-label="Sampling method" data-mbtns></div>
+            <div class="controls">
+              <button class="btn is-on" data-draw="1">Draw a sample</button>
+              <button class="btn" data-draw="200">Draw 200 samples</button>
+            </div>
+            <svg viewBox="0 0 640 330" role="img" aria-label="Employees by office, with the sample highlighted"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="mu">–</b><span>True mean salary μ</span></div>
+              <div class="stat"><b data-stat="xbar">–</b><span>Sample mean x̄</span></div>
+              <div class="stat"><b data-stat="sen">–</b><span>Seniors in sample (population: <span data-sen></span>)</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="estimation">
+          <h2>Estimation</h2>
+          <p class="section-sub">Using a sample to estimate what we can't measure directly</p>
+
+          <p>After collecting a sample, we use it to estimate unknown population <b>parameters</b>, such as a mean or a proportion. The number calculated from the sample is called a <b>statistic</b> or <b>estimator</b>.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Parameter (population, unknown)</th><th>Estimator (sample, calculated)</th></tr></thead>
+            <tbody>
+              <tr><td>Mean μ</td><td>Sample mean x̄</td></tr>
+              <tr><td>Proportion p</td><td>Sample proportion p̂</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Types of estimation</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Point estimation</h4><p>A single best guess of a parameter. The sample mean x̄ is a point estimate of μ.</p></div>
+            <div class="point"><h4>Interval estimation</h4><p>A range within which the parameter is expected to lie. A 95% confidence interval for μ might be (45.5, 54.5).</p></div>
+          </div>
+
+          <h3>Properties of a good estimator</h3>
+          <div class="measure-grid">
+            <div class="measure"><h4>Unbiasedness</h4><p>Its expected value equals the true parameter: on average it hits the target.</p></div>
+            <div class="measure"><h4>Consistency</h4><p>It becomes more accurate as the sample size grows.</p></div>
+            <div class="measure"><h4>Efficiency</h4><p>It has the smallest variance among unbiased estimators: the tightest spread.</p></div>
+            <div class="measure"><h4>Sufficiency</h4><p>It uses all the relevant information in the data.</p></div>
+          </div>
+
+          <div class="viz" id="viz-estimators">
+            <div class="viz-head">
+              <h4>Put four estimators to the test</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Each estimator is used on 500 samples of test scores from a population with μ = 70. Each dot is one estimate. A good estimator's dots are centered on the purple line (unbiased), tightly packed (efficient), and get tighter as n grows (consistent).</p>
+            <div class="controls">
+              <label class="range">Sample size n <span data-out="n">10</span><input type="range" min="2" max="100" value="10" data-in="n" /></label>
+              <button class="btn is-on" data-rerun>Run again</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Estimator comparison"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="ci">
+          <h2>Confidence intervals</h2>
+          <p class="section-sub">A range, and how much to trust it</p>
+
+          <p>A confidence interval gives a range around the sample statistic that is likely to contain the population parameter. For a population mean with σ known:</p>
+          <div class="formula" style="text-align:center">CI = x̄ ± Z<sub>α/2</sub> × σ ÷ √n</div>
+          <p>Here x̄ is the sample mean, σ the population standard deviation, n the sample size, and Z<sub>α/2</sub> the critical value from the standard normal table: 1.645 for 90%, 1.96 for 95%, 2.576 for 99% confidence. The part after ± is the <b>margin of error</b>.</p>
+
+          <div class="viz" id="viz-ci">
+            <div class="viz-head">
+              <h4>Estimate the average salary</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">500 employees with a true mean salary of ₹63,150 and σ = ₹12,800 (known here so you can check the estimate). Take a sample, then change the sample size and confidence level.</p>
+            <div class="controls">
+              <label class="range">Sample size n <span data-out="n">50</span><input type="range" min="10" max="200" step="5" value="50" data-in="n" /></label>
+              <label class="range">Confidence <span data-out="c">95%</span><input type="range" min="0" max="2" step="1" value="1" data-in="c" /></label>
+              <button class="btn is-on" data-new>Take a new sample</button>
+            </div>
+            <svg viewBox="0 0 640 150" role="img" aria-label="Confidence interval on a salary scale"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="xbar">–</b><span>Point estimate x̄</span></div>
+              <div class="stat"><b data-stat="moe">–</b><span>Margin of error</span></div>
+              <div class="stat"><b data-stat="ci">–</b><span>Interval estimate</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>What "95% confident" means</h3>
+          <div class="verdict-grid">
+            <div class="verdict no"><h4>✗ Wrong</h4><q>There's a 95% chance μ is in this interval.</q><p>Once the interval is calculated, μ either is or isn't in it. The interval varies from sample to sample; the truth doesn't.</p></div>
+            <div class="verdict meh"><h4>✗ Also wrong</h4><q>95% of employees earn within this range.</q><p>That would be a range for individuals. A confidence interval is about the mean, not individual values.</p></div>
+            <div class="verdict yes"><h4>✓ Correct</h4><q>This method captures μ 95% of the time.</q><p>If we sampled 100 times and built an interval each time, about 95 would contain μ. The confidence is in the procedure.</p></div>
+          </div>
+
+          <div class="viz" id="viz-coverage">
+            <div class="viz-head">
+              <h4>See the 95% in action</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Each line is the interval from one random sample of 50 employees. Teal intervals capture the true mean; rose ones miss it. Keep adding samples and watch the capture rate settle near the confidence level.</p>
+            <div class="controls">
+              <div class="controls" role="group" aria-label="Confidence level" style="margin:0">
+                <button class="btn" data-z="1.645" aria-pressed="false">90%</button>
+                <button class="btn" data-z="1.96" aria-pressed="true">95%</button>
+                <button class="btn" data-z="2.576" aria-pressed="false">99%</button>
+              </div>
+              <button class="btn is-on" data-add="20">Add 20 samples</button>
+              <button class="btn" data-add="100">Add 100</button>
+              <button class="btn ghost" data-add="0">Reset</button>
+            </div>
+            <svg viewBox="0 0 640 320" role="img" aria-label="Confidence intervals from repeated samples"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="n">0</b><span>Intervals drawn (last 40 shown)</span></div>
+              <div class="stat"><b data-stat="hit">–</b><span>Captured μ</span></div>
+              <div class="stat"><b data-stat="miss">–</b><span>Missed μ</span></div>
+            </div>
+          </div>
+
+          <h3>Why sampling and estimation matter</h3>
+          <ul class="plain">
+            <li>They let researchers study large populations efficiently, reducing cost and time without losing accuracy.</li>
+            <li>They support prediction, planning and decision making.</li>
+            <li>They are the foundation of hypothesis testing and statistical inference.</li>
+          </ul>
+        </section>
+
+        <section id="inference">
+          <h2>Statistical inference</h2>
+          <p class="section-sub">From sample evidence to conclusions about a population</p>
+
+          <div class="definition">
+            <strong>Statistical inference</strong>
+            Drawing conclusions or making decisions about a population based on information from a sample. It connects descriptive statistics, which summarize data, to probabilistic reasoning, which predicts or estimates.
+          </div>
+
+          <div class="flow" aria-label="Statistical inference overview">
+            <div class="flow-node pop"><b>Population</b><span>Unknown parameters: μ, σ, p</span></div>
+            <div class="flow-arrow">sampling</div>
+            <div class="flow-node"><b>Sample</b><span>Observed data: x₁, x₂, …, xₙ</span></div>
+            <div class="flow-arrow">inference</div>
+            <div class="flow-branches">
+              <div>
+                <div class="flow-node est"><b>Estimation</b><span>What is the parameter's value?</span></div>
+                <div class="flow-leaves"><span>Point estimate</span><span>Interval estimate</span></div>
+              </div>
+              <div>
+                <div class="flow-node test"><b>Hypothesis testing</b><span>Is the effect real?</span></div>
+                <div class="flow-leaves"><span>H₀ vs H₁, p-value</span><span>Errors and power</span></div>
+              </div>
+            </div>
+          </div>
+
+          <p>Estimation determines the value of a population parameter from sample data: a point estimate such as x̄ = ΣXᵢ ÷ n for μ, or an interval such as x̄ ± Z<sub>α/2</sub> σ ÷ √n. Hypothesis testing makes decisions about population characteristics based on sample evidence.</p>
+        </section>
+
+        <section id="hypothesis">
+          <h2>Hypothesis testing</h2>
+          <p class="section-sub">Does the sample support or contradict a claim?</p>
+
+          <p>Hypothesis testing is a formal procedure for deciding whether sample data supports or contradicts a stated assumption (a hypothesis) about the population.</p>
+
+          <ol class="steps">
+            <li><h4>State the hypotheses</h4><p>The null hypothesis H₀ says there is no effect or difference; the alternative H₁ says there is. For example, H₀: μ = μ₀ vs. H₁: μ ≠ μ₀.</p></li>
+            <li><h4>Choose a significance level α</h4><p>Commonly 0.05 or 0.01: the probability of rejecting H₀ when it is actually true.</p></li>
+            <li><h4>Select the test statistic</h4><p>Z = (x̄ − μ₀) ÷ (σ/√n) when σ is known; t = (x̄ − μ₀) ÷ (s/√n) when it isn't.</p></li>
+            <li><h4>Compute it from the sample data</h4><p>And find its p-value: the probability of a result at least this extreme if H₀ were true.</p></li>
+            <li><h4>Make a decision</h4><p>If the p-value ≤ α, reject H₀. If the p-value > α, fail to reject H₀.</p></li>
+          </ol>
+
+          <h3>Worked example: rod lengths</h3>
+          <div class="split reverse">
+            <img src="../assets/img/session-08/curves.jpg" alt="Sweeping curved architectural lines in black and white" loading="lazy" />
+            <div>
+              <p>A machine should produce rods averaging 50 cm. A random sample of 25 rods has x̄ = 49.5 cm, and σ = 1.2 cm. At the 5% level, does the mean length differ from 50 cm?</p>
+              <div class="formula">H₀: μ = 50 &nbsp; H₁: μ ≠ 50</div>
+              <div class="formula">Z = (49.5 − 50) ÷ (1.2/√25) = −0.5 ÷ 0.24 ≈ −2.08</div>
+              <p>The two-tailed critical value at 5% is ±1.96. Since |Z| = 2.08 > 1.96, we <b>reject H₀</b>: the mean rod length differs significantly from 50 cm. (Equivalently, p ≈ 0.037 < 0.05.)</p>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-test">
+            <div class="viz-head">
+              <h4>Hypothesis test calculator</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">The curve is the distribution of the test statistic if H₀ were true. Shaded tails are the rejection region; the line is your sample's statistic. Change the inputs and see the decision update.</p>
+            <div class="controls" role="group" aria-label="Test">
+              <button class="btn" data-tt="one" aria-pressed="true">One sample: rod lengths</button>
+              <button class="btn" data-tt="two" aria-pressed="false">Two samples: junior vs. senior salaries</button>
+            </div>
+            <div class="controls" data-inputs></div>
+            <div class="controls" role="group" aria-label="Significance level">
+              <b style="font-size:.9rem">α</b>
+              <button class="btn" data-a="0.1" aria-pressed="false">0.10</button>
+              <button class="btn" data-a="0.05" aria-pressed="true">0.05</button>
+              <button class="btn" data-a="0.01" aria-pressed="false">0.01</button>
+            </div>
+            <svg viewBox="0 0 640 240" role="img" aria-label="Null distribution with rejection regions"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="stat">–</b><span data-stat-l>Test statistic</span></div>
+              <div class="stat"><b data-stat="crit">–</b><span>Critical value</span></div>
+              <div class="stat"><b data-stat="p">–</b><span>p-value</span></div>
+              <div class="stat"><b data-stat="dec">–</b><span>Decision</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="errors">
+          <h2>Errors and power</h2>
+          <p class="section-sub">Every decision from a sample can be wrong in two ways</p>
+
+          <div class="table-wrap"><table class="error-grid">
+            <thead><tr><th></th><th>H₀ is actually true</th><th>H₀ is actually false</th></tr></thead>
+            <tbody>
+              <tr><th>Reject H₀</th><td class="bad"><b>Type I error (α)</b><br />False positive</td><td class="good"><b>Correct</b><br />Power = 1 − β</td></tr>
+              <tr><th>Fail to reject H₀</th><td class="good"><b>Correct</b><br />Probability 1 − α</td><td class="bad"><b>Type II error (β)</b><br />False negative</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="point-grid">
+            <div class="point"><h4>Type I error</h4><p>Rejecting a true null hypothesis. Its probability is α.</p></div>
+            <div class="point"><h4>Type II error</h4><p>Failing to reject a false null hypothesis. Its probability is β.</p></div>
+            <div class="point"><h4>Power (1 − β)</h4><p>The ability to correctly reject a false H₀, detecting an effect that really exists.</p></div>
+          </div>
+
+          <h3>Confidence and significance</h3>
+          <p>Estimation and testing both use a confidence level (1 − α) or significance level α. A 95% confidence level means α = 0.05, a 5% chance of error. A 99% confidence interval is wider than a 95% one, but more reliable.</p>
+
+          <div class="viz" id="viz-power">
+            <div class="viz-head">
+              <h4>The trade-off between α, β and power</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Back to the rods (H₀: μ = 50, σ = 1.2). Suppose the machine has really drifted to a new mean. The gray curve is where x̄ falls if H₀ is true; the teal curve is where it really falls. Change the drift, sample size and α.</p>
+            <div class="controls">
+              <label class="range">True mean μ <span data-out="mu">49.4</span><input type="range" min="49" max="50" step="0.05" value="49.4" data-in="mu" /></label>
+              <label class="range">Sample size n <span data-out="n">25</span><input type="range" min="5" max="100" step="1" value="25" data-in="n" /></label>
+              <label class="range">α <span data-out="a">0.05</span><input type="range" min="1" max="20" step="1" value="5" data-in="a" /></label>
+            </div>
+            <svg viewBox="0 0 640 250" role="img" aria-label="Null and alternative distributions"></svg>
+            <div class="legend">
+              <span><i style="background:#d94f70"></i>α: Type I error region</span>
+              <span><i style="background:#d98a0b"></i>β: Type II error region</span>
+              <span><i style="background:#0e8c7f"></i>Power</span>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="a">–</b><span>α (Type I)</span></div>
+              <div class="stat"><b data-stat="b">–</b><span>β (Type II)</span></div>
+              <div class="stat"><b data-stat="pw">–</b><span>Power 1 − β</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="tests">
+          <h2>Common statistical tests</h2>
+          <p class="section-sub">Matching the test to the question and the data</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Test</th><th>When to use it</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Z-test</b></td><td>Large samples (n ≥ 30), population σ known</td><td>Rod lengths with a known machine σ</td></tr>
+              <tr><td><b>t-test</b></td><td>Small samples, σ unknown</td><td>Comparing two teams' mean salaries</td></tr>
+              <tr><td><b>χ² (chi-square) test</b></td><td>Categorical data and tests of independence</td><td>Is product choice related to region?</td></tr>
+              <tr><td><b>F-test</b></td><td>Comparing two variances, or in ANOVA</td><td>Is one machine more consistent than another?</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-quiz">
+            <div class="viz-head">
+              <h4>Which test would you use?</h4>
+              <span class="viz-tag">Practice</span>
+            </div>
+            <p class="viz-hint">Pick a test for each scenario to check your answer.</p>
+            <div data-quiz></div>
+            <p class="tree-note" data-score></p>
+          </div>
+
+          <h3>Why statistical inference matters</h3>
+          <ul class="plain">
+            <li>It lets us generalize from a sample to the whole population.</li>
+            <li>It provides quantitative evidence for decision making.</li>
+            <li>It is essential in research, business analytics, healthcare studies and quality control.</li>
+          </ul>
+
+          <div class="takeaways">
+            <h3>Session 8 in summary</h3>
+            <ul>
+              <li>Sampling collects representative data; probability methods give every member a known chance and avoid the bias of convenience or judgment samples.</li>
+              <li>Estimation infers parameters from statistics: a point estimate is one best guess, an interval estimate is a range with a stated confidence.</li>
+              <li>A good estimator is unbiased, consistent, efficient and sufficient.</li>
+              <li>CI = x̄ ± Z<sub>α/2</sub> σ/√n; a larger sample narrows it and a higher confidence widens it.</li>
+              <li>Hypothesis tests compare a test statistic with its distribution under H₀; reject H₀ when the p-value ≤ α.</li>
+              <li>Every test risks Type I (α) and Type II (β) errors; larger samples raise power.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="8"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-07.html">Previous: Session 07</a>
+      <a href="session-09.html">Next: Session 09</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-08.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

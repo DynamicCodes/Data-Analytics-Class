@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 15: Prescriptive Modelling and Analytics | Data-Class</title>
+  <meta name="description" content="What prescriptive modelling is, how it differs from predictive modelling, how prescriptive analytics works, and real-world use cases." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>15</div>
+      <h1>Prescriptive Modelling and Analytics</h1>
+      <p class="lead">The final stage of analytics: going beyond "what will happen?" to "what should we do?" by combining predictions with optimization, simulation and business constraints.</p>
+      <ul class="lesson-meta">
+        <li>4 topics</li>
+        <li>6 interactive visuals</li>
+        <li>About 50 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-15/hero.jpg" alt="Upward growth chart" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#what">What prescriptive modelling is</a></li>
+          <li><a href="#vs">Predictive vs. prescriptive</a></li>
+          <li><a href="#how">How prescriptive analytics works</a></li>
+          <li><a href="#cases">Real-world use cases</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="what">
+          <h2>What prescriptive modelling is</h2>
+          <p class="section-sub">From "what will happen?" to "what should we do?"</p>
+
+          <div class="definition">
+            <strong>Prescriptive modelling</strong>
+            The use of mathematical, statistical and computational techniques to recommend decisions or actions based on predictive insights and constraints. It combines <b>predictive models</b> (what is likely to happen), <b>optimization models</b> (what is the best action) and <b>simulation models</b> (what-if scenarios) to guide decisions under uncertainty.
+          </div>
+
+          <h3>The analytics continuum</h3>
+          <div class="viz" id="viz-continuum">
+            <div class="viz-head">
+              <h4>Four questions about one sales problem</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Step through the four stages of analytics for a company whose sales dropped. Each stage answers a harder question, and the last one tells you what to do.</p>
+            <div class="controls" role="group" aria-label="Stage"></div>
+            <div class="controls" data-extra></div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Analytics stage chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>How it works: three stages</h3>
+          <ol class="steps">
+            <li><h4>Input: data and predictions</h4><p>Historical data, outputs of predictive models (probabilities, forecasts), and business constraints (resources, budgets, time limits).</p></li>
+            <li><h4>Decision / optimization</h4><p>Mathematical models such as linear or integer programming, with an objective (maximize profit, minimize risk) and constraints (operational or resource limits).</p></li>
+            <li><h4>Output: recommendations</h4><p>Actionable strategies, such as pricing plans or resource allocations, ranked by expected impact.</p></li>
+          </ol>
+
+          <h3>The mathematical formulation</h3>
+          <div class="formula" style="text-align:center">Maximize or minimize Z = f(x₁, x₂, …, xₙ) &nbsp; subject to &nbsp; gᵢ(x₁, x₂, …, xₙ) ≤ bᵢ, &nbsp; i = 1, 2, …, m</div>
+          <p>Z is the <b>objective</b> (profit, cost, risk), the xᵢ are the <b>decision variables</b> we control (how much to produce, where to send a truck), and each gᵢ ≤ bᵢ is a <b>constraint</b> with limit bᵢ (machine hours, budget, drivers). The classic example is a product-mix problem:</p>
+
+          <div class="viz" id="viz-lp">
+            <div class="viz-head">
+              <h4>Linear programming: the best product mix</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A furniture workshop makes chairs (x₁) and tables (x₂). Each chair needs 1 hour of machine time and 2 hours of labor; each table needs 3 machine hours and 2 labor hours. Change the profits and the hours available; the shaded area holds every feasible plan, and the optimizer finds the most profitable corner.</p>
+            <div class="controls">
+              <label class="range">Profit per chair (₹) <span data-out="p1">400</span><input type="range" min="100" max="1000" step="50" value="400" data-in="p1" /></label>
+              <label class="range">Profit per table (₹) <span data-out="p2">700</span><input type="range" min="100" max="1500" step="50" value="700" data-in="p2" /></label>
+            </div>
+            <div class="controls">
+              <label class="range">Machine hours available <span data-out="m">90</span><input type="range" min="30" max="150" step="5" value="90" data-in="m" /></label>
+              <label class="range">Labor hours available <span data-out="l">100</span><input type="range" min="30" max="150" step="5" value="100" data-in="l" /></label>
+            </div>
+            <svg viewBox="0 0 640 320" role="img" aria-label="Feasible region and optimal solution"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="x1">–</b><span>Chairs x₁</span></div>
+              <div class="stat"><b data-stat="x2">–</b><span>Tables x₂</span></div>
+              <div class="stat"><b data-stat="z">–</b><span>Maximum profit Z</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Category</th><th>Methods</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><b>Optimization</b></td><td>Linear, integer and dynamic programming</td><td>Find optimal decisions under constraints</td></tr>
+              <tr><td><b>Simulation</b></td><td>Monte Carlo, system dynamics, agent-based simulation</td><td>Evaluate what-if scenarios and uncertainty</td></tr>
+              <tr><td><b>Decision analysis</b></td><td>Decision trees, utility theory, sensitivity analysis</td><td>Weigh trade-offs between alternatives</td></tr>
+              <tr><td><b>ML integration</b></td><td>Predictive + prescriptive hybrid models</td><td>Use ML predictions to guide optimization</td></tr>
+              <tr><td><b>Reinforcement learning</b></td><td>Learning optimal actions by trial and feedback</td><td>AI-driven decision systems</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Predictive component</th><th>Prescriptive decision</th></tr></thead>
+            <tbody>
+              <tr><td><b>Retail</b></td><td>Predict product demand</td><td>Optimize inventory and pricing</td></tr>
+              <tr><td><b>Finance</b></td><td>Predict default risk</td><td>Adjust loan approval thresholds</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Predict readmission</td><td>Recommend treatment plan or discharge timing</td></tr>
+              <tr><td><b>Supply chain</b></td><td>Forecast delays</td><td>Optimize routing and delivery schedules</td></tr>
+              <tr><td><b>Marketing</b></td><td>Predict response rate</td><td>Optimize targeting and budget allocation</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Benefits</h4><p>Actionable insights that move from prediction to decision; optimization under constraints; dynamic decisions that adapt to real-time feedback; better ROI; the backbone of automated AI decision systems.</p></div>
+            <div class="measure"><h4>Challenges</h4><p>Complex integration of several methods; bad predictions lead to bad prescriptions; large optimizations are computationally heavy; recommendations must be explainable; real-time systems need continuous updates.</p></div>
+            <div class="measure"><h4>The future</h4><p>Integration with AI and reinforcement learning, adaptive systems that keep learning, real-time prescriptions inside operational systems, and explainable AI for trust.</p></div>
+          </div>
+        </section>
+
+        <section id="vs">
+          <h2>Predictive vs. prescriptive</h2>
+          <p class="section-sub">Knowing what might happen vs. deciding what to do</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Feature</th><th>Predictive</th><th>Prescriptive</th></tr></thead>
+            <tbody>
+              <tr><th>Goal</th><td>Forecast future outcomes</td><td>Recommend optimal actions</td></tr>
+              <tr><th>Core question</th><td>"What is likely to happen if current patterns continue?"</td><td>"What should we do to get the best result?"</td></tr>
+              <tr><th>Focus</th><td>Estimation and forecasting</td><td>Optimization and decision making</td></tr>
+              <tr><th>Techniques</th><td>Regression, trees and forests, neural networks, time series, ensembles</td><td>Linear/integer programming, optimization, simulation, reinforcement learning, decision analysis</td></tr>
+              <tr><th>Input</th><td>Historical data and features (X, Y)</td><td>Predictive outputs, constraints and objectives</td></tr>
+              <tr><th>Output</th><td>Probabilities, trends, classifications</td><td>Decisions, strategies, recommendations</td></tr>
+              <tr><th>Example output</th><td>"Churn probability = 0.85"</td><td>"Offer this customer a loyalty discount"</td></tr>
+              <tr><th>Business value</th><td>Anticipates risks and opportunities; supports insight</td><td>Chooses the optimal response; supports action</td></tr>
+              <tr><th>Dependency</th><td>Works independently</td><td>Depends on predictive insights</td></tr>
+              <tr><th>Limitation</th><td>Doesn't say what to do; may miss costs and constraints</td><td>Only as good as the predictions and assumptions; can be complex</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Scenario</th><th>Predictive</th><th>Prescriptive</th></tr></thead>
+            <tbody>
+              <tr><td><b>Retail</b></td><td>Predicts next month's demand per product</td><td>How much stock to order and where to send it</td></tr>
+              <tr><td><b>Finance</b></td><td>Predicts each customer's default probability</td><td>Which loans to approve, and at what interest rate</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Predicts readmission likelihood</td><td>Personalized treatment plans to reduce readmission</td></tr>
+              <tr><td><b>Marketing</b></td><td>Predicts churn</td><td>Retention strategies and personalized offers</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>From a churn prediction to a retention decision</h3>
+          <p>The predictive model says "this customer has an 80% chance of churning". The prescriptive model decides what to do, for example "offer a 20% discount to customers with more than 70% churn probability". But is 70% the right cut-off? That depends on the costs and benefits, which is exactly what prescriptive analytics works out.</p>
+
+          <div class="viz" id="viz-churn">
+            <div class="viz-head">
+              <h4>Who should get the retention offer?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">2,000 subscribers, each with a predicted churn probability. A subscriber is worth ₹6,000 a year. Customers above the threshold get a discount offer; the offer costs money for everyone who receives it, and it persuades a share of would-be churners to stay. Find the threshold that maximizes net value.</p>
+            <div class="controls">
+              <label class="range">Offer threshold (churn probability) <span data-out="t">0.70</span><input type="range" min="0" max="100" value="70" data-in="t" /></label>
+            </div>
+            <div class="controls">
+              <label class="range">Cost of the offer per customer (₹) <span data-out="c">1,200</span><input type="range" min="200" max="3000" step="100" value="1200" data-in="c" /></label>
+              <label class="range">Share of churners the offer saves <span data-out="e">40%</span><input type="range" min="10" max="80" step="5" value="40" data-in="e" /></label>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Net value by threshold"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="n">–</b><span>Customers offered</span></div>
+              <div class="stat"><b data-stat="saved">–</b><span>Expected customers saved</span></div>
+              <div class="stat"><b data-stat="net">–</b><span>Net value of the campaign</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="how">
+          <h2>How prescriptive analytics works</h2>
+          <p class="section-sub">Predictive insights + optimization + constraints and objectives</p>
+
+          <div class="formula" style="text-align:center">Data → Prediction → Optimization → Action</div>
+
+          <ol class="steps">
+            <li><h4>Data collection and preparation</h4><p>Transactions, sensors and IoT, historical performance, and external data (market, weather, social media), cleaned and integrated. A logistics company gathers past delivery times, routes, fuel use and traffic.</p></li>
+            <li><h4>Predictive modelling</h4><p>Forecast demand, risks, customer behavior, costs or delays, for example the probability that each delivery route will be delayed.</p></li>
+            <li><h4>Define objectives and constraints</h4><p>The objective to maximize or minimize (profit, cost, speed) and the real-world limits (trucks, budgets, working hours, service levels).</p></li>
+            <li><h4>Optimization and simulation</h4><p>The core engine: linear/integer programming, dynamic programming, genetic algorithms, Monte Carlo simulation and reinforcement learning test what-if scenarios to find the best actions under uncertainty.</p></li>
+            <li><h4>Recommendation and implementation</h4><p>Which action to take, when, with what resources, delivered to managers or automated, for example "assign driver A to route 5 and driver B to route 7 to cut cost by 12%".</p></li>
+          </ol>
+
+          <h3>Example: assigning drivers to routes</h3>
+          <p>A conceptual prescriptive model for deliveries minimizes:</p>
+          <div class="formula" style="text-align:center">Total cost = distance cost + delay penalty</div>
+          <p>The predictive model supplies each route's delay probability; the optimizer chooses the assignment.</p>
+
+          <div class="viz" id="viz-assign">
+            <div class="viz-head">
+              <h4>Assign four drivers to four routes</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Each cell shows the expected cost of a driver on a route: distance cost + (predicted delay probability × delay penalty). Click cells to build your own assignment (one per row and column), then let the optimizer check all 24 possibilities.</p>
+            <div class="controls">
+              <label class="range">Delay penalty (₹ per late delivery) <span data-out="pen">2,000</span><input type="range" min="0" max="6000" step="250" value="2000" data-in="pen" /></label>
+              <button class="btn is-on" data-opt>Find the optimal assignment</button>
+              <button class="btn ghost" data-clear>Clear mine</button>
+            </div>
+            <div class="table-wrap"><table data-grid></table></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="split">
+            <img src="../assets/img/session-15/warehouse.jpg" alt="Warehouse shelves stacked with boxes" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">Use case: supply chain optimization</h3>
+              <div class="table-wrap"><table>
+                <tbody>
+                  <tr><th>Data</th><td>Past delivery, weather and demand data</td></tr>
+                  <tr><th>Prediction</th><td>Next week's demand by region</td></tr>
+                  <tr><th>Objective</th><td>Minimize delivery cost and late shipments</td></tr>
+                  <tr><th>Constraints</th><td>20 trucks, 8-hour driver limit</td></tr>
+                  <tr><th>Optimization</th><td>Linear programming assigns routes</td></tr>
+                  <tr><th>Recommendation</th><td>A truck-route schedule that cuts cost by 10%</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+          </div>
+
+          <h3>Simulation: deciding under uncertainty</h3>
+          <p>Forecasts are never exact. Monte Carlo simulation runs a decision against thousands of possible futures to find the choice with the best expected result. The classic case is stocking for an uncertain demand: order too little and you lose sales; order too much and you're left with unsold stock.</p>
+
+          <div class="viz" id="viz-mc">
+            <div class="viz-head">
+              <h4>How many units to stock for a festival week?</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">A warehouse must stock a product before Diwali. Demand is forecast at about 1,000 units, with uncertainty. Each unit sold earns the margin; each unsold unit loses the cost. Choose an order quantity, run 2,000 simulated weeks, and compare with the best possible order.</p>
+            <div class="controls">
+              <label class="range">Order quantity <span data-out="q">1,000</span><input type="range" min="600" max="1600" step="10" value="1000" data-in="q" /></label>
+              <label class="range">Forecast uncertainty (SD) <span data-out="sd">200</span><input type="range" min="50" max="400" step="10" value="200" data-in="sd" /></label>
+            </div>
+            <div class="controls">
+              <label class="range">Profit per unit sold (₹) <span data-out="m">300</span><input type="range" min="50" max="800" step="10" value="300" data-in="m" /></label>
+              <label class="range">Loss per unsold unit (₹) <span data-out="o">100</span><input type="range" min="20" max="800" step="10" value="100" data-in="o" /></label>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Simulated profit by order quantity"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="ep">–</b><span>Expected profit at your order</span></div>
+              <div class="stat"><b data-stat="best">–</b><span>Best order quantity</span></div>
+              <div class="stat"><b data-stat="so">–</b><span>Chance of a stock-out</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Component</th><th>Function</th></tr></thead>
+            <tbody>
+              <tr><td><b>Data</b></td><td>Raw input and context</td></tr>
+              <tr><td><b>Predictive models</b></td><td>Estimate what is likely to happen</td></tr>
+              <tr><td><b>Optimization models</b></td><td>Determine the best possible decisions</td></tr>
+              <tr><td><b>Simulation models</b></td><td>Evaluate uncertainty and risk</td></tr>
+              <tr><td><b>Decision rules / engines</b></td><td>Turn model output into actionable recommendations</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Category</th><th>Tools</th></tr></thead>
+            <tbody>
+              <tr><td><b>Optimization</b></td><td>IBM CPLEX, Gurobi, Google OR-Tools</td></tr>
+              <tr><td><b>Simulation</b></td><td>AnyLogic, Simul8, Arena</td></tr>
+              <tr><td><b>Machine learning</b></td><td>Python (scikit-learn, TensorFlow), R</td></tr>
+              <tr><td><b>Prescriptive platforms</b></td><td>SAS, IBM Decision Optimization, Microsoft Azure ML, RapidMiner</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note">Prescriptive analytics = predictive analytics + optimization + decision making. It turns insights into strategic actions: smarter, faster and more profitable decisions.</p>
+        </section>
+
+        <section id="cases">
+          <h2>Real-world use cases</h2>
+          <p class="section-sub">How leading companies turn predictions into actions</p>
+
+          <div class="viz" id="viz-cases">
+            <div class="viz-head">
+              <h4>Prediction → prescription → decision</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Pick a company to follow its path from business challenge to a concrete decision.</p>
+            <div class="controls" role="group" aria-label="Company"></div>
+            <div data-flow></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Company</th><th>Predictive focus</th><th>Prescriptive action</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td><b>Amazon</b></td><td>Demand and price forecasting</td><td>Optimize stock, routes and dynamic prices</td><td>Lower delivery cost, higher profit</td></tr>
+              <tr><td><b>Netflix</b></td><td>Viewing behavior and churn</td><td>Personalized recommendations, production planning</td><td>Higher engagement and retention</td></tr>
+              <tr><td><b>Uber</b></td><td>Demand forecasting</td><td>Surge pricing, driver reallocation, routing</td><td>Better balance of demand and supply</td></tr>
+              <tr><td><b>Walmart</b></td><td>Demand and inventory forecasting</td><td>Replenishment and shelf optimization</td><td>Fewer stock-outs, more efficiency</td></tr>
+              <tr><td><b>Zomato</b></td><td>Order and delivery prediction</td><td>Delivery allocation and dynamic discounts</td><td>Faster delivery, better utilization</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="takeaways">
+            <h3>Session 15 in summary</h3>
+            <ul>
+              <li>Prescriptive modelling recommends actions by combining predictions, optimization and simulation under real constraints.</li>
+              <li>It is the last step of the continuum: descriptive (what happened), diagnostic (why), predictive (what next), prescriptive (what to do).</li>
+              <li>An optimization model has an objective, decision variables and constraints; for linear programs the best solution lies at a corner of the feasible region.</li>
+              <li>Prescriptive decisions depend on costs and benefits as well as predictions, so the best action threshold changes when the economics change.</li>
+              <li>Simulation handles uncertainty by testing decisions against many possible futures.</li>
+              <li>Prescriptive analytics closes the loop between prediction and action.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="15"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-14.html">Previous: Session 14</a>
+      <a href="session-16.html">Next: Session 16</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-15.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 13: From Correlation to Supervised Segmentation | Data-Class</title>
+  <meta name="description" content="Supervised segmentation, identifying informative attributes, progressive attributive segmentation, and model induction and prediction." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>13</div>
+      <h1>From Correlation to Supervised Segmentation</h1>
+      <p class="lead">How predictive modelling moves from spotting relationships to grouping customers, patients or borrowers by their predicted outcome: finding the attributes that matter, splitting data on them step by step, and learning a model that predicts new cases.</p>
+      <ul class="lesson-meta">
+        <li>4 topics</li>
+        <li>5 interactive visuals</li>
+        <li>About 45 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-13/hero.jpg" alt="Colored pins connected by thread on a white surface" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#supervised">Supervised segmentation</a></li>
+          <li><a href="#informative">Identifying informative attributes</a></li>
+          <li><a href="#progressive">Progressive attributive segmentation</a></li>
+          <li><a href="#induction">Model induction and prediction</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="supervised">
+          <h2>Supervised segmentation</h2>
+          <p class="section-sub">From discovering relationships to grouping by predicted outcome</p>
+
+          <p>Predictive modelling uses historical data and statistical or machine learning methods to predict future outcomes. The journey from <b>correlation</b> to <b>supervised segmentation</b> is the move from discovering relationships in data to grouping or classifying entities by predictive patterns.</p>
+
+          <div class="point-grid">
+            <div class="point"><h4>Correlation</h4><p>Measures the strength and direction of a linear relationship and shows which features relate to the target, but doesn't establish causation.</p></div>
+            <div class="point"><h4>Prediction</h4><p>Quantifies and uses those relationships: select relevant features, build models to estimate or classify outcomes, and interpret the results as business insights.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Phase</th><th>Objective</th><th>Typical outputs</th></tr></thead>
+            <tbody>
+              <tr><td><b>Feature validation</b></td><td>Identify key predictive variables</td><td>Selected attributes with significance</td></tr>
+              <tr><td><b>Model development</b></td><td>Train supervised learning algorithms</td><td>Regression or classification models</td></tr>
+              <tr><td><b>Model evaluation</b></td><td>Assess accuracy and stability</td><td>R², AUC, F1-score</td></tr>
+              <tr><td><b>Supervised segmentation</b></td><td>Divide entities into data-driven groups</td><td>Segments such as low, medium and high risk</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="definition">
+            <strong>Supervised segmentation</strong>
+            Dividing a population into distinct, meaningful groups based on outcomes predicted by a supervised model. Unlike unsupervised clustering, which groups data without labels, it is guided by a known target variable such as churn = Yes/No. It uses labeled training data, defines segments by rules, probabilities or thresholds from the model, and helps explain why outcomes occur.
+          </div>
+
+          <div class="viz" id="viz-supunsup">
+            <div class="viz-head">
+              <h4>Same customers, two ways to segment</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">300 telecom customers by monthly usage and satisfaction score. Rose dots churned. Compare clustering, which ignores churn, with supervised segmentation, which is guided by it.</p>
+            <div class="controls" role="group" aria-label="Method">
+              <button class="btn" data-m="none" aria-pressed="true">Raw data</button>
+              <button class="btn" data-m="unsup" aria-pressed="false">Unsupervised: k-means on usage</button>
+              <button class="btn" data-m="sup" aria-pressed="false">Supervised: churn-guided rules</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Customer scatter plot with segments"></svg>
+            <div class="table-wrap"><table data-seg></table></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Conceptual workflow</h3>
+          <ol class="steps">
+            <li><h4>Data understanding</h4><p>Identify input features and the outcome variable.</p></li>
+            <li><h4>Correlation analysis</h4><p>Understand relationships and dependencies.</p></li>
+            <li><h4>Feature selection</h4><p>Keep only statistically significant predictors.</p></li>
+            <li><h4>Model building</h4><p>Develop a supervised regression or classification model.</p></li>
+            <li><h4>Prediction and segmentation</h4><p>Use predicted values or probabilities to form distinct segments.</p></li>
+            <li><h4>Validation and interpretation</h4><p>Evaluate performance and the meaning of each segment.</p></li>
+          </ol>
+
+          <h3>Techniques</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>Concept</th><th>Use case</th></tr></thead>
+            <tbody>
+              <tr><td><b>Decision tree segmentation</b></td><td>Hierarchical rules (splits) on predictor values create interpretable groups</td><td>Customer segmentation, risk scoring</td></tr>
+              <tr><td><b>Probability-based segmentation</b></td><td>Predicted probabilities, such as from logistic regression, are banded into low, medium and high</td><td>Marketing, churn prediction</td></tr>
+              <tr><td><b>Ensemble segmentation</b></td><td>Several models combined for more stable, accurate segments</td><td>Fraud detection, credit risk</td></tr>
+              <tr><td><b>Hybrid segmentation</b></td><td>Clustering combined with supervised prediction</td><td>Customer profiling</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-bands">
+            <div class="viz-head">
+              <h4>Probability-based segments and the gains chart</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A churn model scored 1,000 customers. Drag the two cut-offs to form Low, Medium and High risk segments. The gains chart shows how quickly targeting the riskiest customers first captures the churners.</p>
+            <div class="controls">
+              <label class="range">Low / Medium cut-off <span data-out="c1">0.20</span><input type="range" min="5" max="60" value="20" data-in="c1" /></label>
+              <label class="range">Medium / High cut-off <span data-out="c2">0.50</span><input type="range" min="20" max="95" value="50" data-in="c2" /></label>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Segment summary and gains chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Good segments, and how to evaluate them</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Statistically valid</h4><p>Segments differ significantly in predicted outcome.</p></div>
+            <div class="point"><h4>Stable</h4><p>Segments stay consistent across different data samples.</p></div>
+            <div class="point"><h4>Interpretable</h4><p>Each segment is easy to describe, like "high income, low risk".</p></div>
+            <div class="point"><h4>Actionable</h4><p>Each group gets its own strategy or intervention.</p></div>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Metric</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><b>Accuracy / R² / AUC</b></td><td>Predictive power of the model</td></tr>
+              <tr><td><b>Lift and gain charts</b></td><td>How well the model separates high from low responders</td></tr>
+              <tr><td><b>Confusion matrix, precision, recall</b></td><td>Performance of classification-based segments</td></tr>
+              <tr><td><b>KS statistic / Gini index</b></td><td>Strength of separation between segments</td></tr>
+              <tr><td><b>Population stability index (PSI)</b></td><td>How segments shift over time in new data</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Objective</th><th>Example segments</th></tr></thead>
+            <tbody>
+              <tr><td><b>Banking</b></td><td>Loan risk analysis</td><td>High / medium / low-risk borrowers</td></tr>
+              <tr><td><b>Marketing</b></td><td>Campaign optimization</td><td>High / moderate / low response</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Disease risk prediction</td><td>Low, medium and high disease probability</td></tr>
+              <tr><td><b>Human resources</b></td><td>Attrition prediction</td><td>Likely to stay / moderate risk / likely to leave</td></tr>
+              <tr><td><b>Retail</b></td><td>Customer lifetime value</td><td>Platinum / gold / silver customers</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Segments aligned with business goals, personalized strategies per group, more transparent decisions, and resources targeted where potential is highest.</p></div>
+            <div class="measure"><h4>Challenges</h4><p>Needs large labeled datasets; segments drift over time; over-segmentation hurts interpretability; unbalanced data biases results; complex models give less explainable segments.</p></div>
+            <div class="measure"><h4>Future trends</h4><p>Explainable AI, AutoML pipelines, dynamic real-time segmentation, ethical and fair modelling, and hybrids with clustering and deep learning.</p></div>
+          </div>
+        </section>
+
+        <section id="informative">
+          <h2>Identifying informative attributes</h2>
+          <p class="section-sub">Finding which features actually matter for prediction</p>
+
+          <div class="definition">
+            <strong>Informative attributes</strong>
+            Variables that have a significant influence on the target outcome. They carry information that helps a model tell classes apart or predict values accurately.
+          </div>
+
+          <div class="point-grid">
+            <div class="point"><h4>Why it matters</h4><p>Less noise, higher accuracy and interpretability, faster training, less overfitting, and insights that are easier to act on.</p></div>
+            <div class="point"><h4>Link to feature selection</h4><p>Feature selection is how informative attributes are found. It separates <b>informative</b> (predictive), <b>redundant</b> (duplicated information) and <b>irrelevant</b> (no predictive value) features.</p></div>
+          </div>
+
+          <h3>An attribute is informative if it…</h3>
+          <ul class="plain">
+            <li>shows significant correlation or association with the target,</li>
+            <li>varies meaningfully across samples (not constant or random),</li>
+            <li>provides unique information not already captured by other features,</li>
+            <li>reduces uncertainty in predicting the outcome.</li>
+          </ul>
+
+          <h3>Methods</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Family</th><th>Methods</th><th>Key idea</th></tr></thead>
+            <tbody>
+              <tr><td><b>Filter</b></td><td>Correlation (continuous data), chi-square (categorical), ANOVA / F-test (numeric input, categorical output), mutual information (mixed types)</td><td>Statistical properties only; model-independent, quick and interpretable</td></tr>
+              <tr><td><b>Wrapper</b></td><td>Forward selection, backward elimination, recursive feature elimination (RFE)</td><td>Train models on subsets to find the best combination; accurate but expensive</td></tr>
+              <tr><td><b>Embedded</b></td><td>LASSO and Ridge, tree-based importance, gradient boosting importance (XGBoost, LightGBM)</td><td>Selection happens during training via importance weights</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Problematic attributes</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Irrelevant</b></td><td>No relation to the outcome</td><td>ID number, random code</td></tr>
+              <tr><td><b>Redundant</b></td><td>Duplicate information</td><td>Age and years since birth</td></tr>
+              <tr><td><b>Sparse</b></td><td>Mostly missing values</td><td>Empty survey fields</td></tr>
+              <tr><td><b>Constant</b></td><td>The same value for every sample</td><td>Country = "India" for all rows</td></tr>
+              <tr><td><b>Highly correlated</b></td><td>Multicollinearity</td><td>Height and weight alongside BMI</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-audit">
+            <div class="viz-head">
+              <h4>Audit the attributes of a loan dataset</h4>
+              <span class="viz-tag">Step through</span>
+            </div>
+            <p class="viz-hint">Ten candidate attributes for predicting loan default. Follow the practical framework step by step and watch each attribute get kept or removed.</p>
+            <div class="controls">
+              <button class="btn" data-dir="-1">Back</button>
+              <button class="btn is-on" data-dir="1">Next step</button>
+              <div class="step-dots" aria-hidden="true"></div>
+            </div>
+            <div class="viz-out" style="margin:0 0 .75rem" data-stepinfo aria-live="polite"></div>
+            <div class="table-wrap"><table data-audit></table></div>
+          </div>
+
+          <h3>Evaluating informativeness</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Metric</th><th>Interpretation</th></tr></thead>
+            <tbody>
+              <tr><td><b>p-value &lt; 0.05</b></td><td>Statistically significant relationship with the target</td></tr>
+              <tr><td><b>Information gain</b></td><td>Reduction in uncertainty from knowing the feature</td></tr>
+              <tr><td><b>Gini / feature importance</b></td><td>From tree-based models</td></tr>
+              <tr><td><b>Mutual information</b></td><td>Shared information content</td></tr>
+            </tbody>
+          </table></div>
+          <p>A strong attribute also <b>improves model performance when included</b>, as validated by cross-validation.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Target</th><th>Informative attributes</th></tr></thead>
+            <tbody>
+              <tr><td><b>Finance</b></td><td>Loan default</td><td>Income, credit score, debt-to-income ratio</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Disease diagnosis</td><td>Age, BMI, blood pressure, glucose level</td></tr>
+              <tr><td><b>Marketing</b></td><td>Customer response</td><td>Purchase frequency, discount sensitivity, ad clicks</td></tr>
+              <tr><td><b>Human resources</b></td><td>Employee attrition</td><td>Tenure, salary growth, engagement score</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Benefits</h4><p>More interpretable, more accurate, faster and simpler models; better domain understanding of what drives outcomes; clearer strategic focus.</p></div>
+            <div class="measure"><h4>Challenges</h4><p>Informative features change over time (concept drift); simple correlation misses hidden interactions; statistical importance isn't the same as business importance, so domain knowledge matters.</p></div>
+          </div>
+          <p class="note">Identifying informative attributes is the foundation of every predictive model: the right features give accurate, stable and explainable predictions.</p>
+        </section>
+
+        <section id="progressive">
+          <h2>Progressive attributive segmentation</h2>
+          <p class="section-sub">Splitting data step by step, most informative attribute first</p>
+
+          <p>Progressive attributive segmentation divides data into meaningful groups in stages. <b>Progressive</b> means attributes are applied one stage at a time, in order of predictive power; <b>attributive</b> means each stage is guided by the attribute that best differentiates the data at that level. You start with the most informative attribute, split, then keep dividing each group with the next most informative attribute until the segments are meaningful and stable.</p>
+
+          <h3>Conceptual example: churn</h3>
+          <ol class="steps">
+            <li><h4>Customer satisfaction score</h4><p>Split into high and low satisfaction.</p></li>
+            <li><h4>Monthly usage, within low satisfaction</h4><p>Split into low and high usage.</p></li>
+            <li><h4>Support tickets, within low satisfaction + low usage</h4><p>Split into frequent and few complaints.</p></li>
+          </ol>
+          <p>Segments: high satisfaction → low churn risk; low satisfaction + high usage → moderate risk; low satisfaction + low usage + frequent complaints → high risk.</p>
+
+          <div class="viz" id="viz-grow">
+            <div class="viz-head">
+              <h4>Build the segments yourself</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">600 customers. Select a segment, then pick an attribute to split it; attributes are ranked by information gain for that segment. Stop when segments get too small or a split adds little.</p>
+            <div class="controls">
+              <button class="btn is-on" data-auto>Split the selected segment on its best attribute</button>
+              <button class="btn ghost" data-reset>Start over</button>
+            </div>
+            <div class="controls" data-choices></div>
+            <svg viewBox="0 0 640 340" role="img" aria-label="Segmentation tree"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Process</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Step</th><th>Description</th><th>Outcome</th></tr></thead>
+            <tbody>
+              <tr><td>1. Attribute ranking</td><td>Rank variables by informativeness (correlation, information gain…)</td><td>Ordered attribute list</td></tr>
+              <tr><td>2. Initial segmentation</td><td>Split on the most important attribute</td><td>Primary segments</td></tr>
+              <tr><td>3. Progressive refinement</td><td>Within each segment, apply the next most informative attribute</td><td>Sub-segments</td></tr>
+              <tr><td>4. Stopping criteria</td><td>Stop when segments are too small or splits add no value</td><td>Final segments</td></tr>
+              <tr><td>5. Interpretation</td><td>Label and describe the segments</td><td>Actionable insights</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Relationship to decision trees:</b> each split works like a tree split, with the highest-information attributes at the top. But progressive segmentation can be guided manually by business logic as well as statistics, making it more flexible and interpretable.</p>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Key principles</h4><p><b>Progression:</b> attributes in descending importance. <b>Purity increase:</b> each split makes segments more homogeneous. <b>Interpretability:</b> every split is explainable. <b>Parsimony:</b> fewer, meaningful groups beat many tiny ones.</p></div>
+            <div class="measure"><h4>Choosing attributes</h4><p>Information gain or entropy (classification), Gini index (tree analysis), ANOVA / F-test (continuous targets), chi-square (categorical targets), mutual information (mixed types).</p></div>
+            <div class="measure"><h4>Benefits</h4><p>Hierarchical, interpretable structure; clear explanations and data storytelling; strategic use in marketing and risk; avoids black-box behavior.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Depends on the right attribute order; manual design can be subjective; may miss non-linear interactions; sensitive to outliers and correlated features; needs revalidation as data changes.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Use case</th><th>Progressive attributes</th></tr></thead>
+            <tbody>
+              <tr><td><b>Banking</b></td><td>Credit risk profiling</td><td>Income → loan-to-value → age → credit history</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Disease risk</td><td>Age → BMI → blood pressure → smoking status</td></tr>
+              <tr><td><b>Marketing</b></td><td>Customer segmentation</td><td>Engagement → purchase frequency → discount sensitivity</td></tr>
+              <tr><td><b>Education</b></td><td>Student performance</td><td>Attendance → study hours → test scores</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Evaluating segments:</b> purity (members share the same outcome), stability (consistent on new data), size balance (each large enough to matter), predictive accuracy, and business interpretability. Common visuals are decision tree diagrams, heatmaps, profile tables, and cluster-and-attribute maps. Future trends include hybrid and dynamic segmentation, SHAP or LIME explanations of each step, and automated attribute ranking with AutoML.</p>
+        </section>
+
+        <section id="induction">
+          <h2>Model induction and prediction</h2>
+          <p class="section-sub">How a model learns, and how it is used</p>
+
+          <p>Model induction and prediction are the two core stages of predictive analytics. <b>Induction</b> answers "how does the model learn from past data?" and <b>prediction</b> answers "how does it use what it learned to forecast new outcomes?"</p>
+
+          <div class="formula" style="text-align:center">Y = f(X) + ε &nbsp;→&nbsp; induction estimates f* from data &nbsp;→&nbsp; prediction: Ŷ = f*(X′)</div>
+          <p>X are the inputs, Y the outcome, f the true relationship and ε random error. Induction produces an estimate f*, for a linear model its parameters β₀, β₁, …, βₙ. Prediction applies f* to new inputs X′.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Comparison</th><th>Model induction</th><th>Prediction</th></tr></thead>
+            <tbody>
+              <tr><th>Purpose</th><td>Learn from historical data</td><td>Apply knowledge to new data</td></tr>
+              <tr><th>Phase</th><td>Training</td><td>Application</td></tr>
+              <tr><th>Data used</th><td>Training set</td><td>Test or real-world data</td></tr>
+              <tr><th>Outcome</th><td>Parameters, rules or weights</td><td>Predicted values or categories</td></tr>
+              <tr><th>Goal</th><td>Minimize error</td><td>Generalize accurately</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Steps in model induction</h3>
+          <ol class="steps">
+            <li><h4>Data collection</h4><p>Gather enough relevant data.</p></li>
+            <li><h4>Preprocessing</h4><p>Clean, normalize and transform.</p></li>
+            <li><h4>Feature selection</h4><p>Identify informative attributes.</p></li>
+            <li><h4>Algorithm selection</h4><p>Regression, tree, and so on.</p></li>
+            <li><h4>Training</h4><p>Fit the model's parameters on training data.</p></li>
+            <li><h4>Validation</h4><p>Measure performance on unseen data.</p></li>
+            <li><h4>Optimization</h4><p>Tune hyperparameters and regularization.</p></li>
+          </ol>
+
+          <div class="viz" id="viz-induct">
+            <div class="viz-head">
+              <h4>Induce a model, then predict</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">The slide's example: predict a final exam score from study hours and attendance. First the model is induced from 60 past students, then it predicts for a new student you describe.</p>
+            <div class="controls" role="group" aria-label="Stage">
+              <button class="btn" data-st="ind" aria-pressed="true">1. Induction (training)</button>
+              <button class="btn" data-st="val" aria-pressed="false">2. Validation (test set)</button>
+              <button class="btn" data-st="pred" aria-pressed="false">3. Prediction (new student)</button>
+            </div>
+            <div class="controls" data-newstudent hidden>
+              <label class="range">Study hours per week <span data-out="h">12</span><input type="range" min="0" max="30" value="12" data-in="h" /></label>
+              <label class="range">Attendance <span data-out="at">80%</span><input type="range" min="40" max="100" value="80" data-in="at" /></label>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Predicted vs actual exam scores"></svg>
+            <div class="stat-row" data-metrics></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Types of prediction and how to evaluate them</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Example</th><th>Evaluation metrics</th></tr></thead>
+            <tbody>
+              <tr><td><b>Regression</b></td><td>Continuous values</td><td>Sales, temperature</td><td>R², RMSE, MAE</td></tr>
+              <tr><td><b>Classification</b></td><td>Discrete categories</td><td>Spam vs. not spam</td><td>Accuracy, precision, recall, F1-score, ROC-AUC</td></tr>
+              <tr><td><b>Probability</b></td><td>Likelihood of an outcome</td><td>P(loan default) = 0.83</td><td>Log-loss, Brier score</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Types of inductive models</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Category</th><th>Example models</th><th>Learning approach</th></tr></thead>
+            <tbody>
+              <tr><td><b>Statistical</b></td><td>Linear / logistic regression</td><td>Parameter estimation</td></tr>
+              <tr><td><b>Tree-based</b></td><td>Decision trees, random forests</td><td>Rule induction</td></tr>
+              <tr><td><b>Probabilistic</b></td><td>Naive Bayes</td><td>Bayesian inference</td></tr>
+              <tr><td><b>Distance-based</b></td><td>K-nearest neighbors</td><td>Instance-based learning</td></tr>
+              <tr><td><b>Neural</b></td><td>Deep learning</td><td>Weight optimization</td></tr>
+              <tr><td><b>Ensemble</b></td><td>Bagging, boosting</td><td>Combining multiple learners</td></tr>
+            </tbody>
+          </table></div>
+          <p><b>Induction approaches:</b> empirical (learn patterns directly from data, like regression and trees), symbolic (derive rules and logic), statistical (probabilistic inference, like Bayesian models) and computational (algorithms that optimize learning, like neural networks and SVMs).</p>
+
+          <h3>Overfitting, generalization and the model lifecycle</h3>
+          <p>Induction must balance <b>underfitting</b> (too simple, misses patterns) and <b>overfitting</b> (too complex, memorizes noise). The goal is <b>generalization</b>: good performance on unseen data, helped by cross-validation, regularization, pruning and dropout. (Session 12 has an interactive overfitting demo.) A model's lifecycle runs through data preparation, induction, validation, prediction, monitoring, and updating as the data changes.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Induction</th><th>Prediction</th></tr></thead>
+            <tbody>
+              <tr><td><b>Banking</b></td><td>Train on loan default history</td><td>Predict risk for new applicants</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Learn from patient records</td><td>Predict disease likelihood</td></tr>
+              <tr><td><b>Retail</b></td><td>Learn buying patterns</td><td>Predict the next purchase</td></tr>
+              <tr><td><b>Manufacturing</b></td><td>Learn equipment failures</td><td>Predict maintenance needs</td></tr>
+              <tr><td><b>Education</b></td><td>Learn from past outcomes</td><td>Predict student success</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Challenges</h4><p>Data quality (missing, biased, unbalanced), model drift, the interpretability vs. complexity trade-off, fairness and privacy, and the need for continuous validation.</p></div>
+            <div class="measure"><h4>Future directions</h4><p>AutoML, explainable predictions with SHAP and LIME, adaptive learning as new data arrives, hybrid statistical and AI induction, and ethical AI.</p></div>
+          </div>
+
+          <div class="takeaways">
+            <h3>Session 13 in summary</h3>
+            <ul>
+              <li>Predictive modelling moves from correlation, to prediction, to supervised segmentation: groups defined by predicted outcomes.</li>
+              <li>Supervised segmentation is guided by a known target, unlike clustering; evaluate it with lift, gains, KS and stability.</li>
+              <li>Informative attributes are significant, variable, unique and uncertainty-reducing; drop irrelevant, redundant, sparse and constant ones.</li>
+              <li>Progressive attributive segmentation splits on the most informative attribute first, then refines each segment, stopping before segments become too small.</li>
+              <li>Induction learns f* from training data; prediction applies it to new data. The goal is generalization, not memorization.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="13"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-12.html">Previous: Session 12</a>
+      <a href="session-14.html">Next: Session 14</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-13.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 18: Overfitting, Generalization and Model Evaluation | Data-Class</title>
+  <meta name="description" content="What overfitting is and why it happens, the bias–variance tradeoff, techniques to avoid it, and holdout evaluation vs. cross-validation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>18</div>
+      <h1>Overfitting, Generalization and Model Evaluation</h1>
+      <p class="lead">A model is only useful if it works on data it has never seen. This session covers why models overfit, the bias–variance tradeoff behind it, the techniques that prevent it, and how holdout evaluation and cross-validation measure generalization.</p>
+      <ul class="lesson-meta">
+        <li>6 topics</li>
+        <li>6 interactive visuals</li>
+        <li>About 50 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-18/hero.jpg" alt="Petri dish resting on colorful laboratory test results" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#overfitting">What overfitting is</a></li>
+          <li><a href="#bias-variance">The bias–variance tradeoff</a></li>
+          <li><a href="#avoid">Avoiding overfitting</a></li>
+          <li><a href="#generalization">Generalization</a></li>
+          <li><a href="#holdout">Holdout evaluation</a></li>
+          <li><a href="#cv">Cross-validation</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="overfitting">
+          <h2>What overfitting is</h2>
+          <p class="section-sub">Learning the noise instead of the pattern</p>
+
+          <div class="definition">
+            <strong>Overfitting</strong>
+            When a model learns the training data too well, including its noise and random fluctuations, instead of the underlying pattern. It performs extremely well on training data but poorly on unseen test data. In short: overfitting = high training accuracy + low test accuracy.
+          </div>
+
+          <p>Imagine fitting a curve to 10 data points. A straight line <b>underfits</b>: it's too simple to follow the pattern. A high-degree polynomial <b>overfits</b>: it bends to pass through every point, noise and all. The best model captures the true pattern, not the noise. The model has memorized the data instead of generalizing from it.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Model type</th><th>Description</th><th>Error behavior</th></tr></thead>
+            <tbody>
+              <tr><td><b>Underfitting</b></td><td>Too simple: misses important patterns</td><td>High training and test error</td></tr>
+              <tr><td><b>Good fit</b></td><td>Balanced complexity: captures the trend</td><td>Low test error</td></tr>
+              <tr><td><b>Overfitting</b></td><td>Too complex: fits the noise</td><td>Low training error, high test error</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Causes of overfitting</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Too complex a model</h4><p>Deep networks or high-degree polynomials with room to memorize.</p></div>
+            <div class="point"><h4>Too few training samples</h4><p>Not enough data to represent the true distribution.</p></div>
+            <div class="point"><h4>Noisy data</h4><p>Outliers or irrelevant features for the model to latch onto.</p></div>
+            <div class="point"><h4>Too many features</h4><p>The model finds random relationships that don't hold up.</p></div>
+            <div class="point"><h4>Insufficient regularization</h4><p>No constraint on how flexible the model can be.</p></div>
+            <div class="point"><h4>Data leakage</h4><p>Information from the test set accidentally used in training.</p></div>
+          </div>
+
+          <h3>Spotting it</h3>
+          <p>The symptoms: high training accuracy but low test accuracy, large variation in cross-validation scores, and training and validation error curves that diverge. Training error keeps falling, while validation error falls at first and then rises; the turning point is where overfitting begins.</p>
+        </section>
+
+        <section id="bias-variance">
+          <h2>The bias–variance tradeoff</h2>
+          <p class="section-sub">Why there's a sweet spot of model complexity</p>
+
+          <p>Suppose the data follows y = f(x) + ε, where f is the true pattern and ε is random noise. A model estimates f with f̂. Two kinds of error can creep in:</p>
+          <div class="point-grid">
+            <div class="point"><h4>Underfitting → high bias</h4><p>f̂(x) is systematically different from f(x): the model is too rigid to capture the pattern, whatever data it sees.</p></div>
+            <div class="point"><h4>Overfitting → high variance</h4><p>f̂(x) fits f(x) + ε, the noise included, so it changes a lot from one training sample to the next.</p></div>
+          </div>
+          <div class="formula" style="text-align:center">Expected test error = Bias² + Variance + Irreducible error</div>
+          <p>The irreducible error comes from the noise ε itself; no model can remove it. The goal is the complexity that minimizes the sum.</p>
+
+          <div class="viz" id="viz-bv">
+            <div class="viz-head">
+              <h4>See bias and variance directly</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">The dashed curve is the true pattern. Each thin line is a polynomial fitted to a different random sample of 10 noisy points. A rigid model's lines agree with each other but miss the truth (bias); a flexible model's lines hit the truth on average but scatter wildly (variance).</p>
+            <div class="controls">
+              <label class="range">Polynomial degree <span data-out="d">1</span><input type="range" min="1" max="9" value="1" data-in="d" /></label>
+              <button class="btn ghost" data-resample>Draw new samples</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Many fitted curves and the error decomposition"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Model complexity</th><th>Bias</th><th>Variance</th><th>Generalization error</th></tr></thead>
+            <tbody>
+              <tr><td><b>Low (simple model)</b></td><td>High</td><td>Low</td><td>High (underfitting)</td></tr>
+              <tr><td><b>Optimal</b></td><td>Balanced</td><td>Balanced</td><td>Low</td></tr>
+              <tr><td><b>High (complex model)</b></td><td>Low</td><td>High</td><td>High (overfitting)</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="avoid">
+          <h2>Avoiding overfitting</h2>
+          <p class="section-sub">Eight families of techniques</p>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>A. Data-related</h4><p>Evaluate on unseen data with a train–test split or k-fold cross-validation. Get more data, which smooths out noise, or augment it by creating modified copies (flipped images, reworded text).</p></div>
+            <div class="measure"><h4>B. Model simplification</h4><p>Use fewer parameters or simpler algorithms, remove irrelevant or redundant features, or reduce dimensions with PCA or LDA.</p></div>
+            <div class="measure"><h4>C. Regularization</h4><p>Add a penalty for large weights to the loss the model minimizes, so it can't bend freely to fit noise.</p></div>
+            <div class="measure"><h4>D. Early stopping</h4><p>Watch validation loss during training and stop when it starts to rise, before overfitting sets in.</p></div>
+            <div class="measure"><h4>E. Dropout</h4><p>In neural networks, randomly switch off neurons during training so they can't co-adapt; this acts as a regularizer.</p></div>
+            <div class="measure"><h4>F. Ensembles</h4><p>Bagging (random forests), boosting (XGBoost, AdaBoost) and stacking combine models whose different errors average out, reducing variance.</p></div>
+            <div class="measure"><h4>G. Pruning</h4><p>Cut decision tree branches that add little predictive power, so deep trees can't memorize the data.</p></div>
+            <div class="measure"><h4>H. Cross-validated tuning</h4><p>Choose hyperparameters (tree depth, α, λ) by cross-validation so they generalize beyond the training set.</p></div>
+          </div>
+
+          <h3>Regularization</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Penalty added to the loss</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td><b>L1 (Lasso)</b></td><td>λ Σ |wᵢ|</td><td>Shrinks weights, and pushes some exactly to zero (feature selection)</td></tr>
+              <tr><td><b>L2 (Ridge)</b></td><td>λ Σ wᵢ²</td><td>Shrinks all weights smoothly toward zero, none exactly zero</td></tr>
+              <tr><td><b>Elastic Net</b></td><td>λ₁ Σ |wᵢ| + λ₂ Σ wᵢ²</td><td>A balance between Lasso and Ridge</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note">The slides' table has the penalty column blank and the L1 effect cut off; the standard forms are shown here. λ controls the strength: λ = 0 is no regularization, and larger λ means a simpler model.</p>
+
+          <div class="viz" id="viz-reg">
+            <div class="viz-head">
+              <h4>Tame a degree-9 polynomial with regularization</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A 9th-degree polynomial fitted to 10 points overfits badly. Increase the penalty λ and compare L1, L2 and Elastic Net: watch the curve smooth out, the coefficients shrink, and test error fall, until too much penalty makes it underfit.</p>
+            <div class="controls" role="group" aria-label="Penalty type">
+              <button class="btn" data-p="l2" aria-pressed="true">L2 (Ridge)</button>
+              <button class="btn" data-p="l1" aria-pressed="false">L1 (Lasso)</button>
+              <button class="btn" data-p="en" aria-pressed="false">Elastic Net</button>
+            </div>
+            <div class="controls">
+              <label class="range">Penalty strength λ <span data-out="l">0</span><input type="range" min="0" max="60" value="0" data-in="l" /></label>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Regularized fit, coefficients and test error"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Early stopping and dropout</h3>
+          <div class="viz" id="viz-early">
+            <div class="viz-head">
+              <h4>When should training stop?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Loss curves for a neural network trained for 200 epochs (illustrative). Drag the stop point, and switch dropout on to see how it changes the validation curve.</p>
+            <div class="controls">
+              <label class="range">Stop training at epoch <span data-out="e">200</span><input type="range" min="1" max="200" value="200" data-in="e" /></label>
+              <button class="btn" data-drop aria-pressed="false">Use dropout</button>
+              <button class="btn ghost" data-best>Stop at the best epoch</button>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Training and validation loss by epoch"></svg>
+            <div class="legend"><span><i style="background:#0e8c7f"></i>Training loss</span><span><i style="background:#d94f70"></i>Validation loss</span></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Pruning decision trees</h3>
+          <div class="viz" id="viz-prune">
+            <div class="viz-head">
+              <h4>How deep should the tree grow?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A decision tree classifies 200 customers (teal = buys, rose = doesn't) from two features. Each shaded rectangle is one leaf's decision. Grow the tree deeper and watch it carve out tiny regions around individual noisy points.</p>
+            <div class="controls">
+              <label class="range">Maximum depth <span data-out="dp">2</span><input type="range" min="1" max="10" value="2" data-in="dp" /></label>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Decision regions and accuracy by depth"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Real-world examples</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Example</th><th>Overfitting scenario</th><th>Avoidance</th></tr></thead>
+            <tbody>
+              <tr><td><b>Finance</b></td><td>Stock price prediction</td><td>Fits noise in short-term trends</td><td>Regularization, rolling validation</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Disease classification</td><td>Memorizes patient IDs or hospital codes</td><td>Feature selection, cross-validation</td></tr>
+              <tr><td><b>Retail</b></td><td>Sales forecasting</td><td>Overfits to one season's data</td><td>Multiple periods, smoothed trends</td></tr>
+              <tr><td><b>AI / ML</b></td><td>Image recognition</td><td>Deep model memorizes training images</td><td>Data augmentation, dropout</td></tr>
+            </tbody>
+          </table></div>
+
+          <p class="note"><b>Best practices:</b> use cross-validation for reliable estimates, apply L1/L2 regularization, prefer simpler models when possible, monitor validation loss and stop early, prune trees and reduce dimensions, use ensembles, and gather or augment data. Overfitting isn't about poor training performance; it's about poor generalization. The model must learn the signal, not the noise.</p>
+        </section>
+
+        <section id="generalization">
+          <h2>Generalization</h2>
+          <p class="section-sub">The true test of a model</p>
+
+          <div class="definition">
+            <strong>Generalization</strong>
+            A model's ability to perform well on unseen data, not just on the data it was trained on. A model generalizes well if it captures the underlying patterns in the data rather than the specific training examples.
+          </div>
+
+          <div class="point-grid">
+            <div class="point"><h4>Good generalization</h4><p>Learns the trends, so it performs well on test data.</p></div>
+            <div class="point"><h4>Poor generalization</h4><p>Memorizes the noise, so it performs poorly on new data (overfitting).</p></div>
+          </div>
+
+          <p><b>Example:</b> a model with 98% accuracy on its training set but 68% on the test set generalizes poorly. The 30-point <b>generalization gap</b> is the warning sign.</p>
+          <p>Generalization matters because it's what makes predictions reliable in real-world conditions: it prevents overfitting, makes models robust and stable, and gives a true estimate of performance. To check it, we must evaluate on data not used in training, using one of two main approaches: holdout evaluation or cross-validation.</p>
+        </section>
+
+        <section id="holdout">
+          <h2>Holdout evaluation</h2>
+          <p class="section-sub">One split, set aside once</p>
+
+          <p>The holdout method divides the data into two or three separate subsets: a <b>training set</b> for fitting the model, a <b>validation set</b> for tuning hyperparameters, and a <b>test set</b> for the final performance estimate.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Subset</th><th>Common share</th><th>Example with 1,000 samples</th><th>Example accuracy</th></tr></thead>
+            <tbody>
+              <tr><td><b>Training</b></td><td>70–80%</td><td>700</td><td>95%</td></tr>
+              <tr><td><b>Validation</b></td><td>10–15%</td><td>150</td><td>88%</td></tr>
+              <tr><td><b>Test</b></td><td>10–15%</td><td>150</td><td>87%</td></tr>
+            </tbody>
+          </table></div>
+          <p>In this example the drop from training to test is small, so the model generalizes well.</p>
+
+          <ol class="steps">
+            <li><h4>Split</h4><p>Divide the data into training, validation and test sets.</p></li>
+            <li><h4>Train</h4><p>Fit the model on the training data.</p></li>
+            <li><h4>Tune</h4><p>Adjust hyperparameters using the validation data.</p></li>
+            <li><h4>Evaluate</h4><p>Measure final performance once on the test data.</p></li>
+          </ol>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Simple and fast, easy to implement, and works well on large datasets.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>The result depends on the particular split and can vary with each random partition; it wastes data when the dataset is small; the estimate is less stable.</p></div>
+          </div>
+        </section>
+
+        <section id="cv">
+          <h2>Cross-validation</h2>
+          <p class="section-sub">Every sample gets a turn in the test set</p>
+
+          <div class="split">
+            <img src="../assets/img/session-18/chart.jpg" alt="Pen resting on a printed bar chart" loading="lazy" />
+            <div>
+              <div class="definition" style="margin-top:0">
+                <strong>Cross-validation (CV)</strong>
+                Improves reliability by using all the data for both training and testing, in different folds. The data is split into k parts; the model is trained on k − 1 folds and tested on the remaining one, and this repeats k times so each fold is the test set once. The k results are averaged.
+              </div>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-kfold">
+            <div class="viz-head">
+              <h4>Step through k-fold cross-validation</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">40 customers, 10 of whom churned (rose). Choose k and step through the iterations: each fold takes one turn as the test set. Switch on stratification to keep the churn rate the same in every fold.</p>
+            <div class="controls">
+              <label class="range">Number of folds k <span data-out="k">5</span><input type="range" min="2" max="10" value="5" data-in="k" /></label>
+              <button class="btn" data-strat aria-pressed="false">Stratified</button>
+            </div>
+            <div class="controls">
+              <button class="btn" data-dir="-1">Previous fold</button>
+              <button class="btn is-on" data-dir="1">Next fold</button>
+            </div>
+            <svg viewBox="0 0 640 250" role="img" aria-label="Folds and which is the test set"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Variant</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><b>Stratified k-fold</b></td><td>Keeps the same class proportions in every fold (for classification)</td></tr>
+              <tr><td><b>Leave-one-out (LOOCV)</b></td><td>Each sample is the test set once (k = n)</td></tr>
+              <tr><td><b>Repeated k-fold</b></td><td>Repeats cross-validation with different random splits</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Uses data efficiently (every sample is used for training and testing), gives more stable estimates, and suits small datasets.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>More computation (the model is trained k times), slower on large datasets, and folds must keep the same distribution.</p></div>
+          </div>
+
+          <h3>Holdout vs. cross-validation</h3>
+          <div class="viz" id="viz-stability">
+            <div class="viz-head">
+              <h4>How much does the estimate depend on luck?</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">The same logistic regression model is evaluated 60 times on the same dataset, each time with a different random split. Each dot is one accuracy estimate. Compare the spread of an 80/20 holdout with 5-fold cross-validation, and see how dataset size changes things.</p>
+            <div class="controls">
+              <label class="range">Dataset size <span data-out="n">200</span><input type="range" min="0" max="4" value="1" data-in="n" /></label>
+              <button class="btn is-on" data-rerun>Run 60 evaluations</button>
+            </div>
+            <svg viewBox="0 0 640 230" role="img" aria-label="Spread of accuracy estimates"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Aspect</th><th>Holdout</th><th>Cross-validation</th></tr></thead>
+            <tbody>
+              <tr><th>Data used for testing</th><td>One portion</td><td>All data, once each</td></tr>
+              <tr><th>Stability</th><td>High variance (depends on one split)</td><td>Low variance (averaged over folds)</td></tr>
+              <tr><th>Computation</th><td>Fast</td><td>Slower (k training rounds)</td></tr>
+              <tr><th>Best for</th><td>Large datasets</td><td>Small to medium datasets, comparing models</td></tr>
+              <tr><th>Result</th><td>A single estimate</td><td>An average of several estimates, plus their spread</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Practical example:</b> a house price model with 10,000 samples. An 80/20 holdout gives a test RMSE of 10.5. Five-fold cross-validation gives an average RMSE of 10.3 with a standard deviation of 0.2 across folds: consistent performance, and a more reliable estimate.</p>
+
+          <h3>Combining both methods</h3>
+          <ol class="steps">
+            <li><h4>Set aside a final test set</h4><p>Lock it away before any modelling.</p></li>
+            <li><h4>Cross-validate on the rest</h4><p>Use 5-fold CV on the training data to tune hyperparameters and choose a model.</p></li>
+            <li><h4>Test once</h4><p>Evaluate the final model on the holdout test set for an unbiased generalization score.</p></li>
+          </ol>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Concept</th><th>Purpose</th><th>Key idea</th></tr></thead>
+            <tbody>
+              <tr><td><b>Generalization</b></td><td>Perform well on unseen data</td><td>Avoid overfitting</td></tr>
+              <tr><td><b>Holdout evaluation</b></td><td>A quick performance estimate</td><td>One simple split</td></tr>
+              <tr><td><b>Cross-validation</b></td><td>A reliable generalization estimate</td><td>Repeated testing on multiple folds</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="takeaways">
+            <h3>Session 18 in summary</h3>
+            <ul>
+              <li>Overfitting means high training accuracy but low test accuracy: the model learned the noise, not the pattern.</li>
+              <li>Expected error = bias² + variance + irreducible error; simple models have high bias, complex ones high variance.</li>
+              <li>Prevent overfitting with more data, simpler models, regularization, early stopping, dropout, ensembles, pruning and cross-validated tuning.</li>
+              <li>Generalization is performance on unseen data; watch the gap between training and test scores.</li>
+              <li>Holdout is simple but depends on one split; cross-validation averages over k folds for a stabler estimate. In practice, tune with CV and report on a final holdout test set.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="18"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-17.html">Previous: Session 17</a>
+      <a href="session-19.html">Next: Session 19</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-18.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

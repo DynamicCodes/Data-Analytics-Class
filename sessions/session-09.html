@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 09: Correlation, Covariance and Outliers | Data-Class</title>
+  <meta name="description" content="Correlation and its types, covariance, Pearson and Spearman correlation, and how to detect and handle outliers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>09</div>
+      <h1>Correlation, Covariance and Outliers</h1>
+      <p class="lead">How to measure whether two variables move together, how strongly and in which direction, why correlation isn't causation, and how a few extreme values can distort the whole picture.</p>
+      <ul class="lesson-meta">
+        <li>6 topics</li>
+        <li>6 interactive visuals</li>
+        <li>About 40 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-09/hero.jpg" alt="Colored pencils drawing curved lines across paper" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#correlation">What correlation is</a></li>
+          <li><a href="#covariance">Covariance</a></li>
+          <li><a href="#pearson">Pearson correlation</a></li>
+          <li><a href="#spearman">Pearson vs. Spearman</a></li>
+          <li><a href="#causation">Correlation is not causation</a></li>
+          <li><a href="#outliers">Outliers</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="correlation">
+          <h2>What correlation is</h2>
+          <p class="section-sub">How one variable changes with another</p>
+
+          <div class="definition">
+            <strong>Correlation</strong>
+            A measure of the degree and direction of the relationship between two or more variables. For example, when rainfall increases, crop yield also increases: both move in the same direction, a positive correlation.
+          </div>
+
+          <h3>Types of correlation</h3>
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>By direction</h4>
+              <p><b>Positive:</b> both variables move in the same direction, like height and weight.<br /><b>Negative:</b> they move in opposite directions, like a product's price and its demand.</p>
+            </div>
+            <div class="measure">
+              <h4>By degree (strength)</h4>
+              <p><b>Perfect (±1):</b> an exact linear relationship; if X rises 10%, Y always rises 20%.<br /><b>High, moderate or low:</b> a partial relationship, depending on how close r is to ±1.<br /><b>Zero:</b> no relationship, like shoe size and intelligence.</p>
+            </div>
+          </div>
+
+          <h3>Seeing it on a scatter plot</h3>
+          <p>Plot each (X, Y) pair as a point. Points hugging a rising line show positive correlation, a falling line shows negative correlation, and a shapeless cloud shows no correlation.</p>
+
+          <div class="viz" id="viz-r">
+            <div class="viz-head">
+              <h4>Dial in a correlation</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Drag the slider to set r, or load an example. The 60 points are regenerated to have exactly that correlation.</p>
+            <div class="controls">
+              <label class="range">Correlation r <span data-out="r">0.80</span><input type="range" min="-100" max="100" value="80" data-in="r" /></label>
+              <button class="btn" data-line aria-pressed="true">Trend line</button>
+            </div>
+            <div class="controls" role="group" aria-label="Examples">
+              <button class="btn ghost" data-ex="0.85">Height and weight</button>
+              <button class="btn ghost" data-ex="-0.8">Price and demand</button>
+              <button class="btn ghost" data-ex="0">Shoe size and intelligence</button>
+              <button class="btn ghost" data-ex="1">Perfect positive</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Scatter plot"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="split">
+            <img src="../assets/img/session-09/ecg.jpg" alt="Green heartbeat traces on a black monitor" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">Where correlation is used</h3>
+              <ul class="plain">
+                <li>Sales and advertising spend.</li>
+                <li>Temperature and electricity consumption.</li>
+                <li>Customer satisfaction and retention.</li>
+                <li>Economic indicators, such as income and expenditure.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="covariance">
+          <h2>Covariance</h2>
+          <p class="section-sub">Do two variables vary together, and in which direction?</p>
+
+          <p>Covariance measures how two variables vary together: whether an increase in one goes with an increase or a decrease in the other. It captures the <b>direction</b> of the relationship, but not its strength or scale. If more advertising tends to bring more sales, covariance is positive; if higher prices reduce sales, it is negative.</p>
+
+          <div class="formula" style="text-align:center">Cov(X, Y) = Σ (x<sub>i</sub> − x̄)(y<sub>i</sub> − ȳ) ÷ (n − 1)</div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Cov(X, Y)</th><th>Interpretation</th><th>Relationship</th></tr></thead>
+            <tbody>
+              <tr><td>&gt; 0</td><td>Positive</td><td>Both variables increase together</td></tr>
+              <tr><td>&lt; 0</td><td>Negative</td><td>One increases while the other decreases</td></tr>
+              <tr><td>= 0</td><td>No covariance</td><td>No linear relationship (independent variables always have zero covariance, but zero covariance doesn't guarantee independence)</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-cov">
+            <div class="viz-head">
+              <h4>Covariance, rectangle by rectangle</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Each point makes a rectangle with the mean point (x̄, ȳ). Teal rectangles (top-right or bottom-left) add to the covariance; rose ones subtract. Drag any point to see the numbers change.</p>
+            <div class="controls" role="group" aria-label="Dataset">
+              <button class="btn" data-ds="ex" aria-pressed="true">Slide example: 3 months</button>
+              <button class="btn" data-ds="more" aria-pressed="false">8 months of data</button>
+              <button class="btn" data-unit aria-pressed="false">Measure sales in ₹ instead of ₹1000</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Covariance rectangles"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="cov">–</b><span>Cov(X, Y)</span></div>
+              <div class="stat"><b data-stat="sx">–</b><span>σ<sub>X</sub></span></div>
+              <div class="stat"><b data-stat="sy">–</b><span>σ<sub>Y</sub></span></div>
+              <div class="stat"><b data-stat="r">–</b><span>Pearson r</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Worked example</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Advertising X (₹1000)</th><th>Sales Y (₹1000)</th><th>x − x̄</th><th>y − ȳ</th><th>Product</th></tr></thead>
+            <tbody>
+              <tr><td>2</td><td>40</td><td>−1.33</td><td>−16.67</td><td>22.22</td></tr>
+              <tr><td>3</td><td>50</td><td>−0.33</td><td>−6.67</td><td>2.22</td></tr>
+              <tr><td>5</td><td>80</td><td>1.67</td><td>23.33</td><td>38.89</td></tr>
+            </tbody>
+          </table></div>
+          <p>With x̄ = 3.33 and ȳ = 56.67, the products add up to 63.33, so Cov(X, Y) = 63.33 ÷ (3 − 1) ≈ <b>31.67</b>. It is positive: as advertising increases, sales increase too.</p>
+
+          <h3>Properties of covariance</h3>
+          <div class="measure-grid">
+            <div class="measure"><h4>Symmetric</h4><div class="formula">Cov(X, Y) = Cov(Y, X)</div></div>
+            <div class="measure"><h4>Scale dependent</h4><div class="formula">Cov(aX, bY) = ab × Cov(X, Y)</div><p>Change the units and the covariance changes, so its size is hard to interpret.</p></div>
+            <div class="measure"><h4>Independence</h4><p>If X and Y are independent, Cov(X, Y) = 0.</p></div>
+            <div class="measure"><h4>Link to variance</h4><div class="formula">Cov(X, X) = Var(X)</div></div>
+          </div>
+
+          <h3>Uses in business and analytics</h3>
+          <ul class="plain">
+            <li>Portfolio optimization: measuring how stocks move together.</li>
+            <li>Risk management and diversification.</li>
+            <li>Product relationships, such as demand for complementary goods.</li>
+            <li>Understanding feature relationships before regression or PCA.</li>
+          </ul>
+        </section>
+
+        <section id="pearson">
+          <h2>Pearson correlation</h2>
+          <p class="section-sub">Covariance, standardized to a −1 to +1 scale</p>
+
+          <p>The Pearson correlation coefficient <b>r</b> measures the strength and direction of a linear relationship between two continuous variables. It is covariance divided by both standard deviations, which removes the units:</p>
+          <div class="formula" style="text-align:center">r = Cov(X, Y) ÷ (σ<sub>X</sub> σ<sub>Y</sub>) = Σ(x<sub>i</sub> − x̄)(y<sub>i</sub> − ȳ) ÷ √[Σ(x<sub>i</sub> − x̄)² Σ(y<sub>i</sub> − ȳ)²]</div>
+          <p>It always lies between −1 and +1. For the advertising example, r = 31.67 ÷ (1.53 × 20.82) ≈ 0.996: a nearly perfect positive relationship.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Value of r</th><th>Type</th><th>Interpretation</th></tr></thead>
+            <tbody>
+              <tr><td>+1</td><td>Perfect positive</td><td>X and Y move exactly together</td></tr>
+              <tr><td>+0.7 to +0.9</td><td>Strong positive</td><td>Both rise together closely</td></tr>
+              <tr><td>+0.3 to +0.6</td><td>Moderate positive</td><td>A partial linear relationship</td></tr>
+              <tr><td>0</td><td>None</td><td>No linear relationship</td></tr>
+              <tr><td>−0.3 to −0.6</td><td>Moderate negative</td><td>As one increases, the other tends to decrease</td></tr>
+              <tr><td>−0.7 to −0.9</td><td>Strong negative</td><td>A strong inverse relationship</td></tr>
+              <tr><td>−1</td><td>Perfect negative</td><td>One decreases exactly as the other increases</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Assumptions</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Linearity</h4><p>The relationship should be a straight line.</p></div>
+            <div class="point"><h4>Continuous data</h4><p>Both variables on an interval or ratio scale.</p></div>
+            <div class="point"><h4>Normality</h4><p>Each variable roughly normally distributed.</p></div>
+            <div class="point"><h4>No extreme outliers</h4><p>Outliers can distort r badly, as the next visual shows.</p></div>
+          </div>
+
+          <div class="viz" id="viz-drag">
+            <div class="viz-head">
+              <h4>One point can change everything</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Twenty machines' running hours and output. Drag the orange point anywhere and watch r and the trend line react.</p>
+            <div class="controls">
+              <button class="btn ghost" data-pos="in">Put it in line</button>
+              <button class="btn ghost" data-pos="off">Off the trend</button>
+              <button class="btn ghost" data-pos="lever">Far out, against the trend</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Scatter plot with a draggable point" style="touch-action:none"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="r0">–</b><span>r without the orange point</span></div>
+              <div class="stat"><b data-stat="r1">–</b><span>r with it</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="split reverse">
+            <img src="../assets/img/session-09/stocks.jpg" alt="Office building overlaid with stock market charts" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">Applications</h3>
+              <ul class="plain">
+                <li><b>Marketing:</b> advertising budget and sales.</li>
+                <li><b>Finance:</b> correlation between stock returns, for diversification.</li>
+                <li><b>Healthcare:</b> a patient's age and recovery time.</li>
+                <li><b>Operations:</b> machine hours and output.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="spearman">
+          <h2>Pearson vs. Spearman</h2>
+          <p class="section-sub">Straight lines vs. any consistent rise or fall</p>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Pearson's r</h4><p>For continuous, roughly normally distributed data. Measures linear relationships.</p></div>
+            <div class="measure"><h4>Spearman's ρ (rho)</h4><p>For ranked or ordinal data, or data that isn't normal. Measures monotonic relationships using ranks.</p><div class="formula">ρ = 1 − 6Σd² ÷ n(n² − 1)</div><p>where d is the difference between each pair's ranks and n the number of observations.</p></div>
+            <div class="measure"><h4>Kendall's tau</h4><p>Another non-parametric measure, based on counting concordant and discordant pairs.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Aspect</th><th>Pearson (r)</th><th>Spearman (ρ)</th></tr></thead>
+            <tbody>
+              <tr><th>Data type</th><td>Continuous (interval or ratio)</td><td>Ordinal or ranked</td></tr>
+              <tr><th>Relationship</th><td>Linear</td><td>Monotonic (can be non-linear)</td></tr>
+              <tr><th>Sensitive to outliers</th><td>Yes</td><td>Less sensitive</td></tr>
+              <tr><th>Formula</th><td>Based on covariance</td><td>Based on rank differences</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-spear">
+            <div class="viz-head">
+              <h4>Compare r and ρ on three datasets</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <div class="controls" role="group" aria-label="Dataset">
+              <button class="btn" data-d="lin" aria-pressed="true">Linear</button>
+              <button class="btn" data-d="curve" aria-pressed="false">Curved but always rising</button>
+              <button class="btn" data-d="out" aria-pressed="false">Linear with one outlier</button>
+              <button class="btn" data-ranks aria-pressed="false">Plot ranks instead</button>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Scatter plot for Pearson and Spearman"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="r">–</b><span>Pearson r</span></div>
+              <div class="stat"><b data-stat="rho">–</b><span>Spearman ρ</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="causation">
+          <h2>Correlation is not causation</h2>
+          <p class="section-sub">Association doesn't prove that one thing causes another</p>
+
+          <p>Correlation shows association, not cause and effect. Ice cream sales and drowning cases both rise in summer, so they are correlated, but ice cream doesn't cause drowning. A third variable, hot weather, drives both. Keep in mind too that correlation only measures <b>linear</b> relationships; non-linear patterns need other methods, such as regression or mutual information.</p>
+
+          <div class="viz" id="viz-cause">
+            <div class="viz-head">
+              <h4>Find the hidden variable</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Two years of monthly data for a beach town.</p>
+            <div class="controls" role="group" aria-label="View">
+              <button class="btn" data-v="raw" aria-pressed="true">Ice cream vs. drownings</button>
+              <button class="btn" data-v="temp" aria-pressed="false">Color by temperature</button>
+              <button class="btn" data-v="ctrl" aria-pressed="false">Remove temperature's effect</button>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Ice cream sales and drownings"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="outliers">
+          <h2>Outliers</h2>
+          <p class="section-sub">Values far away from the rest</p>
+
+          <div class="definition">
+            <strong>Outlier</strong>
+            A data point that lies far from the rest of the observations: an unusually high or low value. If most months bring ₹1–2 lakh in sales but one month brings ₹10 lakh, that month is an outlier.
+          </div>
+
+          <div class="split">
+            <img src="../assets/img/session-09/zigzag.jpg" alt="Many zigzag signal lines on graph paper" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">Why outliers occur</h3>
+              <ul class="plain">
+                <li><b>Data entry or measurement error:</b> a typo, a faulty sensor, or the wrong unit (cm vs. inches).</li>
+                <li><b>Sampling error:</b> data from a non-representative sample.</li>
+                <li><b>Natural variation:</b> genuinely extreme cases, such as very high earners.</li>
+                <li><b>Experimental error:</b> mistakes during collection or observation.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>Effects of outliers</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Measure</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>Mean</td><td>Strongly affected: it can shift up or down</td></tr>
+              <tr><td>Median</td><td>Much less affected (robust)</td></tr>
+              <tr><td>Standard deviation and variance</td><td>Increase sharply</td></tr>
+              <tr><td>Correlation and regression</td><td>Can change direction or lose accuracy</td></tr>
+              <tr><td>Machine learning models</td><td>May overfit or mispredict</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Detecting outliers</h3>
+          <div class="measure-grid">
+            <div class="measure"><h4>IQR method</h4><div class="formula">IQR = Q3 − Q1</div><p>Values below Q1 − 1.5 × IQR or above Q3 + 1.5 × IQR are outliers. This is how box plots flag them.</p></div>
+            <div class="measure"><h4>Z-score</h4><div class="formula">Z = (X − X̄) ÷ σ</div><p>Values with |Z| above 3 (sometimes 2) are outliers. Works best for roughly normal data.</p></div>
+            <div class="measure"><h4>Modified Z-score</h4><div class="formula">M = 0.6745 (X − median) ÷ MAD</div><p>Uses the median and the median absolute deviation (MAD), so the outlier can't hide itself. Values with |M| above 3.5 are outliers.</p></div>
+          </div>
+
+          <div class="viz" id="viz-out">
+            <div class="viz-head">
+              <h4>Detect and handle outliers</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Pick a dataset and a detection method, then try a way of handling what it finds. You can also type your own values.</p>
+            <div class="controls" role="group" aria-label="Dataset">
+              <button class="btn" data-set="h" aria-pressed="true">Heights (slide example)</button>
+              <button class="btn" data-set="s" aria-pressed="false">Monthly sales (₹ lakh)</button>
+            </div>
+            <input class="num-input" type="text" data-vals aria-label="Data values" />
+            <div class="controls" role="group" aria-label="Detection method" style="margin-top:1rem">
+              <b style="font-size:.9rem;min-width:5.5rem">Detect with</b>
+              <button class="btn" data-m="iqr" aria-pressed="true">IQR fences</button>
+              <button class="btn" data-m="z" aria-pressed="false">Z-score &gt; 2</button>
+              <button class="btn" data-m="mz" aria-pressed="false">Modified Z &gt; 3.5</button>
+            </div>
+            <div class="controls" role="group" aria-label="Handling">
+              <b style="font-size:.9rem;min-width:5.5rem">Handle by</b>
+              <button class="btn" data-h="keep" aria-pressed="true">Keeping them</button>
+              <button class="btn" data-h="remove" aria-pressed="false">Removing</button>
+              <button class="btn" data-h="cap" aria-pressed="false">Capping at the fence</button>
+              <button class="btn" data-h="log" aria-pressed="false">Log transform</button>
+            </div>
+            <svg viewBox="0 0 640 170" role="img" aria-label="Dot plot with outlier fences"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="mean">–</b><span>Mean</span></div>
+              <div class="stat"><b data-stat="med">–</b><span>Median</span></div>
+              <div class="stat"><b data-stat="sd">–</b><span>Standard deviation</span></div>
+              <div class="stat"><b data-stat="n">–</b><span>Outliers flagged</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Handling outliers</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Method</th><th>When to use it</th></tr></thead>
+            <tbody>
+              <tr><td><b>Remove</b></td><td>When caused by data entry or measurement errors</td></tr>
+              <tr><td><b>Cap or winsorize</b></td><td>Replace extreme values with boundary values or percentiles (such as the 1st and 99th)</td></tr>
+              <tr><td><b>Transform</b></td><td>Apply a log or square root to reduce their impact</td></tr>
+              <tr><td><b>Use robust models</b></td><td>Methods less sensitive to outliers, such as median regression or robust scaling</td></tr>
+              <tr><td><b>Investigate separately</b></td><td>Sometimes outliers are the insight: fraud, or a special customer segment</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Example:</b> heights of 150, 152, 151, 153, 155 and 210 cm. The mean is about 161.8 cm, pulled up by the 210, while the median is 152.5 cm and barely notices it. The 210 cm value is an outlier.</p>
+
+          <h3>Why it matters in business analytics</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Finance</h4><p>Detecting fraudulent transactions.</p></div>
+            <div class="point"><h4>Healthcare</h4><p>Spotting abnormal lab values.</p></div>
+            <div class="point"><h4>Manufacturing</h4><p>Catching machine malfunctions.</p></div>
+            <div class="point"><h4>Marketing</h4><p>Finding unusually high or low sales.</p></div>
+          </div>
+
+          <div class="takeaways">
+            <h3>Session 9 in summary</h3>
+            <ul>
+              <li>Correlation measures the direction and strength of a relationship; the scatter plot is the first thing to look at.</li>
+              <li>Covariance gives the direction but depends on units; Pearson's r standardizes it to between −1 and +1.</li>
+              <li>Pearson measures linear relationships in continuous data; Spearman uses ranks, handles monotonic curves and resists outliers.</li>
+              <li>Correlation is not causation: a hidden third variable can create an association.</li>
+              <li>Outliers distort the mean, standard deviation and correlation. Detect them with IQR fences or Z-scores, then decide whether to remove, cap, transform or investigate them.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="9"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-08.html">Previous: Session 08</a>
+      <a href="session-10.html">Next: Session 10</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-09.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

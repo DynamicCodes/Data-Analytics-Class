@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 16: Regression Analysis and Forecasting Techniques | Data-Class</title>
+  <meta name="description" content="Simple and multiple regression, key statistical measures and assumptions, and qualitative, time series and causal forecasting methods." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>16</div>
+      <h1>Regression Analysis and Forecasting Techniques</h1>
+      <p class="lead">How to model the relationship between a target and its predictors with regression, how to judge whether a model is any good, and how to forecast future values from expert judgment, past patterns or causal drivers.</p>
+      <ul class="lesson-meta">
+        <li>2 topics</li>
+        <li>7 interactive visuals</li>
+        <li>About 50 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-16/hero.jpg" alt="Glowing financial chart on a digital display" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#regression">Regression analysis</a></li>
+          <li><a href="#measures">Measuring a regression model</a></li>
+          <li><a href="#assumptions">Assumptions and limitations</a></li>
+          <li><a href="#forecasting">What forecasting is</a></li>
+          <li><a href="#qualitative">Qualitative forecasting</a></li>
+          <li><a href="#quantitative">Quantitative forecasting</a></li>
+          <li><a href="#accuracy">Forecast accuracy and process</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="regression">
+          <h2>Regression analysis</h2>
+          <p class="section-sub">How does one variable change when another changes?</p>
+
+          <div class="split">
+            <img src="../assets/img/session-16/magnifier.jpg" alt="Magnifying glass over a chart showing declining performance" loading="lazy" />
+            <div>
+              <div class="definition" style="margin-top:0">
+                <strong>Regression analysis</strong>
+                A statistical modelling technique that examines the relationship between a dependent variable (the target) and one or more independent variables (predictors). It quantifies how variables are related, predicts future outcomes, and helps explain relationships.
+              </div>
+              <p>It answers questions like: how do sales depend on advertising spend? How does a house price depend on location, area and number of rooms?</p>
+            </div>
+          </div>
+
+          <h3>The mathematical form</h3>
+          <div class="formula" style="text-align:center">Y = W₀ + W₁X + ε</div>
+          <p>Y is the dependent variable, X the independent variable, W₀ the <b>intercept</b> (the value of Y when X = 0), W₁ the <b>slope</b> (how much Y changes for each one-unit increase in X), and ε the random error. The usual way to choose W₀ and W₁ is <b>least squares</b>: pick the line that makes the sum of squared errors (vertical distances from points to the line) as small as possible.</p>
+
+          <h3>Worked example: sales and advertising</h3>
+          <p>A marketing manager wants to predict sales from advertising spend (both in ₹ lakh):</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Advertising spend X</th><td>10</td><td>20</td><td>30</td><td>40</td></tr></thead>
+            <tbody><tr><th>Sales Y</th><td>25</td><td>40</td><td>60</td><td>80</td></tr></tbody>
+          </table></div>
+
+          <div class="viz" id="viz-fit">
+            <div class="viz-head">
+              <h4>Find the best-fitting line yourself</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Adjust the intercept and slope. Each shaded square is one point's squared error; least squares makes their total area as small as possible. Then let the calculator find the exact answer.</p>
+            <div class="controls">
+              <label class="range">Intercept W₀ <span data-out="w0">0.0</span><input type="range" min="-20" max="30" step="0.5" value="0" data-in="w0" /></label>
+              <label class="range">Slope W₁ <span data-out="w1">2.00</span><input type="range" min="0.5" max="3" step="0.05" value="2" data-in="w1" /></label>
+            </div>
+            <div class="controls">
+              <button class="btn is-on" data-ls>Fit by least squares</button>
+              <button class="btn ghost" data-deck>Try the slide's line: Y = 5 + 2X</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Regression line with squared errors"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="sse">–</b><span>Sum of squared errors</span></div>
+              <div class="stat"><b data-stat="r2">–</b><span>R²</span></div>
+              <div class="stat"><b data-stat="p50">–</b><span>Predicted sales at X = 50</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+          <p class="note">The slides use Y = 5 + 2X, which predicts sales of 105 at a spend of 50. The least-squares line for this data is Y = 5 + 1.85X, which predicts 97.5; the slide's slope is a rounded approximation.</p>
+
+          <h3>Types of regression</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Simple linear</b></td><td>One predictor, one outcome</td><td>Sales from advertising spend</td></tr>
+              <tr><td><b>Multiple linear</b></td><td>Several predictors</td><td>House price from area, rooms and distance to the city</td></tr>
+              <tr><td><b>Polynomial</b></td><td>Curved relationship between X and Y</td><td>Growth curves, performance trends</td></tr>
+              <tr><td><b>Logistic</b></td><td>Categorical outcome (Yes/No, 0/1)</td><td>Will a customer buy (1) or not (0)?</td></tr>
+              <tr><td><b>Ridge and Lasso</b></td><td>Regularization to avoid overfitting</td><td>Feature selection, robust fitting</td></tr>
+              <tr><td><b>Non-linear</b></td><td>Complex non-linear relationships</td><td>Chemical reaction rates, disease growth</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-logit">
+            <div class="viz-head">
+              <h4>Logistic regression: will the visitor buy?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">For a yes/no outcome, a straight line makes no sense: it would predict probabilities below 0 or above 1. Logistic regression fits an S-shaped curve instead. Each dot is a website visitor (1 = bought). Move the decision threshold to turn probabilities into predictions.</p>
+            <div class="controls">
+              <label class="range">Decision threshold <span data-out="t">0.50</span><input type="range" min="5" max="95" value="50" data-in="t" /></label>
+              <label class="range">New visitor's minutes on site <span data-out="x">12</span><input type="range" min="0" max="30" value="12" data-in="x" /></label>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Logistic regression curve"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>The regression process</h3>
+          <ol class="steps">
+            <li><h4>Problem definition</h4><p>Identify the dependent (Y) and independent (X) variables.</p></li>
+            <li><h4>Data collection</h4><p>Gather relevant data.</p></li>
+            <li><h4>Data preparation</h4><p>Handle missing values, outliers and scaling.</p></li>
+            <li><h4>Model building</h4><p>Fit the regression equation.</p></li>
+            <li><h4>Model evaluation</h4><p>Check R², adjusted R², p-values and the F-test.</p></li>
+            <li><h4>Prediction</h4><p>Forecast outcomes for new data.</p></li>
+            <li><h4>Interpretation</h4><p>Analyze coefficients and business implications.</p></li>
+          </ol>
+        </section>
+
+        <section id="measures">
+          <h2>Measuring a regression model</h2>
+          <p class="section-sub">Is the model any good, and which predictors matter?</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Measure</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>R² (coefficient of determination)</b></td><td>Share of the variance in Y explained by the model, from 0 to 1</td></tr>
+              <tr><td><b>Adjusted R²</b></td><td>R² penalized for the number of predictors, so useless predictors lower it</td></tr>
+              <tr><td><b>p-value</b></td><td>Tests whether each predictor is statistically significant</td></tr>
+              <tr><td><b>F-statistic</b></td><td>Tests whether the model as a whole is significant</td></tr>
+              <tr><td><b>RMSE</b></td><td>The typical size of a prediction error, in Y's units</td></tr>
+            </tbody>
+          </table></div>
+          <div class="formula" style="text-align:center">R² = 1 − SSE ÷ SST &nbsp;&nbsp;&nbsp; Adjusted R² = 1 − (1 − R²)(n − 1) ÷ (n − k − 1)</div>
+          <p>SSE is the sum of squared errors, SST the total sum of squares around the mean of Y, n the number of observations and k the number of predictors.</p>
+
+          <div class="viz" id="viz-multi">
+            <div class="viz-head">
+              <h4>Multiple regression: why adjusted R² matters</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A model predicts monthly sales for 24 stores. Add or remove predictors: two genuinely matter, and the others are pure noise. Watch R² always rise when a predictor is added, while adjusted R² and the p-values tell the truth.</p>
+            <div class="controls" data-preds></div>
+            <div class="table-wrap"><table data-coef></table></div>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="r2">–</b><span>R²</span></div>
+              <div class="stat"><b data-stat="ar2">–</b><span>Adjusted R²</span></div>
+              <div class="stat"><b data-stat="f">–</b><span>F-statistic (p-value)</span></div>
+              <div class="stat"><b data-stat="rmse">–</b><span>RMSE (₹ lakh)</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Application</th></tr></thead>
+            <tbody>
+              <tr><td><b>Business</b></td><td>Sales forecasting, pricing strategy</td></tr>
+              <tr><td><b>Finance</b></td><td>Risk modelling, stock price prediction</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Disease progression, treatment effects</td></tr>
+              <tr><td><b>Marketing</b></td><td>Customer response prediction</td></tr>
+              <tr><td><b>Operations</b></td><td>Demand forecasting, cost optimization</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="assumptions">
+          <h2>Assumptions and limitations</h2>
+          <p class="section-sub">When can you trust a linear regression?</p>
+
+          <div class="point-grid">
+            <div class="point"><h4>Linearity</h4><p>The relationship between X and Y is linear.</p></div>
+            <div class="point"><h4>Independence</h4><p>Observations are independent of one another.</p></div>
+            <div class="point"><h4>Homoscedasticity</h4><p>Errors have constant variance across X.</p></div>
+            <div class="point"><h4>Normal errors</h4><p>Errors are normally distributed.</p></div>
+            <div class="point"><h4>No multicollinearity</h4><p>Predictors aren't highly correlated with each other.</p></div>
+          </div>
+
+          <div class="viz" id="viz-resid">
+            <div class="viz-head">
+              <h4>Diagnose a regression with residual plots</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A residual is actual minus predicted. If the assumptions hold, residuals scatter randomly around zero. Pick a dataset to see what each kind of violation looks like.</p>
+            <div class="controls" role="group" aria-label="Dataset">
+              <button class="btn" data-d="good" aria-pressed="true">Assumptions hold</button>
+              <button class="btn" data-d="curve" aria-pressed="false">Non-linear</button>
+              <button class="btn" data-d="fan" aria-pressed="false">Unequal variance</button>
+              <button class="btn" data-d="out" aria-pressed="false">An outlier</button>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Fitted line and residual plot"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Easy to interpret; gives both prediction and explanation; quantifies the strength and direction of relationships; the foundation for many machine learning models.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Sensitive to outliers; assumes linear relationships; misses interactions unless they're added; and correlation isn't causation, so interpret coefficients carefully.</p></div>
+          </div>
+
+          <h3>Regression vs. correlation</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Feature</th><th>Regression</th><th>Correlation</th></tr></thead>
+            <tbody>
+              <tr><th>Purpose</th><td>Predict or explain Y using X</td><td>Measure the strength of a relationship</td></tr>
+              <tr><th>Direction</th><td>One variable depends on the other</td><td>No direction implied</td></tr>
+              <tr><th>Output</th><td>An equation and coefficients</td><td>A single value r between −1 and +1</td></tr>
+              <tr><th>Example</th><td>Predict salary from experience</td><td>How strongly salary and experience are related</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note">Regression gives the predictive insight Ŷ = f(X₁, X₂, …, Xₙ): an equation you can use, not just a measure of association.</p>
+        </section>
+
+        <section id="forecasting">
+          <h2>What forecasting is</h2>
+          <p class="section-sub">Estimating the future from the past</p>
+
+          <div class="split reverse">
+            <img src="../assets/img/session-16/questions.jpg" alt="Colorful question marks" loading="lazy" />
+            <div>
+              <div class="definition" style="margin-top:0">
+                <strong>Forecasting</strong>
+                Estimating future values of a variable, such as sales, demand, revenue or stock prices, from historical data and analytical models. Forecasting = historical data + analytical model + future estimation.
+              </div>
+              <p>It helps organizations plan ahead, allocate resources and reduce uncertainty: predicting demand, planning production, inventory and staff, supporting strategy, anticipating market trends and risks, and budgeting.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Qualitative</b></td><td>Expert opinion, intuition and market knowledge; no historical data needed</td><td>Forecasting a new product</td></tr>
+              <tr><td><b>Quantitative</b></td><td>Mathematical and statistical models of historical data</td><td>Time series forecasting, regression</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="qualitative">
+          <h2>Qualitative forecasting</h2>
+          <p class="section-sub">When there's no history to learn from</p>
+
+          <p>Qualitative methods rely on human judgment. They are used when historical data is limited or missing: launching new products, entering new markets, or facing situations with no precedent.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Delphi method</b></td><td>Experts give anonymous estimates and refine them over several rounds</td><td>Future technology adoption</td></tr>
+              <tr><td><b>Market research / surveys</b></td><td>Opinions from customers or stakeholders</td><td>Demand for a new restaurant</td></tr>
+              <tr><td><b>Executive opinion (jury of experts)</b></td><td>A group of senior managers forecasts together</td><td>Company sales forecast</td></tr>
+              <tr><td><b>Sales force composite</b></td><td>Salespeople estimate their customers' demand</td><td>Regional sales</td></tr>
+              <tr><td><b>Scenario building</b></td><td>Best-case, worst-case and other futures</td><td>Strategic planning under uncertainty</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-delphi">
+            <div class="viz-head">
+              <h4>A Delphi panel converges</h4>
+              <span class="viz-tag">Step through</span>
+            </div>
+            <p class="viz-hint">Nine experts forecast how many electric scooters a new city will sell in year one. Each round, they see the group's anonymous median and range, then revise. Anonymity keeps a senior voice from dominating.</p>
+            <div class="controls">
+              <button class="btn is-on" data-next>Run the next round</button>
+              <button class="btn ghost" data-reset>Start over</button>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Expert estimates by round"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="quantitative">
+          <h2>Quantitative forecasting</h2>
+          <p class="section-sub">Time series models and causal models</p>
+
+          <h3>Time series models</h3>
+          <p>Used when future values depend mainly on past patterns, such as sales, stock prices or energy use.</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>Description</th><th>Application</th></tr></thead>
+            <tbody>
+              <tr><td><b>Naive forecast</b></td><td>Next period = the last period's value</td><td>A quick baseline</td></tr>
+              <tr><td><b>Moving average</b></td><td>Average of the last n periods</td><td>Stable demand</td></tr>
+              <tr><td><b>Weighted moving average</b></td><td>More weight on recent periods</td><td>Responds faster to change</td></tr>
+              <tr><td><b>Exponential smoothing</b></td><td>Exponentially decreasing weights on the past</td><td>Sales, weather</td></tr>
+              <tr><td><b>Trend projection</b></td><td>A regression line through time, extended forward</td><td>Long-term demand trends</td></tr>
+              <tr><td><b>ARIMA</b></td><td>A statistical model that captures trend and autocorrelation (SARIMA adds seasonality)</td><td>Economic and financial forecasting</td></tr>
+              <tr><td><b>Seasonal decomposition</b></td><td>Splits a series into trend, seasonality and noise</td><td>Monthly or quarterly patterns</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="formula" style="text-align:center">Simple exponential smoothing: F<sub>t+1</sub> = αY<sub>t</sub> + (1 − α)F<sub>t</sub></div>
+          <p>F<sub>t+1</sub> is the forecast for the next period, Y<sub>t</sub> the actual value this period, F<sub>t</sub> this period's forecast, and α (between 0 and 1) the smoothing constant: higher α reacts faster to recent changes.</p>
+
+          <div class="viz" id="viz-fc">
+            <div class="viz-head">
+              <h4>Compare forecasting methods on real-looking demand</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Three years of monthly demand for a food-delivery zone (thousand orders). Each method is fitted on the first 30 months and forecasts the last 6 (shaded), which it never saw. Pick a method, tune it, and compare accuracy.</p>
+            <div class="controls" role="group" aria-label="Method"></div>
+            <div class="controls" data-param></div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Demand and forecasts"></svg>
+            <div class="table-wrap"><table data-acc></table></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="viz" id="viz-decomp">
+            <div class="viz-head">
+              <h4>Seasonal decomposition</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">The same demand series split into its parts: observed = trend + seasonal + remainder. Highlight a month to see how its value is built.</p>
+            <div class="controls">
+              <label class="range">Month <span data-out="mo">Jan, year 1</span><input type="range" min="0" max="35" value="9" data-in="mo" /></label>
+            </div>
+            <svg viewBox="0 0 640 380" role="img" aria-label="Trend, seasonal and remainder components"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Causal (explanatory) models</h3>
+          <p>Used when the future depends on other influencing variables.</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Linear regression</b></td><td>Forecast Y from its relationship with X</td><td>Sales from advertising spend</td></tr>
+              <tr><td><b>Multiple regression</b></td><td>Several drivers at once</td><td>House price from area, rooms and location</td></tr>
+              <tr><td><b>Econometric models</b></td><td>Systems of equations linking economic variables</td><td>GDP or inflation</td></tr>
+              <tr><td><b>Machine learning</b></td><td>Random forests, XGBoost, LSTM for complex patterns</td><td>High-accuracy demand forecasting</td></tr>
+              <tr><td><b>Input–output models</b></td><td>Relationships between sectors of the economy</td><td>Industrial and macroeconomic planning</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="accuracy">
+          <h2>Forecast accuracy and process</h2>
+          <p class="section-sub">Measuring errors and keeping forecasts current</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Metric</th><th>Formula</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><b>MSE</b></td><td>Mean of squared errors</td><td>Penalizes large errors heavily</td></tr>
+              <tr><td><b>RMSE</b></td><td>√MSE</td><td>Typical error size, in the data's units</td></tr>
+              <tr><td><b>MAPE</b></td><td>Mean of |error| ÷ actual × 100</td><td>Relative error as a percentage</td></tr>
+              <tr><td><b>Bias</b></td><td>Mean of errors (actual − forecast)</td><td>Positive: under-forecasting; negative: over-forecasting</td></tr>
+            </tbody>
+          </table></div>
+
+          <ol class="steps">
+            <li><h4>Problem definition</h4><p>What to forecast, and why.</p></li>
+            <li><h4>Data collection</h4><p>Relevant, accurate history.</p></li>
+            <li><h4>Preprocessing</h4><p>Clean, fill gaps, remove outliers.</p></li>
+            <li><h4>Model selection</h4><p>Choose a suitable method.</p></li>
+            <li><h4>Model fitting</h4><p>Train and validate.</p></li>
+            <li><h4>Evaluation</h4><p>MSE, RMSE, MAPE on held-out data.</p></li>
+            <li><h4>Forecast generation</h4><p>Produce and monitor forecasts.</p></li>
+            <li><h4>Updating</h4><p>Improve continuously as new data arrives.</p></li>
+          </ol>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Use case</th></tr></thead>
+            <tbody>
+              <tr><td><b>Retail (Amazon, Walmart)</b></td><td>Demand and inventory forecasting</td></tr>
+              <tr><td><b>Finance</b></td><td>Stock prices, credit risk</td></tr>
+              <tr><td><b>Transport (Uber, airlines)</b></td><td>Ride and ticket demand</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Disease spread, hospital capacity</td></tr>
+              <tr><td><b>Manufacturing</b></td><td>Production planning</td></tr>
+              <tr><td><b>Food delivery (Zomato)</b></td><td>Order volume by time and region</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Reduces uncertainty, supports resource and budget planning, improves operational efficiency, and enables proactive strategy.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Built on assumptions that can fail under sudden change; accuracy falls with longer horizons; depends heavily on data quality and model choice; external shocks (pandemics, policy changes) distort outcomes.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Category</th><th>Examples</th><th>When to use</th></tr></thead>
+            <tbody>
+              <tr><td><b>Qualitative</b></td><td>Delphi, market research</td><td>When data is limited</td></tr>
+              <tr><td><b>Quantitative: time series</b></td><td>Moving average, exponential smoothing, ARIMA</td><td>When data shows trends or seasonality</td></tr>
+              <tr><td><b>Quantitative: causal</b></td><td>Regression, machine learning</td><td>When predictors drive the outcome</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="takeaways">
+            <h3>Session 16 in summary</h3>
+            <ul>
+              <li>Regression models Y = W₀ + W₁X + ε; least squares picks the line with the smallest sum of squared errors.</li>
+              <li>Judge a model with R², adjusted R², p-values, the F-test and RMSE; adjusted R² guards against useless predictors.</li>
+              <li>Check the assumptions with residual plots: linearity, independence, constant variance, normal errors, no multicollinearity.</li>
+              <li>Forecasting uses judgment (qualitative) when data is scarce, and time series or causal models when history is available.</li>
+              <li>Evaluate forecasts on data the model hasn't seen, with MSE, RMSE, MAPE and bias. Good forecasting = right data + right model + continuous monitoring.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="16"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-15.html">Previous: Session 15</a>
+      <a href="session-17.html">Next: Session 17</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-16.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

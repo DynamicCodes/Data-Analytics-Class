@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 21: Factor Analysis, Directional Data and Functional Data Analysis | Data-Class</title>
+  <meta name="description" content="Finding latent factors behind correlated variables, analyzing angles and times of day with circular statistics, and treating whole curves as data with functional data analysis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>21</div>
+      <h1>Factor Analysis, Directional Data and Functional Data Analysis</h1>
+      <p class="lead">Three specialized kinds of analysis for data that ordinary methods handle badly: many correlated variables driven by a few hidden factors, directions and cyclic times that wrap around, and observations that are entire curves rather than single numbers.</p>
+      <ul class="lesson-meta">
+        <li>3 topics</li>
+        <li>6 interactive visuals</li>
+        <li>About 50 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-21/hero.jpg" alt="Waves of glowing dots flowing across a dark surface" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#factor">Factor analysis</a></li>
+          <li><a href="#directional">Directional data</a></li>
+          <li><a href="#circular">Circular statistics</a></li>
+          <li><a href="#fda">Functional data analysis</a></li>
+          <li><a href="#fpca">Functional PCA</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="factor">
+          <h2>Factor analysis</h2>
+          <p class="section-sub">A few hidden factors behind many correlated variables</p>
+
+          <div class="definition">
+            <strong>Factor analysis</strong>
+            A statistical technique that identifies underlying relationships (factors) among a large set of observed variables. It reduces dimensionality by grouping correlated variables into a smaller set of latent (unobserved) factors.
+          </div>
+          <p>Its objectives are to identify the latent variables that explain the pattern of correlations, to reduce redundancy among variables, and to summarize the data efficiently while keeping most of its information.</p>
+
+          <div class="point-grid">
+            <div class="point"><h4>Exploratory factor analysis (EFA)</h4><p>Used when you don't know the structure or number of factors: it explores the data to discover underlying dimensions, such as personality traits in questionnaire responses.</p></div>
+            <div class="point"><h4>Confirmatory factor analysis (CFA)</h4><p>Used when you already have a theory about the structure: it tests whether the data fits, for example whether 16 personality factors fit Cattell's theory.</p></div>
+          </div>
+
+          <h3>The mathematical model</h3>
+          <p>With p observed variables X₁, X₂, …, Xₚ, each is written as a linear combination of m common factors F₁, F₂, …, Fₘ plus an error term:</p>
+          <div class="formula" style="text-align:center">Xᵢ = aᵢ₁F₁ + aᵢ₂F₂ + … + aᵢₘFₘ + eᵢ</div>
+          <p>aᵢⱼ is the <b>factor loading</b> (the correlation between variable i and factor j), Fⱼ is a <b>common factor</b>, and eᵢ is the variable's <b>unique factor</b> or error.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>Factor loadings</b></td><td>Correlations between the observed variables and the factors</td></tr>
+              <tr><td><b>Communality</b></td><td>The share of a variable's variance explained by the common factors (the sum of its squared loadings)</td></tr>
+              <tr><td><b>Eigenvalue</b></td><td>How much of the total variance a factor explains</td></tr>
+              <tr><td><b>Factor rotation</b></td><td>Adjusting loadings to simplify interpretation (Varimax, Oblimin)</td></tr>
+              <tr><td><b>Scree plot</b></td><td>A plot of eigenvalues used to decide how many factors to keep</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Example: five exam subjects, two abilities</h3>
+          <p>Students have marks in Math, Physics, Literature, History and Art. Factor analysis finds two factors: <b>Analytical ability</b> (high loadings on Math and Physics) and <b>Verbal/creative ability</b> (high loadings on Literature, History and Art). Instead of five variables, each student is described by two latent factors.</p>
+
+          <div class="viz" id="viz-fa">
+            <div class="viz-head">
+              <h4>Extract the factors from 300 students' marks</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">The heatmap is the correlation matrix of the five subjects. The scree plot shows the eigenvalues; Kaiser's rule keeps factors with an eigenvalue above 1. Choose how many factors to keep and see the loadings and communalities.</p>
+            <div class="controls">
+              <label class="range">Factors to keep <span data-out="m">2</span><input type="range" min="1" max="3" value="2" data-in="m" /></label>
+              <button class="btn" data-rot aria-pressed="true">Varimax rotation</button>
+            </div>
+            <svg viewBox="0 0 640 250" role="img" aria-label="Correlation heatmap and scree plot"></svg>
+            <div class="table-wrap"><table data-load></table></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Rotation: making factors interpretable</h3>
+          <p>The first factors extracted are mathematically valid but often hard to read: every variable loads a bit on every factor. Rotation turns the factor axes so that each variable loads strongly on one factor and weakly on the others. <b>Varimax</b> keeps the factors uncorrelated (orthogonal); <b>Oblimin</b> lets them correlate (oblique). Rotating doesn't change how much variance is explained in total, only how it's shared out.</p>
+
+          <div class="viz" id="viz-rot">
+            <div class="viz-head">
+              <h4>Rotate the factor axes yourself</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Each point is a subject, placed by its loadings on the two factors. Rotate the axes until each subject sits close to one axis, or let Varimax find the angle that maximizes the simple-structure criterion.</p>
+            <div class="controls">
+              <label class="range">Rotation angle <span data-out="a">0°</span><input type="range" min="-90" max="90" value="0" data-in="a" /></label>
+              <button class="btn is-on" data-vmax>Find the Varimax angle</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Loading plot with rotatable axes"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Steps</h3>
+          <ol class="steps">
+            <li><h4>Collect data</h4><p>Interval or ratio-scaled variables; check sampling adequacy (KMO above 0.6, Bartlett's test significant).</p></li>
+            <li><h4>Form the correlation matrix</h4><p>Correlations among all the variables.</p></li>
+            <li><h4>Extract factors</h4><p>With principal component analysis, principal axis factoring or maximum likelihood.</p></li>
+            <li><h4>Decide how many</h4><p>Eigenvalue above 1 (Kaiser's rule), the elbow of the scree plot, or the percentage of variance explained.</p></li>
+            <li><h4>Rotate</h4><p>Varimax (orthogonal) or Oblimin (oblique) to improve interpretability.</p></li>
+            <li><h4>Interpret and name</h4><p>Look for patterns in the high-loading variables and name each factor.</p></li>
+            <li><h4>Validate</h4><p>Cross-validate, or run a confirmatory analysis on another dataset.</p></li>
+          </ol>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Psychology</b></td><td>Underlying traits such as intelligence or personality</td></tr>
+              <tr><td><b>Marketing</b></td><td>How customers perceive product attributes</td></tr>
+              <tr><td><b>Finance</b></td><td>Reducing many financial indicators to common risk factors</td></tr>
+              <tr><td><b>Education</b></td><td>Latent skills behind test scores</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Grouping symptoms into diagnostic dimensions</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Reduces complexity, reveals hidden structure, improves interpretability, and removes multicollinearity.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Needs large samples; choosing and naming factors is subjective; sensitive to outliers and scaling; captures only linear relationships.</p></div>
+          </div>
+        </section>
+
+        <section id="directional">
+          <h2>Directional data</h2>
+          <p class="section-sub">Data that wraps around</p>
+
+          <div class="definition">
+            <strong>Directional data analytics</strong>
+            The analysis of data that represents directions, orientations or angles rather than ordinary linear measurements. Such data is cyclic: after 360° (or 24 hours) it wraps around to the beginning.
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Context</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Meteorology</b></td><td>Wind direction in degrees</td></tr>
+              <tr><td><b>Navigation</b></td><td>Ship or aircraft bearing</td></tr>
+              <tr><td><b>Geology</b></td><td>Orientation of rock layers or faults</td></tr>
+              <tr><td><b>Time of day</b></td><td>Traffic peaks, purchase times</td></tr>
+              <tr><td><b>Biology</b></td><td>Animal movement or migration direction</td></tr>
+              <tr><td><b>Robotics</b></td><td>Sensor orientation or motion angle</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Why it needs different methods</h3>
+          <p>0° and 360° are the same direction, yet numerically far apart. The ordinary average of 350° and 10° is 180°, pointing the opposite way; the true average direction is 0°. Distances between angles must be measured around the circle. So the usual mean, variance and regression can give badly misleading answers for circular data.</p>
+        </section>
+
+        <section id="circular">
+          <h2>Circular statistics</h2>
+          <p class="section-sub">Averaging directions as vectors</p>
+
+          <p>Each observation is an angle θ on the unit circle, written as a vector xᵢ = (cos θᵢ, sin θᵢ). The average of these vectors gives the <b>mean resultant vector</b>:</p>
+          <div class="formula" style="text-align:center">C̄ = (1/n) Σ cos θᵢ, &nbsp; S̄ = (1/n) Σ sin θᵢ, &nbsp; θ̄ = tan⁻¹(S̄ / C̄)</div>
+          <p class="note">In practice the mean direction is computed with the two-argument arctangent, θ̄ = atan2(S̄, C̄). Plain tan⁻¹(S̄/C̄) can't tell opposite directions apart: for directions around 180° it would give an answer near 0°.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Measure</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>Mean direction θ̄</b></td><td>The average direction</td></tr>
+              <tr><td><b>Resultant length R</b></td><td>R = √(C̄² + S̄²), the strength of concentration (0 ≤ R ≤ 1)</td></tr>
+              <tr><td><b>Circular variance</b></td><td>V = 1 − R; lower means more concentrated</td></tr>
+              <tr><td><b>Circular standard deviation</b></td><td>√(−2 ln R), the angular spread</td></tr>
+              <tr><td><b>Circular correlation</b></td><td>Correlation between two sets of angles</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-circ">
+            <div class="viz-head">
+              <h4>Average some directions</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Click anywhere around the compass to add a wind observation, or load an example. Compare the ordinary arithmetic mean (rose) with the circular mean (violet), whose arrow length is R.</p>
+            <div class="controls">
+              <button class="btn" data-ex="wrap">350° and 10°</button>
+              <button class="btn" data-ex="north">Northerly winds</button>
+              <button class="btn" data-ex="spread">No preferred direction</button>
+              <button class="btn ghost" data-ex="clear">Clear</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Compass with observations and mean directions" style="touch-action:none"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="lin">–</b><span>Arithmetic mean (misleading)</span></div>
+              <div class="stat"><b data-stat="mean">–</b><span>Circular mean θ̄</span></div>
+              <div class="stat"><b data-stat="r">–</b><span>Resultant length R</span></div>
+              <div class="stat"><b data-stat="p">–</b><span>Rayleigh test p-value</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Directional distributions</h3>
+          <div class="measure-grid">
+            <div class="measure"><h4>Von Mises (circular normal)</h4><div class="formula">f(θ) = e<sup>κ cos(θ − μ)</sup> ÷ 2π I₀(κ)</div><p>The circle's answer to the normal distribution. μ is the mean direction, κ the concentration (like an inverse variance), and I₀ the modified Bessel function of order 0.</p></div>
+            <div class="measure"><h4>Uniform circular</h4><p>All directions equally likely: no dominant direction (κ = 0).</p></div>
+            <div class="measure"><h4>Bivariate and spherical</h4><p>For 3D orientations such as latitude–longitude or azimuth–dip.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><b>Circular mean and variance</b></td><td>Central tendency and spread</td></tr>
+              <tr><td><b>Rose diagrams</b></td><td>Circular histograms of direction frequencies, common in wind studies</td></tr>
+              <tr><td><b>Compass / polar plots</b></td><td>Each observation drawn as an arrow from the origin</td></tr>
+              <tr><td><b>Rayleigh test</b></td><td>Tests for uniformity: is there a preferred direction?</td></tr>
+              <tr><td><b>Watson–Williams test</b></td><td>Compares mean directions between groups</td></tr>
+              <tr><td><b>Circular regression</b></td><td>Relationships between circular and linear variables</td></tr>
+              <tr><td><b>Spherical statistics and plots</b></td><td>For 3D directional data</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Case example: when do customers buy?</h3>
+          <p>A company tracks the time of day of online purchases, converting times to angles (0° = midnight, 180° = noon, so each hour is 15°). The analysis finds a mean purchase direction of 210° and a concentration of R = 0.85: purchases cluster strongly around one time of day.</p>
+          <p class="note">The slides describe 210° as "≈ 8 PM", but on this scale 210° ÷ 15° = hour 14, which is <b>2 PM</b>. An 8 PM peak would be 300°. The visual below lets you check the conversion.</p>
+
+          <div class="viz" id="viz-rose">
+            <div class="viz-head">
+              <h4>Purchase times as a rose diagram</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">1,000 simulated purchases drawn from a von Mises distribution on a 24-hour clock. Each petal is one hour. Set the peak time and concentration κ, and see the fitted curve, R and the mean time.</p>
+            <div class="controls">
+              <label class="range">Peak time μ <span data-out="mu">2:00 PM (210°)</span><input type="range" min="0" max="95" value="56" data-in="mu" /></label>
+              <label class="range">Concentration κ <span data-out="k">3.6</span><input type="range" min="0" max="100" value="36" data-in="k" /></label>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Rose diagram of purchase times"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Meteorology</b></td><td>Prevailing wind or ocean current directions</td></tr>
+              <tr><td><b>Navigation</b></td><td>Optimizing routes from heading data</td></tr>
+              <tr><td><b>Geology</b></td><td>Fault orientation, magnetic field direction</td></tr>
+              <tr><td><b>Neuroscience</b></td><td>Direction of neuron firing patterns</td></tr>
+              <tr><td><b>Economics, marketing</b></td><td>Cyclic sales and traffic; customer visit timing over 24 hours</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Handles cyclic data properly, reveals periodic and rotational patterns, supports angular relationships, and works for 2D and 3D orientations.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Needs transformations and specialized formulas, is less intuitive, and has fewer ready-made tools (though that is improving).</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Concept</th><th>Linear data</th><th>Directional data</th></tr></thead>
+            <tbody>
+              <tr><th>Range</th><td>(−∞, ∞)</td><td>[0°, 360°)</td></tr>
+              <tr><th>Mean</th><td>Arithmetic mean</td><td>Circular mean</td></tr>
+              <tr><th>Spread</th><td>Variance</td><td>Circular variance</td></tr>
+              <tr><th>Distribution</th><td>Normal</td><td>Von Mises</td></tr>
+              <tr><th>Visualization</th><td>Histogram</td><td>Rose diagram</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="fda">
+          <h2>Functional data analysis</h2>
+          <p class="section-sub">When each observation is a whole curve</p>
+
+          <div class="definition">
+            <strong>Functional data analysis (FDA)</strong>
+            A statistical framework for data that can be viewed as functions, curves or trajectories rather than individual numbers. Each observation is a function, such as a time-dependent curve, instead of a single data point.
+          </div>
+          <p>In traditional data, an observation is one value, like a person's height. In functional data, it's a curve, like that person's growth curve over time. Many modern sources produce such continuous signals: sensor readings (temperature, ECG, EEG), stock prices through the day, traffic flow, and spectroscopic data (light intensity vs. wavelength).</p>
+
+          <div class="split">
+            <img src="../assets/img/session-21/bulbs.jpg" alt="Small white light bulbs drawn on a chalkboard, with one large yellow bulb" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">The core idea</h3>
+              <p>FDA models each observation as a smooth function plus noise, xᵢ(t) = underlying smooth function + noise, where t lies in a continuous interval such as time or space. The functions are represented with a <b>basis expansion</b>:</p>
+              <div class="formula">xᵢ(t) = Σₖ cᵢₖ φₖ(t)</div>
+              <p>The φₖ(t) are basis functions (B-splines, Fourier terms, wavelets) and the cᵢₖ are each curve's coefficients. A curve with hundreds of noisy readings becomes a handful of coefficients.</p>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-smooth">
+            <div class="viz-head">
+              <h4>Turn noisy readings into a smooth function</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A year of noisy daily temperature readings for one city. Represent it with a Fourier basis: more terms follow the data more closely, but too many start chasing the noise. The lower panel shows the basis functions being combined.</p>
+            <div class="controls">
+              <label class="range">Fourier harmonics <span data-out="k">2</span><input type="range" min="0" max="20" value="2" data-in="k" /></label>
+            </div>
+            <svg viewBox="0 0 640 330" role="img" aria-label="Noisy data, smoothed curve and basis functions"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Basis type</th><th>Best for</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Fourier</b></td><td>Periodic data</td><td>Temperature, time-of-day activity</td></tr>
+              <tr><td><b>B-splines</b></td><td>Locally smooth data</td><td>Growth curves</td></tr>
+              <tr><td><b>Wavelets</b></td><td>Non-smooth, transient signals</td><td>ECG, vibration data</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Steps in FDA</h3>
+          <ol class="steps">
+            <li><h4>Smooth the data</h4><p>Convert discrete, noisy readings into smooth functions with a basis expansion or kernel smoothing.</p></li>
+            <li><h4>Represent each observation as a function</h4><p>Of time, space or another continuous domain.</p></li>
+            <li><h4>Describe the functions</h4><p>Functional analogs of the usual statistics: the mean curve x̄(t) = (1/n) Σ xᵢ(t), variance and covariance functions, functional boxplots and outlier detection.</p></li>
+            <li><h4>Functional PCA</h4><p>Find the dominant modes of variation among the curves.</p></li>
+            <li><h4>Functional regression</h4><p>Model relationships where predictors, responses or both are functions.</p></li>
+          </ol>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Regression type</th><th>Model</th></tr></thead>
+            <tbody>
+              <tr><td><b>Scalar-on-function</b></td><td>Y = α + ∫ X(t) β(t) dt + ε</td></tr>
+              <tr><td><b>Function-on-scalar</b></td><td>Y(t) = α(t) + X β(t) + ε(t)</td></tr>
+              <tr><td><b>Function-on-function</b></td><td>Y(t) = α(t) + ∫ X(s) β(s, t) ds + ε(t)</td></tr>
+            </tbody>
+          </table></div>
+          <p><b>Functional clustering and classification</b> group similar curves, such as customers' behavior over time or heartbeat shapes.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Descriptive tool</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><b>Functional mean curve</b></td><td>The average pattern over all functions</td></tr>
+              <tr><td><b>Functional variance function</b></td><td>How variation changes over time</td></tr>
+              <tr><td><b>Functional boxplot</b></td><td>The distribution of a set of curves</td></tr>
+              <tr><td><b>FPCA plot</b></td><td>The main modes of variation</td></tr>
+              <tr><td><b>Correlation surface</b></td><td>The functional analog of a covariance matrix</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="fpca">
+          <h2>Functional PCA</h2>
+          <p class="section-sub">The main ways a set of curves differ</p>
+
+          <p>Functional principal component analysis is PCA applied to curves. It decomposes each function as the mean curve plus a weighted sum of components:</p>
+          <div class="formula" style="text-align:center">xᵢ(t) = x̄(t) + Σₖ ξᵢₖ φₖ(t)</div>
+          <p>The φₖ(t) are the functional principal components (modes of variation) and the ξᵢₖ are each curve's scores. FPCA identifies dominant patterns such as "overall level", "timing shift" or "peak intensity".</p>
+
+          <h3>Example: temperature curves for 10 cities</h3>
+          <p>Record daily temperature across 10 cities for a year; each city becomes a smooth curve over 365 days. FDA finds the mean annual temperature curve, and FPCA reveals the main differences: the <b>first component</b> is the overall hotness level, and the <b>second</b> is the contrast between summer and winter extremes.</p>
+
+          <div class="viz" id="viz-fpca">
+            <div class="viz-head">
+              <h4>Find the modes of variation in 10 cities' temperatures</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">FPCA is computed from the 10 curves below. Move the sliders to add a component to the mean curve and see what each one means; click a city to see its scores.</p>
+            <div class="controls">
+              <label class="range">Add component 1 <span data-out="s1">0</span><input type="range" min="-100" max="100" value="0" data-in="s1" /></label>
+              <label class="range">Add component 2 <span data-out="s2">0</span><input type="range" min="-100" max="100" value="0" data-in="s2" /></label>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Temperature curves, mean and principal components"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Medicine and biology</b></td><td>ECG, EEG and growth curves</td></tr>
+              <tr><td><b>Finance</b></td><td>Daily stock price curves</td></tr>
+              <tr><td><b>Transportation</b></td><td>Traffic volume through the day</td></tr>
+              <tr><td><b>Environmental science</b></td><td>Temperature or pollution over time</td></tr>
+              <tr><td><b>Manufacturing and IoT</b></td><td>Sensor readings across production cycles</td></tr>
+              <tr><td><b>Sports analytics</b></td><td>Athletes' speed or acceleration profiles</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Captures shape, not just points; handles complex time and space dependencies; reduces dimensions via FPCA; smooths out measurement noise; supports regression, clustering and classification on curves.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Needs dense, continuous data; computationally intensive on large datasets; choosing basis functions and smoothing is subjective; functional components can be hard to interpret.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Aspect</th><th>Traditional analysis</th><th>Functional data analysis</th></tr></thead>
+            <tbody>
+              <tr><th>Observation</th><td>A number or vector</td><td>A function or curve</td></tr>
+              <tr><th>Variables</th><td>A finite number</td><td>Infinite-dimensional</td></tr>
+              <tr><th>Tools</th><td>Mean, variance, PCA</td><td>Functional mean, FPCA</td></tr>
+              <tr><th>Models</th><td>Linear regression</td><td>Functional regression</td></tr>
+              <tr><th>Visualization</th><td>Scatterplots</td><td>Functional boxplots, FPCA plots</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="takeaways">
+            <h3>Session 21 in summary</h3>
+            <ul>
+              <li>Factor analysis explains correlated variables with a few latent factors: Xᵢ = Σ aᵢⱼFⱼ + eᵢ. Keep factors by eigenvalue or scree plot, rotate for interpretability, then name them.</li>
+              <li>Directional data wraps around, so averages and spreads must be computed on the circle: mean direction θ̄ = atan2(S̄, C̄), resultant length R, circular variance 1 − R.</li>
+              <li>The von Mises distribution is the circular normal; rose diagrams show direction frequencies; the Rayleigh test checks for a preferred direction.</li>
+              <li>Functional data analysis treats each curve as one observation, smoothing noisy readings with basis functions.</li>
+              <li>Functional PCA decomposes curves into a mean plus modes of variation, such as overall level and seasonal amplitude.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="21"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-20.html">Previous: Session 20</a>
+      <a href="session-22.html">Next: Session 22</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-21.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

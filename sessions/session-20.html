@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 20: Evidence, Probability and Probabilistic Reasoning | Data-Class</title>
+  <meta name="description" content="How evidence updates probability with Bayes' theorem, combining several pieces of evidence, dependent evidence, and probabilistic reasoning models like Bayesian networks and Markov models." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>20</div>
+      <h1>Evidence, Probability and Probabilistic Reasoning</h1>
+      <p class="lead">Evidence rarely gives certainty; it changes how confident we should be. This session shows how Bayes' rule turns evidence into updated probabilities, how to combine many signals into one belief (and when that goes wrong), and how probabilistic models reason under uncertainty.</p>
+      <ul class="lesson-meta">
+        <li>3 topics</li>
+        <li>6 interactive visuals</li>
+        <li>About 45 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-20/hero.jpg" alt="Glowing dashboard of charts and graphs in warm light" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#evidence">Evidence and probability</a></li>
+          <li><a href="#bayes">Bayes' theorem</a></li>
+          <li><a href="#combination">Combining evidence</a></li>
+          <li><a href="#dependence">When evidence isn't independent</a></li>
+          <li><a href="#reasoning">Probabilistic reasoning</a></li>
+          <li><a href="#models">Reasoning models</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="evidence">
+          <h2>Evidence and probability</h2>
+          <p class="section-sub">Two foundations for reasoning under uncertainty</p>
+
+          <div class="point-grid">
+            <div class="point"><h4>Evidence</h4><p>What we observe or know from data, experiments or experience: data or observations that support or refute a hypothesis, prediction or belief.</p></div>
+            <div class="point"><h4>Probability</h4><p>A numerical measure of how likely an event is, from 0 (impossible) to 1 (certain), based on the available evidence.</p></div>
+          </div>
+          <p>In short: <b>probability quantifies uncertainty, and evidence informs and updates it.</b> Evidence doesn't give certainty; it changes our confidence about an event or hypothesis.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Context</th><th>Evidence</th><th>Interpretation</th></tr></thead>
+            <tbody>
+              <tr><td><b>Medical diagnosis</b></td><td>Test result is positive</td><td>Supports "disease present"</td></tr>
+              <tr><td><b>Marketing</b></td><td>Click-through rate of 8%</td><td>Evidence that the campaign is effective</td></tr>
+              <tr><td><b>Finance</b></td><td>Market volatility increases</td><td>Evidence of a riskier environment</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Types of probability</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Based on</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Classical</b></td><td>Known, equally likely outcomes</td><td>Rolling a die, tossing a coin</td></tr>
+              <tr><td><b>Empirical</b></td><td>Observed data or experiments</td><td>70% of customers buy after seeing an ad</td></tr>
+              <tr><td><b>Subjective</b></td><td>Personal judgment or expert belief</td><td>An analyst's "80% chance of a market crash"</td></tr>
+              <tr><td><b>Bayesian</b></td><td>A belief updated as new evidence appears</td><td>Disease probability after a medical test</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="bayes">
+          <h2>Bayes' theorem</h2>
+          <p class="section-sub">The bridge between evidence and probability</p>
+
+          <p>Bayesian thinking lets us update a belief when new evidence arrives. Bayes' theorem links the prior belief, the evidence and the updated belief:</p>
+          <div class="formula" style="text-align:center">P(H | E) = P(E | H) × P(H) ÷ P(E)</div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Term</th><th>Name</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>P(H)</td><td><b>Prior</b></td><td>Initial belief, before seeing the evidence</td></tr>
+              <tr><td>P(E | H)</td><td><b>Likelihood</b></td><td>How likely the evidence is if the hypothesis is true</td></tr>
+              <tr><td>P(H | E)</td><td><b>Posterior</b></td><td>Updated belief after seeing the evidence</td></tr>
+              <tr><td>P(E)</td><td><b>Marginal likelihood</b></td><td>Overall probability of the evidence; a normalizing constant</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="split">
+            <img src="../assets/img/session-20/medical.jpg" alt="Stethoscope beside a tablet showing medical charts" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">Example: a rare disease</h3>
+              <p>1% of people have a rare disease, P(D) = 0.01. A test is 99% accurate: P(Pos | D) = 0.99 and P(Pos | ¬D) = 0.01. You test positive. How likely is it that you actually have the disease?</p>
+              <div class="formula">P(Pos) = 0.99 × 0.01 + 0.01 × 0.99 = 0.0198</div>
+              <div class="formula">P(D | Pos) = 0.99 × 0.01 ÷ 0.0198 ≈ 0.5</div>
+              <p>Despite a "99% accurate" test, there's only a <b>50% chance</b> of having the disease, because the disease itself is rare. Session 6 walks through this example step by step.</p>
+            </div>
+          </div>
+
+          <h3>Evidence-based decision making</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Step</th><th>Description</th><th>Churn example</th></tr></thead>
+            <tbody>
+              <tr><td><b>1. Define the hypothesis</b></td><td>What are we assessing?</td><td>"This customer will churn"</td></tr>
+              <tr><td><b>2. Gather evidence</b></td><td>Observe data, trends, outcomes</td><td>Their usage has dropped</td></tr>
+              <tr><td><b>3. Assign a prior</b></td><td>From history or domain knowledge</td><td>Past churn rate = 15%</td></tr>
+              <tr><td><b>4. Update with the evidence</b></td><td>Apply Bayes' theorem or a learning model</td><td>Updated probability ≈ 40%</td></tr>
+              <tr><td><b>5. Decide</b></td><td>Act on the updated probability</td><td>Offer a retention discount</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-update">
+            <div class="viz-head">
+              <h4>Update a belief with one piece of evidence</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Each square is one of 1,000 customers. Set the prior and how often the evidence appears in each group, and watch the prior become a posterior. The churn preset reproduces the slides' 15% → 40% example.</p>
+            <div class="controls" role="group" aria-label="Examples">
+              <button class="btn" data-ex="churn" aria-pressed="true">Churn: usage dropped</button>
+              <button class="btn" data-ex="disease" aria-pressed="false">Rare disease: positive test</button>
+              <button class="btn" data-ex="fraud" aria-pressed="false">Fraud: overseas transaction</button>
+            </div>
+            <div class="controls">
+              <label class="range">Prior P(H) <span data-out="p">0.15</span><input type="range" min="1" max="99" value="15" data-in="p" /></label>
+              <label class="range">P(E | H) <span data-out="a">0.80</span><input type="range" min="1" max="99" value="80" data-in="a" /></label>
+              <label class="range">P(E | not H) <span data-out="b">0.20</span><input type="range" min="1" max="99" value="20" data-in="b" /></label>
+            </div>
+            <svg viewBox="0 0 640 270" role="img" aria-label="Icon array of prior and posterior"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>In business analytics</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Field</th><th>Application</th><th>How evidence and probability work</th></tr></thead>
+            <tbody>
+              <tr><td><b>Finance</b></td><td>Risk and credit scoring</td><td>Probabilistic models built on payment history</td></tr>
+              <tr><td><b>Marketing</b></td><td>Customer behavior prediction</td><td>Probabilities updated by campaign evidence</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Disease detection</td><td>Test results as evidence in probabilistic diagnosis</td></tr>
+              <tr><td><b>Operations</b></td><td>Demand forecasting</td><td>Past sales update forecast probabilities</td></tr>
+            </tbody>
+          </table></div>
+          <p><b>Common tools:</b> Bayesian networks (graphical models linking evidence and probabilities), the naive Bayes classifier (a simple model assuming conditional independence), A/B testing (experimental evidence comparing success rates), and Monte Carlo simulation (random sampling to estimate distributions).</p>
+          <p><b>Challenges:</b> misreading evidence (for example, confirmation bias), poor-quality data producing misleading probabilities, overconfidence in prior assumptions, and the difficulty of quantifying uncertainty.</p>
+          <p class="note">Evidence provides the observed reality; probability provides the quantitative belief. "Evidence changes what we believe, and probability tells us how much we should believe it."</p>
+        </section>
+
+        <section id="combination">
+          <h2>Combining evidence</h2>
+          <p class="section-sub">Many signals, one belief</p>
+
+          <p>In decision analytics we usually have <b>several</b> pieces of evidence E₁, E₂, E₃, … (data, signals, test results) bearing on one hypothesis H. <b>Explicit evidence combination</b> updates our belief about H using all of them with Bayes' rule:</p>
+          <div class="formula" style="text-align:center">P(H | E₁, E₂, …, Eₙ) = P(E₁, E₂, …, Eₙ | H) × P(H) ÷ P(E₁, E₂, …, Eₙ)</div>
+          <p>If the pieces of evidence are <b>conditionally independent given H</b>, the joint likelihood becomes a product:</p>
+          <div class="formula" style="text-align:center">P(E₁, E₂, …, Eₙ | H) = P(E₁ | H) × P(E₂ | H) × … × P(Eₙ | H)</div>
+          <div class="formula" style="text-align:center">so &nbsp; P(H | E₁, …, Eₙ) = P(H) × ∏ P(Eᵢ | H) ÷ P(E₁, …, Eₙ)</div>
+          <p>In practice, P(E₁, …, Eₙ) is found by computing the same product for every hypothesis (here, H and not H) and dividing by the total, so the posteriors add up to 1. This is exactly how the <b>naive Bayes classifier</b> works.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Concept</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>Prior</b></td><td>What we believe before any data</td></tr>
+              <tr><td><b>Likelihood</b></td><td>How well each piece of evidence fits the hypothesis</td></tr>
+              <tr><td><b>Posterior</b></td><td>The updated belief after combining all the evidence</td></tr>
+              <tr><td><b>Conditional independence</b></td><td>Given the hypothesis, each piece of evidence affects belief independently</td></tr>
+              <tr><td><b>Combination rule</b></td><td>Multiply all the likelihoods together, then apply Bayes' rule</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-spam">
+            <div class="viz-head">
+              <h4>Is this email spam? Combine the clues</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Start from the prior (40% of email is spam). Click each clue to say whether this email has it; unset clues are ignored. The chart tracks the belief as each clue is combined. As in the slides, 90% of spam contains the word "offer".</p>
+            <div data-clues></div>
+            <svg viewBox="0 0 640 230" role="img" aria-label="Probability of spam as evidence is combined"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Evidence narrows belief</h3>
+          <p>Each new piece of evidence narrows or shifts the distribution of belief. The prior is broad and uncertain; after E₁ it focuses on the likely values, and after E₂ it is sharper still.</p>
+
+          <div class="viz" id="viz-narrow">
+            <div class="viz-head">
+              <h4>Estimate a conversion rate as evidence accumulates</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">A new landing page has an unknown conversion rate. Start from a broad prior, then observe visitors in batches. The curve is the belief about the rate; watch it narrow and settle near the true value (hidden until you reveal it).</p>
+            <div class="controls">
+              <button class="btn" data-obs="10">Observe 10 visitors</button>
+              <button class="btn is-on" data-obs="50">Observe 50</button>
+              <button class="btn" data-obs="500">Observe 500</button>
+              <button class="btn ghost" data-reset>Start over</button>
+              <button class="btn ghost" data-reveal aria-pressed="false">Reveal the true rate</button>
+            </div>
+            <div class="controls" role="group" aria-label="Prior">
+              <b style="font-size:.9rem">Prior</b>
+              <button class="btn" data-prior="flat" aria-pressed="true">Know nothing (flat)</button>
+              <button class="btn" data-prior="wrong" aria-pressed="false">Confident but wrong (expects ~40%)</button>
+            </div>
+            <svg viewBox="0 0 640 250" role="img" aria-label="Belief distribution over the conversion rate"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Evidence combined</th></tr></thead>
+            <tbody>
+              <tr><td><b>Spam detection</b></td><td>Word frequencies, sender reputation, links</td></tr>
+              <tr><td><b>Medical diagnosis</b></td><td>Symptoms, test results, patient history</td></tr>
+              <tr><td><b>Fraud detection</b></td><td>Transaction amount, location, device ID, time</td></tr>
+              <tr><td><b>Recommendation systems</b></td><td>User history, similarity, context</td></tr>
+              <tr><td><b>Risk scoring</b></td><td>Many risk indicators combined into one probability</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="dependence">
+          <h2>When evidence isn't independent</h2>
+          <p class="section-sub">Don't count the same clue twice</p>
+
+          <p>If the pieces of evidence are <b>dependent</b>, you can't simply multiply their likelihoods. You must use joint or conditional probabilities, such as:</p>
+          <div class="formula" style="text-align:center">P(E₁, E₂ | H) = P(E₁ | H) × P(E₂ | E₁, H)</div>
+          <p>Multiplying anyway counts overlapping information more than once and makes the posterior overconfident. Bayesian networks handle this better by modelling the relationships between pieces of evidence explicitly.</p>
+
+          <div class="viz" id="viz-dep">
+            <div class="viz-head">
+              <h4>The danger of double-counting</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A patient has two positive screening results for a disease with a 5% prior. Each test alone has P(positive | disease) = 0.9 and P(positive | healthy) = 0.2. But the tests may measure the same thing: at full overlap, the second result just repeats the first. Compare the naive product with the correct calculation.</p>
+            <div class="controls">
+              <label class="range">Overlap between the two tests <span data-out="r">0%</span><input type="range" min="0" max="100" value="0" data-in="r" /></label>
+            </div>
+            <svg viewBox="0 0 640 200" role="img" aria-label="Naive vs correct posterior"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <p class="note">Combining evidence with Bayes' rule turns fragmented data into a coherent belief. Each new observation refines our understanding, as long as we account for how the observations relate to each other.</p>
+        </section>
+
+        <section id="reasoning">
+          <h2>Probabilistic reasoning</h2>
+          <p class="section-sub">Degrees of belief instead of true or false</p>
+
+          <div class="split reverse">
+            <img src="../assets/img/session-20/brain.jpg" alt="Circuit board shaped like a human brain" loading="lazy" />
+            <div>
+              <div class="definition" style="margin-top:0">
+                <strong>Probabilistic reasoning</strong>
+                A logical framework that uses probability theory to represent and reason about uncertain knowledge. Instead of absolute truths (yes/no), it works with degrees of belief. It asks: "Given what I know, how likely is this to be true?"
+              </div>
+              <p>It lets us combine prior knowledge with observed evidence, update beliefs as new data appears, and make rational decisions under uncertainty.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Context</th><th>Why it's needed</th></tr></thead>
+            <tbody>
+              <tr><td><b>Data analytics</b></td><td>Real-world data is incomplete, noisy or ambiguous</td></tr>
+              <tr><td><b>Machine learning</b></td><td>Predictions are probabilistic, not deterministic</td></tr>
+              <tr><td><b>Business decisions</b></td><td>Risk and uncertainty always exist</td></tr>
+              <tr><td><b>AI systems</b></td><td>Robots and agents must act despite uncertainty</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Core concept</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><b>Random variable</b></td><td>A variable with an uncertain outcome (weather, stock price)</td></tr>
+              <tr><td><b>Probability distribution</b></td><td>How likely each outcome is</td></tr>
+              <tr><td><b>Conditional probability</b></td><td>The probability of one event given another: P(A | B) = P(A ∩ B) ÷ P(B). If 90% of spam emails contain "offer", then P(Offer | Spam) = 0.9.</td></tr>
+              <tr><td><b>Independence</b></td><td>Two events don't affect each other's probability</td></tr>
+              <tr><td><b>Joint probability</b></td><td>The probability of several events together</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type of reasoning</th><th>Direction</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Forward (predictive)</b></td><td>Cause → effect</td><td>Disease → symptom</td></tr>
+              <tr><td><b>Backward (diagnostic)</b></td><td>Effect → cause</td><td>Symptom → disease</td></tr>
+              <tr><td><b>Causal</b></td><td>Infers cause–effect relationships</td><td>"Why did sales drop?"</td></tr>
+              <tr><td><b>Abductive</b></td><td>The best explanation for the evidence</td><td>"Given the alert, what's the likely fault?"</td></tr>
+              <tr><td><b>Bayesian</b></td><td>Updating belief as evidence arrives</td><td>A spam filter learning from each email</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="models">
+          <h2>Reasoning models</h2>
+          <p class="section-sub">Structured ways to compute with uncertainty</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Model</th><th>Description</th><th>Example use</th></tr></thead>
+            <tbody>
+              <tr><td><b>Bayesian networks</b></td><td>Graphs of dependencies between variables</td><td>Medical diagnosis, credit scoring</td></tr>
+              <tr><td><b>Naive Bayes classifier</b></td><td>Assumes features are independent given the class</td><td>Spam detection, sentiment analysis</td></tr>
+              <tr><td><b>Markov models</b></td><td>The next state depends only on the current one</td><td>Next-word prediction, stock trends</td></tr>
+              <tr><td><b>Hidden Markov models</b></td><td>States are hidden; only observations are visible</td><td>Speech recognition, bioinformatics</td></tr>
+              <tr><td><b>Monte Carlo simulation</b></td><td>Random sampling to estimate probabilities</td><td>Risk analysis, forecasting</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-bn">
+            <div class="viz-head">
+              <h4>Reason with a Bayesian network</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A small diagnostic network: smoking raises the risk of lung disease; lung disease causes coughing and abnormal X-rays; flu also causes coughing. Click a node to set what you've observed (unknown → yes → no). Every bar shows that variable's probability given all the evidence.</p>
+            <div class="controls" role="group" aria-label="Scenarios">
+              <button class="btn ghost" data-sc="fwd">Forward: a smoker</button>
+              <button class="btn ghost" data-sc="back">Backward: a cough</button>
+              <button class="btn ghost" data-sc="explain">Explaining away: cough + flu</button>
+              <button class="btn ghost" data-sc="reset">Clear all evidence</button>
+            </div>
+            <svg viewBox="0 0 640 330" role="img" aria-label="Bayesian network with node probabilities"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="viz" id="viz-markov">
+            <div class="viz-head">
+              <h4>A Markov model of customer states</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Each month a customer is Active, At risk, or Churned, and next month's state depends only on this month's (the Markov property). Start with 1,000 active customers, adjust the transition probabilities, and project 12 months ahead.</p>
+            <div class="controls">
+              <label class="range">Active → At risk <span data-out="ar">10%</span><input type="range" min="1" max="40" value="10" data-in="ar" /></label>
+              <label class="range">At risk → Active (win-back) <span data-out="ra">30%</span><input type="range" min="0" max="80" value="30" data-in="ra" /></label>
+              <label class="range">At risk → Churned <span data-out="rc">20%</span><input type="range" min="0" max="60" value="20" data-in="rc" /></label>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Transition diagram and projected customer states"></svg>
+            <div class="legend"><span><i style="background:#0e8c7f"></i>Active</span><span><i style="background:#d98a0b"></i>At risk</span><span><i style="background:#d94f70"></i>Churned</span></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Characteristic</th><th>Explanation</th></tr></thead>
+            <tbody>
+              <tr><td><b>Uncertainty modelling</b></td><td>Handles incomplete or noisy data</td></tr>
+              <tr><td><b>Learning from data</b></td><td>Probabilities adjust with evidence</td></tr>
+              <tr><td><b>Quantitative logic</b></td><td>Combines mathematics with reasoning</td></tr>
+              <tr><td><b>Dynamic updating</b></td><td>Beliefs evolve as new evidence appears</td></tr>
+              <tr><td><b>Decision support</b></td><td>Guides rational choices under uncertainty</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Benefits:</b> it handles incomplete or noisy data, gives a degree of confidence rather than a bare yes/no, integrates new information through Bayes' theorem, and reduces intuition-based bias in decisions.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Concept</th><th>Description</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><b>Evidence</b></td><td>Data or observations supporting or refuting a hypothesis</td><td>Basis for updating beliefs</td></tr>
+              <tr><td><b>Probability</b></td><td>Quantitative measure of uncertainty</td><td>Describes likelihood</td></tr>
+              <tr><td><b>Bayes' theorem</b></td><td>The mathematical link between evidence and probability</td><td>Updates beliefs logically</td></tr>
+              <tr><td><b>Probabilistic reasoning</b></td><td>Reasoning and deciding under uncertainty with probability theory</td><td>Rational, data-driven decisions</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="takeaways">
+            <h3>Session 20 in summary</h3>
+            <ul>
+              <li>Evidence doesn't give certainty; it changes how confident we should be. Probability measures that confidence.</li>
+              <li>Bayes' theorem, P(H | E) = P(E | H) × P(H) ÷ P(E), turns a prior into a posterior; rare hypotheses stay unlikely even after strong evidence.</li>
+              <li>Several pieces of evidence can be combined by multiplying their likelihoods, but only if they're conditionally independent given the hypothesis (the naive Bayes assumption).</li>
+              <li>Dependent evidence must be combined with joint or conditional probabilities; multiplying anyway double-counts and overstates confidence.</li>
+              <li>Probabilistic reasoning runs forward (cause → effect), backward (effect → cause) and abductively (best explanation); Bayesian networks and Markov models put it into practice.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="20"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-19.html">Previous: Session 19</a>
+      <a href="session-21.html">Next: Session 21</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-20.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

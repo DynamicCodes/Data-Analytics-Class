@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 02: Approval, Installation, Acceptance and Operation | Data-Class</title>
+  <meta name="description" content="Management approval, installation, acceptance and operation in the data analytics life cycle." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>02</div>
+      <h1>Approval, Installation, Acceptance and Operation</h1>
+      <p class="lead">The final phases of an analytics project: getting leadership sign-off, setting up the tools, proving the solution works for its users, and keeping it running reliably in production.</p>
+      <ul class="lesson-meta">
+        <li>5 topics</li>
+        <li>4 interactive visuals</li>
+        <li>About 30 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-02/hero.jpg" alt="Finger tracing a rising line chart on a glowing screen" />
+    </figure>
+
+    <ol class="phase-strip" aria-label="Analytics project phases covered in the course">
+      <li class="is-done">Discovery</li>
+      <li class="is-done">Data preparation</li>
+      <li class="is-done">Model planning</li>
+      <li class="is-done">Model building</li>
+      <li class="is-done">Quality assurance</li>
+      <li class="is-done">Documentation</li>
+      <li class="is-here">Management approval</li>
+      <li class="is-here">Installation</li>
+      <li class="is-here">Acceptance and operation</li>
+    </ol>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#approval">Management approval</a></li>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#acceptance">Acceptance</a></li>
+          <li><a href="#operation">Operation</a></li>
+          <li><a href="#best-practices">Best practices and summary</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+
+        <!-- 1 -->
+        <section id="approval">
+          <h2>Management approval</h2>
+          <p class="section-sub">Accountability, oversight and decision-making authority</p>
+
+          <div class="split">
+            <img src="../assets/img/session-02/approval.jpg" alt="Connected rings on a surface, like linked approval steps" loading="lazy" />
+            <div>
+              <div class="definition" style="margin:0">
+                <strong>Management approval</strong>
+                The formal sign-off by leadership or stakeholders at key stages of an analytics project. It makes sure resources, objectives, processes and outcomes line up with business goals and compliance requirements.
+              </div>
+            </div>
+          </div>
+
+          <h3>Why approval matters</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Alignment</h4><p>Confirms the project supports strategic business goals.</p></div>
+            <div class="point"><h4>Resources</h4><p>Budget, tools and people are formally authorized.</p></div>
+            <div class="point"><h4>Risk management</h4><p>Reduces errors, misreadings and misuse of data.</p></div>
+            <div class="point"><h4>Compliance</h4><p>Meets regulatory, privacy and security standards.</p></div>
+            <div class="point"><h4>Accountability</h4><p>Key decisions and assumptions are reviewed and recorded.</p></div>
+          </div>
+
+          <h3>Stages that need approval</h3>
+          <p>Approval isn't a single event at the end. Projects pass through a series of gates, and each gate has to be cleared before the next stage begins.</p>
+
+          <div class="viz" id="viz-gates">
+            <div class="viz-head">
+              <h4>Walk a project through its approval gates</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Approve each gate in order. A gate can't be approved until the one before it has been signed off.</p>
+            <div class="progress-track" aria-hidden="true"><div class="progress-fill"></div></div>
+            <ol class="gates"></ol>
+            <div class="controls" style="margin:1rem 0 0">
+              <button class="btn ghost" data-reset>Start over</button>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Best practices</h3>
+          <ol class="steps">
+            <li><h4>Document everything</h4><p>Give clear summaries of objectives, methods, assumptions and risks.</p></li>
+            <li><h4>Use dashboards or prototypes</h4><p>Visuals help managers understand technical results quickly.</p></li>
+            <li><h4>Create structured approval workflows</h4><p>Use digital tools for sign-offs and version control.</p></li>
+            <li><h4>Involve key stakeholders early</h4><p>Engage management before critical milestones to avoid delays.</p></li>
+            <li><h4>Include compliance and security checks</h4><p>Bring legal, privacy or governance teams into the loop when needed.</p></li>
+          </ol>
+
+          <h3>Tools and methods</h3>
+          <div class="tool-rows">
+            <div class="tool-row"><b>Project management</b><ul class="chips"><li>Jira</li><li>Asana</li><li>Monday.com</li></ul></div>
+            <div class="tool-row"><b>Documentation</b><ul class="chips"><li>Confluence</li><li>SharePoint</li></ul></div>
+            <div class="tool-row"><b>Dashboards</b><ul class="chips"><li>Tableau</li><li>Power BI</li><li>Looker</li></ul></div>
+            <div class="tool-row"><b>Digital signatures</b><ul class="chips"><li>DocuSign</li><li>Adobe Sign</li></ul></div>
+          </div>
+        </section>
+
+        <!-- 2 -->
+        <section id="installation">
+          <h2>Installation</h2>
+          <p class="section-sub">Setting up the environment analytics runs on</p>
+
+          <div class="definition">
+            <strong>Installation</strong>
+            Setting up the software, tools, platforms and environments needed for data analytics. Proper installation keeps the analytics pipeline running smoothly, efficiently and reproducibly.
+          </div>
+
+          <div class="point-grid">
+            <div class="point"><h4>Enables the work</h4><p>Provides tools for processing, analysis and visualization.</p></div>
+            <div class="point"><h4>Compatibility</h4><p>Prevents software conflicts and version mismatches.</p></div>
+            <div class="point"><h4>Reproducibility</h4><p>A consistent setup lets teams reproduce analyses reliably.</p></div>
+            <div class="point"><h4>Security</h4><p>Installations follow IT policy and data security standards.</p></div>
+          </div>
+
+          <h3>What typically gets installed</h3>
+          <figure class="figure">
+            <img src="../assets/img/session-02/install.jpg" alt="Digital globe surrounded by streams of data" loading="lazy" />
+          </figure>
+          <div class="tool-rows">
+            <div class="tool-row"><b>Languages and environments</b><ul class="chips"><li>Python (pandas, NumPy, scikit-learn, Matplotlib, seaborn)</li><li>R</li><li>Jupyter Notebook / JupyterLab</li><li>RStudio</li></ul></div>
+            <div class="tool-row"><b>SQL databases</b><ul class="chips"><li>MySQL</li><li>PostgreSQL</li><li>Microsoft SQL Server</li></ul></div>
+            <div class="tool-row"><b>NoSQL databases</b><ul class="chips"><li>MongoDB</li><li>Cassandra</li><li>Firebase</li></ul></div>
+            <div class="tool-row"><b>Data warehouses</b><ul class="chips"><li>Snowflake</li><li>Amazon Redshift</li><li>Google BigQuery</li></ul></div>
+            <div class="tool-row"><b>ETL and pipelines</b><ul class="chips"><li>Apache Airflow</li><li>Talend</li><li>Informatica</li><li>dbt</li></ul></div>
+            <div class="tool-row"><b>Visualization and BI</b><ul class="chips"><li>Tableau</li><li>Power BI</li><li>Looker</li><li>Google Data Studio</li></ul></div>
+            <div class="tool-row"><b>Analytics and ML</b><ul class="chips"><li>Apache Spark</li><li>TensorFlow</li><li>PyTorch</li><li>KNIME</li><li>SAS</li><li>RapidMiner</li></ul></div>
+            <div class="tool-row"><b>Version control</b><ul class="chips"><li>Git</li><li>GitHub</li><li>GitLab</li><li>Bitbucket</li></ul></div>
+            <div class="tool-row"><b>Supporting tools</b><ul class="chips"><li>Docker / Conda</li><li>Python venv</li><li>AWS, Azure, GCP</li></ul></div>
+          </div>
+
+          <h3>An example installation workflow</h3>
+          <div class="viz" id="viz-install">
+            <div class="viz-head">
+              <h4>Set up an analytics environment</h4>
+              <span class="viz-tag">Step through</span>
+            </div>
+            <p class="viz-hint">Five steps from an empty machine to a documented setup your team can copy.</p>
+            <div class="controls">
+              <button class="btn" data-dir="-1">Back</button>
+              <button class="btn is-on" data-dir="1">Next step</button>
+              <div class="step-dots" aria-hidden="true"></div>
+            </div>
+            <div class="viz-out" style="margin:0 0 .75rem" aria-live="polite"></div>
+            <div class="terminal" aria-label="Terminal commands for this step"></div>
+          </div>
+
+          <h3>Installation best practices</h3>
+          <div class="table-wrap">
+            <table>
+              <tbody>
+                <tr><th>Check requirements</th><td>Make sure the operating system, memory and disk space meet each tool's needs.</td></tr>
+                <tr><th>Use virtual environments</th><td>Isolate each project's dependencies to prevent conflicts.</td></tr>
+                <tr><th>Manage versions</th><td>Track library versions so results stay reproducible.</td></tr>
+                <tr><th>Document the steps</th><td>Write down the setup so teammates can replicate it.</td></tr>
+                <tr><th>Automate</th><td>Use bash or Python scripts, or Dockerfiles, to install consistently.</td></tr>
+                <tr><th>Test the setup</th><td>Run a small sample analysis to confirm everything works.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 3 -->
+        <section id="acceptance">
+          <h2>Acceptance</h2>
+          <p class="section-sub">Proving the solution meets its requirements</p>
+
+          <p><b>Acceptance and operation</b> are the final stages of the project life cycle. Here the analytics solution is validated, approved, deployed and maintained for everyday use, so its outputs are accurate, reliable and actionable for business decisions.</p>
+
+          <div class="split">
+            <img src="../assets/img/session-02/acceptance.jpg" alt="Hand placing the final piece into a puzzle of people" loading="lazy" />
+            <div>
+              <div class="definition" style="margin:0 0 1rem">
+                <strong>Acceptance</strong>
+                The formal approval stage where stakeholders or management verify that the analytics solution meets its requirements.
+              </div>
+              <h4>Key objectives</h4>
+              <ul class="plain">
+                <li>Confirm outputs align with business objectives.</li>
+                <li>Validate the accuracy, completeness and reliability of results.</li>
+                <li>Ensure compliance with governance and regulations.</li>
+                <li>Gain formal sign-off for deployment.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>Common acceptance activities</h3>
+          <div class="point-grid">
+            <div class="point">
+              <h4>User acceptance testing (UAT)</h4>
+              <p>Actual users test dashboards, reports or models to confirm results are understandable and actionable.</p>
+            </div>
+            <div class="point">
+              <h4>Validating models and metrics</h4>
+              <p>Check performance (accuracy, precision, recall) and compare results with benchmarks or historical data.</p>
+            </div>
+            <div class="point">
+              <h4>Stakeholder review</h4>
+              <p>Present insights, assumptions and methods, and take in feedback before deployment.</p>
+            </div>
+            <div class="point">
+              <h4>Documentation and sign-off</h4>
+              <p>Record approval formally with signatures or digital confirmation.</p>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-uat">
+            <div class="viz-head">
+              <h4>Run a UAT sign-off for a sales dashboard</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Tick each acceptance criterion once it has been verified. Sign-off is only possible when all of them pass.</p>
+            <ul class="checklist"></ul>
+            <div class="controls" style="margin:1rem 0 0">
+              <span class="badge" aria-live="polite"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4 -->
+        <section id="operation">
+          <h2>Operation</h2>
+          <p class="section-sub">Keeping the solution useful in day-to-day work</p>
+
+          <div class="definition">
+            <strong>Operation</strong>
+            The stage where the analytics solution is deployed into production and actively used in business processes.
+          </div>
+
+          <h4>Key objectives</h4>
+          <ul class="plain">
+            <li>Make insights available to end users and decision makers.</li>
+            <li>Keep the solution running smoothly, reliably and securely.</li>
+            <li>Continuously monitor performance, accuracy and data quality.</li>
+          </ul>
+
+          <figure class="figure">
+            <img src="../assets/img/session-02/operation.jpg" alt="Boxes moving along a network of roller conveyors" loading="lazy" />
+          </figure>
+
+          <h3>Operational activities</h3>
+          <ol class="steps">
+            <li>
+              <h4>Deployment</h4>
+              <ul><li>Deploy dashboards, reports or models to production platforms.</li><li>Integrate with existing systems such as ERP, CRM and data warehouses.</li></ul>
+            </li>
+            <li>
+              <h4>Monitoring and maintenance</h4>
+              <ul><li>Track pipeline health and model performance.</li><li>Detect anomalies, missing data or falling model accuracy.</li><li>Update models and dashboards as requirements change.</li></ul>
+            </li>
+            <li>
+              <h4>User support and training</h4>
+              <ul><li>Guide people in interpreting analytics outputs.</li><li>Run training sessions for teams using the dashboards and reports.</li></ul>
+            </li>
+            <li>
+              <h4>Periodic review</h4>
+              <ul><li>Audit the usage, accuracy and effectiveness of outputs.</li><li>Adjust pipelines, models or reports based on feedback or business changes.</li></ul>
+            </li>
+          </ol>
+
+          <div class="viz" id="viz-monitor">
+            <div class="viz-head">
+              <h4>Monitor a model in production</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Weekly accuracy of a demand forecasting model over six months. As customer behavior shifts, the data drifts and accuracy falls. Set an alert threshold and decide whether to retrain automatically.</p>
+            <div class="controls">
+              <label class="range">Alert threshold <span data-out="th">85%</span><input type="range" min="75" max="92" value="85" data-in="th" /></label>
+              <button class="btn" data-retrain aria-pressed="false">Retrain when alerted</button>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Model accuracy over 26 weeks"></svg>
+            <div class="legend">
+              <span><i style="background:#0e8c7f"></i>Weekly accuracy</span>
+              <span><i style="background:#d94f70"></i>Below threshold</span>
+              <span><i style="background:#6b5fd3"></i>Retrained</span>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="alerts">–</b><span>Weeks below threshold</span></div>
+              <div class="stat"><b data-stat="avg">–</b><span>Average accuracy</span></div>
+              <div class="stat"><b data-stat="retrains">–</b><span>Retrains</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <!-- 5 -->
+        <section id="best-practices">
+          <h2>Best practices and summary</h2>
+          <p class="section-sub">Acceptance and operation done well</p>
+
+          <ol class="steps">
+            <li><h4>Define acceptance criteria up front</h4><p>Agree on them at the beginning of the project, not at the end.</p></li>
+            <li><h4>Involve stakeholders in UAT</h4><p>Bring key users into testing and review sessions.</p></li>
+            <li><h4>Automate monitoring</h4><p>Watch data quality and model performance automatically.</p></li>
+            <li><h4>Version everything</h4><p>Keep version control for datasets, models and dashboards.</p></li>
+            <li><h4>Close the feedback loop</h4><p>Use feedback to keep improving the solution.</p></li>
+          </ol>
+
+          <div class="takeaways">
+            <h3>Session 2 in summary</h3>
+            <ul>
+              <li>Management approval happens at several gates, from project initiation to deployment, and keeps the work aligned, funded and compliant.</li>
+              <li>Installation sets up languages, databases, pipelines, BI tools and version control in a documented, reproducible way.</li>
+              <li>Acceptance proves the solution meets its requirements through UAT, validation, stakeholder review and formal sign-off.</li>
+              <li>Operation keeps the solution useful: deploy, monitor, support users, review and retrain as data changes.</li>
+              <li>Together with session 1, you have now followed a full analytics project from discovery to day-to-day operation.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="2"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-01.html">Previous: Session 01</a>
+      <a href="session-03.html">Next: Session 03</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-02.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

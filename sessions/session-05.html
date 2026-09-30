@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 05: Descriptive Statistics | Data-Class</title>
+  <meta name="description" content="Central tendency, dispersion, position and shape, applied to a year of monthly sales." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>05</div>
+      <h1>Descriptive Statistics</h1>
+      <p class="lead">The measures that summarize any dataset: where its center is, how spread out it is, where individual values stand, and what shape it takes. Then a full worked example on a retail company's monthly sales.</p>
+      <ul class="lesson-meta">
+        <li>7 topics</li>
+        <li>3 interactive visuals</li>
+        <li>About 35 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-05/hero.jpg" alt="Printed charts and a calculator on a wooden desk" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#intro">What descriptive statistics do</a></li>
+          <li><a href="#central">Central tendency</a></li>
+          <li><a href="#dispersion">Dispersion</a></li>
+          <li><a href="#position">Position: percentiles and quartiles</a></li>
+          <li><a href="#shape">Shape: skewness and kurtosis</a></li>
+          <li><a href="#playground">Seeing the measures together</a></li>
+          <li><a href="#sales-case">Business case: monthly sales</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="intro">
+          <h2>What descriptive statistics do</h2>
+          <p class="section-sub">A snapshot summary of a dataset</p>
+
+          <div class="definition">
+            <strong>Descriptive statistics</strong>
+            Measures that summarize and organize data so it can be easily understood. They describe the main features of a dataset: its central tendency, dispersion and shape.
+          </div>
+
+          <div class="point-grid">
+            <div class="point"><h4>Central tendency</h4><p>The typical value: mean, median, mode.</p></div>
+            <div class="point"><h4>Dispersion</h4><p>How spread out values are: range, variance, standard deviation, coefficient of variation.</p></div>
+            <div class="point"><h4>Position</h4><p>Where a value stands: percentiles, quartiles, interquartile range.</p></div>
+            <div class="point"><h4>Shape</h4><p>The pattern of the distribution: skewness and kurtosis.</p></div>
+          </div>
+          <p>They are the foundation of data analysis. Before any advanced statistical or predictive method, these measures show you the patterns, the variability and the overall distribution of your data.</p>
+        </section>
+
+        <section id="central">
+          <h2>Central tendency</h2>
+          <p class="section-sub">The center, or typical value, of a dataset</p>
+
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>Mean (average)</h4>
+              <div class="formula">Mean = ΣX<sub>i</sub> ÷ n</div>
+              <p>Add all values and divide by how many there are. Sensitive to outliers: one extreme value can pull it a long way.</p>
+            </div>
+            <div class="measure">
+              <h4>Median</h4>
+              <div class="formula">Middle value of the sorted data</div>
+              <p>With an even count, take the average of the two middle values. Much less affected by extreme values.</p>
+            </div>
+            <div class="measure">
+              <h4>Mode</h4>
+              <div class="formula">Most frequent value(s)</div>
+              <p>There can be one, several, or none. The only center measure that works for categorical data.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="dispersion">
+          <h2>Dispersion</h2>
+          <p class="section-sub">How spread out the values are</p>
+
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>Range</h4>
+              <div class="formula">Range = Max − Min</div>
+              <p>Simple, but depends only on the two most extreme values, so it is sensitive to outliers.</p>
+            </div>
+            <div class="measure">
+              <h4>Variance (σ²)</h4>
+              <div class="formula">σ² = Σ(X<sub>i</sub> − X̄)² ÷ n</div>
+              <p>The average squared distance from the mean. For a sample, divide by n − 1 instead (written s²).</p>
+            </div>
+            <div class="measure">
+              <h4>Standard deviation (σ)</h4>
+              <div class="formula">σ = √Variance</div>
+              <p>The typical distance of a value from the mean, in the same units as the data.</p>
+            </div>
+            <div class="measure">
+              <h4>Coefficient of variation (CV)</h4>
+              <div class="formula">CV = (SD ÷ Mean) × 100</div>
+              <p>Spread relative to the mean, as a percentage. Lets you compare variability across datasets with different units or scales.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="position">
+          <h2>Position: percentiles and quartiles</h2>
+          <p class="section-sub">Where a value stands relative to the rest</p>
+
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>Percentiles</h4>
+              <p>Divide sorted data into 100 equal parts. The 90th percentile is the value below which 90% of observations fall.</p>
+            </div>
+            <div class="measure">
+              <h4>Quartiles</h4>
+              <p>Divide data into four equal parts: Q1 (25th percentile), Q2 (the median, 50th) and Q3 (75th).</p>
+            </div>
+            <div class="measure">
+              <h4>Interquartile range (IQR)</h4>
+              <div class="formula">IQR = Q3 − Q1</div>
+              <p>The spread of the middle 50% of the data. Unaffected by extreme values, and the basis of the box plot.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="shape">
+          <h2>Shape: skewness and kurtosis</h2>
+          <p class="section-sub">The pattern of the distribution</p>
+
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>Skewness</h4>
+              <p>Measures asymmetry.<br /><b>Positive skew:</b> a long tail on the right.<br /><b>Negative skew:</b> a long tail on the left.</p>
+            </div>
+            <div class="measure">
+              <h4>Kurtosis</h4>
+              <p>Measures peakedness or flatness.<br /><b>Leptokurtic:</b> tall and narrow.<br /><b>Mesokurtic:</b> normal shape.<br /><b>Platykurtic:</b> flat.</p>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-shape">
+            <div class="viz-head">
+              <h4>Bend the distribution</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Drag the skew slider and change the peakedness. Watch how the mean, median and mode separate as the distribution becomes lopsided.</p>
+            <div class="controls">
+              <label class="range">Skew <span data-out="sk">None</span><input type="range" min="-8" max="8" step="0.5" value="0" data-in="sk" /></label>
+            </div>
+            <div class="controls" role="group" aria-label="Peakedness">
+              <button class="btn" data-k="1.1" aria-pressed="false">Leptokurtic</button>
+              <button class="btn" data-k="2" aria-pressed="true">Mesokurtic</button>
+              <button class="btn" data-k="5" aria-pressed="false">Platykurtic</button>
+            </div>
+            <svg viewBox="0 0 640 250" role="img" aria-label="Distribution curve"></svg>
+            <div class="legend">
+              <span><i style="background:#6b5fd3"></i>Mean</span>
+              <span><i style="background:#0e8c7f"></i>Median</span>
+              <span><i style="background:#d98a0b"></i>Mode</span>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="playground">
+          <h2>Seeing the measures together</h2>
+          <p class="section-sub">Visual tools used alongside the numbers</p>
+
+          <p>Descriptive measures are usually read together with visuals that show the whole distribution: a <b>histogram</b>, a <b>box plot</b>, a <b>stem-and-leaf plot</b> or a <b>frequency table</b>.</p>
+
+          <div class="viz" id="viz-stats">
+            <div class="viz-head">
+              <h4>Statistics calculator</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Pick a dataset or type your own numbers, separated by commas. Every measure, the dot plot and the box plot update as you type. Add an extreme value to see which measures it moves.</p>
+            <div class="controls" role="group" aria-label="Example datasets">
+              <button class="btn" data-preset="sales" aria-pressed="true">Monthly sales</button>
+              <button class="btn" data-preset="ages" aria-pressed="false">Patient ages</button>
+              <button class="btn" data-preset="scores" aria-pressed="false">Test scores</button>
+              <button class="btn ghost" data-outlier>Add an extreme value</button>
+            </div>
+            <label for="stats-input" style="font-size:.9rem;font-weight:600">Data values</label>
+            <input id="stats-input" class="num-input" type="text" inputmode="decimal" />
+            <div class="controls" style="margin:1rem 0 .25rem">
+              <label class="range">Percentile <span data-out="p">90th</span><input type="range" min="1" max="99" value="90" data-in="p" /></label>
+              <button class="btn" data-sample aria-pressed="false">Treat as a sample (n − 1)</button>
+            </div>
+            <svg viewBox="0 0 640 220" role="img" aria-label="Dot plot and box plot"></svg>
+            <div class="legend">
+              <span><i style="background:#6b5fd3"></i>Mean</span>
+              <span><i style="background:#0e8c7f"></i>Median</span>
+              <span><i style="background:#d98a0b"></i>Percentile</span>
+            </div>
+            <div class="stat-row" data-stats></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Application example</h3>
+          <p>In a dataset of patients' ages, the mean is 45 years, the median 43 years and the standard deviation 10 years. The average patient is 45, and most patients are between 35 and 55 (within one standard deviation of the mean). The median sitting a little below the mean hints at a few older patients pulling the average up.</p>
+        </section>
+
+        <section id="sales-case">
+          <h2>Business case: monthly sales</h2>
+          <p class="section-sub">A time series analyzed with central tendency and dispersion</p>
+
+          <div class="split">
+            <img src="../assets/img/session-05/timeseries.jpg" alt="Line chart glowing on a dark display" loading="lazy" />
+            <div>
+              <p>A retail company wants to analyze its sales for the last 12 months in order to:</p>
+              <ul class="plain">
+                <li>understand its typical monthly sales (central tendency),</li>
+                <li>measure how stable, or risky, its sales are (dispersion),</li>
+                <li>support forecasting and decision making.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-sales">
+            <div class="viz-head">
+              <h4>Monthly sales (₹000)</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Layer the measures onto the time series.</p>
+            <div class="controls">
+              <button class="btn" data-layer="mean" aria-pressed="true">Mean</button>
+              <button class="btn" data-layer="sd" aria-pressed="false">±1 standard deviation</button>
+              <button class="btn" data-layer="range" aria-pressed="false">Range</button>
+              <button class="btn" data-layer="trend" aria-pressed="false">Trend line</button>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Monthly sales line chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Month</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th></tr></thead>
+            <tbody><tr><th>Sales (₹000)</th><td>480</td><td>520</td><td>510</td><td>580</td><td>600</td><td>560</td><td>610</td><td>590</td><td>570</td><td>640</td><td>660</td><td>700</td></tr></tbody>
+          </table></div>
+
+          <h3>Step-by-step calculations</h3>
+
+          <details class="working" open>
+            <summary>Mean <span>₹585,000</span></summary>
+            <div>
+              <div class="formula">X̄ = ΣX<sub>i</sub> ÷ n = 7,020 ÷ 12 = 585</div>
+              <p>On average, the company earns ₹585,000 a month.</p>
+            </div>
+          </details>
+          <details class="working">
+            <summary>Median <span>₹585,000</span></summary>
+            <div>
+              <p>Sorted: 480, 510, 520, 560, 570, <b>580, 590</b>, 600, 610, 640, 660, 700</p>
+              <div class="formula">Median = (580 + 590) ÷ 2 = 585</div>
+              <p>The median equals the mean, so sales are roughly symmetric with no extreme outliers.</p>
+            </div>
+          </details>
+          <details class="working">
+            <summary>Mode <span>None</span></summary>
+            <div><p>No value repeats, so there is no mode. Each month's sales are different, consistent with steady growth rather than repeated plateaus.</p></div>
+          </details>
+          <details class="working">
+            <summary>Range <span>₹220,000</span></summary>
+            <div>
+              <div class="formula">Range = Max − Min = 700 − 480 = 220</div>
+              <p>Sales varied by ₹220,000 across the year.</p>
+            </div>
+          </details>
+          <details class="working">
+            <summary>Variance and standard deviation <span>σ ≈ ₹60,900</span></summary>
+            <div>
+              <p>Deviations from the mean (X<sub>i</sub> − 585): −105, −65, −75, −5, 15, −25, 25, 5, −15, 55, 75, 115</p>
+              <p>Squared and added: 11,025 + 4,225 + 5,625 + 25 + 225 + 625 + 625 + 25 + 225 + 3,025 + 5,625 + 13,225 = <b>44,500</b></p>
+              <div class="formula">σ² = 44,500 ÷ 12 = 3,708.33 &nbsp;⇒&nbsp; σ = √3,708.33 ≈ 60.9</div>
+              <p>Monthly sales typically sit about ₹61,000 away from the average.</p>
+              <p class="note" style="margin:.5rem 0 0">If these 12 months are treated as a sample of a longer history, divide by n − 1 instead: s² = 44,500 ÷ 11 = 4,045.45 and s ≈ 63.6.</p>
+            </div>
+          </details>
+          <details class="working">
+            <summary>Coefficient of variation <span>≈ 10.4%</span></summary>
+            <div>
+              <div class="formula">CV = (σ ÷ X̄) × 100 = (60.9 ÷ 585) × 100 ≈ 10.4%</div>
+              <p>Only about 10% variation relative to the mean: sales are relatively stable and predictable. (Using the sample SD, CV ≈ 10.9%.)</p>
+            </div>
+          </details>
+          <details class="working">
+            <summary>Quartiles and IQR <span>IQR = ₹67,500</span></summary>
+            <div>
+              <div class="formula">Q1 = 550 &nbsp;·&nbsp; Q2 = 585 &nbsp;·&nbsp; Q3 = 617.5 &nbsp;⇒&nbsp; IQR = 67.5</div>
+              <p>The middle half of months fell between ₹550,000 and ₹617,500. (Calculated with the same linear interpolation method as Excel's QUARTILE.INC; other methods give slightly different values.)</p>
+            </div>
+          </details>
+
+          <h3>Reading the time series</h3>
+          <ul class="plain">
+            <li><b>Trend:</b> a gradual increase, especially from June to December, showing good business momentum.</li>
+            <li><b>Low variability:</b> stable demand with consistent growth means low business risk.</li>
+            <li><b>Forecasting:</b> the upward trend and the November–December peak suggest seasonality, which a forecast for next year should account for.</li>
+          </ul>
+
+          <h3>Business insights</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Insight</th><th>Measure used</th><th>Business meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>Performance level</b></td><td>Mean, median</td><td>Average monthly sales of ₹585k show overall business health.</td></tr>
+              <tr><td><b>Stability</b></td><td>Standard deviation, CV</td><td>About 10% variation shows stable demand.</td></tr>
+              <tr><td><b>Growth pattern</b></td><td>Time series trend</td><td>Steady increase, with possible seasonality in November and December.</td></tr>
+              <tr><td><b>Risk and volatility</b></td><td>Range, variance</td><td>Low dispersion means less uncertainty, which helps plan inventory and cash flow.</td></tr>
+              <tr><td><b>Decision support</b></td><td>Combined</td><td>Use the mean for budgeting, variance for risk analysis and the trend for forecasting.</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Strategic use across departments</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Department</th><th>Using central tendency</th><th>Using dispersion</th></tr></thead>
+            <tbody>
+              <tr><td><b>Sales and marketing</b></td><td>Set monthly targets from the mean or median.</td><td>Plan promotion intensity based on volatility.</td></tr>
+              <tr><td><b>Finance</b></td><td>Plan budgets from average cash inflow.</td><td>Assess risk from the variance in sales.</td></tr>
+              <tr><td><b>Inventory</b></td><td>Keep average stock near mean sales.</td><td>Size safety stock from dispersion to avoid shortages and overstock.</td></tr>
+              <tr><td><b>Operations</b></td><td>Schedule production for typical demand.</td><td>Adjust resources in high-variance months.</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="takeaways">
+            <h3>Session 5 in summary</h3>
+            <ul>
+              <li>Central tendency showed the company's average performance: ₹585k a month.</li>
+              <li>Dispersion showed consistency: a CV of about 10% means stable, predictable demand.</li>
+              <li>The time series revealed steady growth and possible seasonal peaks, both essential for next year's plans.</li>
+              <li>Combining central tendency and dispersion helps a business balance growth planning with risk management.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="5"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-04.html">Previous: Session 04</a>
+      <a href="session-06.html">Next: Session 06</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-05.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

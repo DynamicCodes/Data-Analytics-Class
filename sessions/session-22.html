@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 22: KNIME Analytics Platform | Data-Class</title>
+  <meta name="description" content="Building no-code analytics workflows in KNIME: nodes, ports and workflows, the typical workflow phases, integrations, applications, and a recap of the whole course." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>22</div>
+      <h1>KNIME Analytics Platform</h1>
+      <p class="lead">KNIME turns everything this course has covered into a visual pipeline: read data, clean it, model it, evaluate it and share the results, by connecting nodes instead of writing code. The session ends with a recap of all 22 sessions.</p>
+      <ul class="lesson-meta">
+        <li>4 topics</li>
+        <li>2 interactive visuals</li>
+        <li>About 30 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-22/hero.jpg" alt="Glowing line chart over a dark blue data grid" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#knime">What KNIME is</a></li>
+          <li><a href="#how">How KNIME works</a></li>
+          <li><a href="#workflow">Building a workflow</a></li>
+          <li><a href="#uses">Integration and applications</a></li>
+          <li><a href="#recap">Course recap</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="knime">
+          <h2>What KNIME is</h2>
+          <p class="section-sub">Visual, no-code data analytics</p>
+
+          <div class="definition">
+            <strong>KNIME</strong>
+            KNIME (the Konstanz Information Miner) is an open-source platform for data analytics, machine learning and workflows. You build visual workflows by dragging and dropping nodes that read, clean and transform data, build and evaluate models, and visualize results, without writing code.
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><b>Visual workflow editor</b></td><td>A drag-and-drop environment for designing analytical pipelines</td></tr>
+              <tr><td><b>Integration</b></td><td>Connects with Python, R, SQL, Excel, TensorFlow and more</td></tr>
+              <tr><td><b>Data analytics</b></td><td>Built-in tools for statistics, machine learning and AI</td></tr>
+              <tr><td><b>ETL (extract, transform, load)</b></td><td>Handles large datasets from many sources</td></tr>
+              <tr><td><b>Extensibility</b></td><td>Plugins for text mining, image processing and deep learning</td></tr>
+              <tr><td><b>Open source + commercial add-ons</b></td><td>KNIME Analytics Platform is free; KNIME Server adds enterprise automation</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Background:</b> KNIME was developed in 2004 at the University of Konstanz, Germany, to help researchers and professionals analyze data visually. Today it's widely used in business analytics, bioinformatics, finance and marketing analytics, and industrial data science.</p>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>KNIME Analytics Platform</h4><p>The core desktop tool: open-source and free, used to build and run workflows.</p></div>
+            <div class="measure"><h4>KNIME Hub</h4><p>A cloud repository for sharing and discovering workflows, components and extensions.</p></div>
+            <div class="measure"><h4>KNIME Business Hub / Server</h4><p>The enterprise version, for workflow automation, scheduling, collaboration and deployment.</p></div>
+          </div>
+        </section>
+
+        <section id="how">
+          <h2>How KNIME works</h2>
+          <p class="section-sub">Nodes connected into workflows</p>
+
+          <div class="split">
+            <img src="../assets/img/session-22/magnifier.jpg" alt="Magnifying glass over a chart showing declining performance" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">Nodes</h3>
+              <p>A <b>node</b> is one processing step that performs a specific operation:</p>
+              <ul class="plain">
+                <li><b>Data input:</b> CSV Reader, Excel Reader, Database Reader.</li>
+                <li><b>Data manipulation:</b> Row Filter, Joiner, Normalizer.</li>
+                <li><b>Modelling:</b> Decision Tree, Regression, Clustering.</li>
+                <li><b>Evaluation:</b> Scorer (accuracy), ROC Curve.</li>
+                <li><b>Visualization:</b> Scatter Plot, Bar Chart.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="point-grid">
+            <div class="point"><h4>Input ports</h4><p>Where data (or a trained model) comes in, on the node's left side.</p></div>
+            <div class="point"><h4>Output ports</h4><p>Where results go out, on the right side, to be connected onward. Data ports are triangles; model ports are squares.</p></div>
+            <div class="point"><h4>Configuration dialog</h4><p>The node's parameters, such as which column to filter or the maximum tree depth.</p></div>
+            <div class="point"><h4>Status light</h4><p>Red: not configured or failed. Yellow: configured, ready to run. Green: executed successfully.</p></div>
+          </div>
+
+          <p>A <b>workflow</b> is a sequence of connected nodes that defines the entire pipeline, for example: Excel Reader → data preprocessing → Random Forest model → Scorer → visualization. Once built, the same workflow can be rerun on new data at any time.</p>
+        </section>
+
+        <section id="workflow">
+          <h2>Building a workflow</h2>
+          <p class="section-sub">From raw file to evaluated model</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Phase</th><th>Purpose</th><th>Example nodes</th></tr></thead>
+            <tbody>
+              <tr><td><b>1. Data input</b></td><td>Read data from files or databases</td><td>Excel Reader, CSV Reader, Database Connector</td></tr>
+              <tr><td><b>2. Data preparation</b></td><td>Clean and transform the data</td><td>Missing Value, String Manipulation, Row Filter</td></tr>
+              <tr><td><b>3. Modelling</b></td><td>Build predictive models</td><td>Decision Tree Learner, Logistic Regression Learner</td></tr>
+              <tr><td><b>4. Evaluation</b></td><td>Assess model performance</td><td>Scorer, ROC Curve</td></tr>
+              <tr><td><b>5. Visualization and output</b></td><td>Present or export results</td><td>Table View, Bar Chart, Excel Writer</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-knime">
+            <div class="viz-head">
+              <h4>Build and run a churn-prediction workflow</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">400 telecom customers, some with missing monthly charges. Choose a node for each step and configure it, then execute the workflow. Nodes turn green as they run, or red if they fail, just as in KNIME. Click any executed node to inspect its output.</p>
+            <div data-config></div>
+            <div class="controls">
+              <button class="btn is-on" data-exec>Execute all</button>
+              <button class="btn ghost" data-good>Load a working workflow</button>
+            </div>
+            <svg viewBox="0 0 640 170" role="img" aria-label="Workflow of connected nodes"></svg>
+            <div class="viz-out" data-output aria-live="polite"></div>
+          </div>
+
+          <div class="viz" id="viz-quiz">
+            <div class="viz-head">
+              <h4>Which node would you use?</h4>
+              <span class="viz-tag">Practice</span>
+            </div>
+            <p class="viz-hint">Pick the KNIME node for each task.</p>
+            <div data-quiz></div>
+            <p class="tree-note" data-score></p>
+          </div>
+        </section>
+
+        <section id="uses">
+          <h2>Integration and applications</h2>
+          <p class="section-sub">Where KNIME fits in a data team</p>
+
+          <p>KNIME connects to <b>Python and R</b> (through scripting nodes), <b>machine learning frameworks</b> (TensorFlow, scikit-learn), <b>databases</b> (MySQL, PostgreSQL, Oracle), <b>clouds</b> (AWS, Azure, Google Cloud), <b>visualization tools</b> (Tableau, Power BI), and <b>APIs and REST services</b>.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Example use case</th></tr></thead>
+            <tbody>
+              <tr><td><b>Finance</b></td><td>Fraud detection, risk scoring</td></tr>
+              <tr><td><b>Marketing</b></td><td>Customer segmentation, campaign analysis</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Clinical data mining, biomarker discovery</td></tr>
+              <tr><td><b>Manufacturing</b></td><td>Quality prediction, process optimization</td></tr>
+              <tr><td><b>Retail</b></td><td>Market basket analysis, demand forecasting</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>A no- or low-code environment, ideal for non-programmers; open source and extensible; works with Python, R and SQL; reusable, automatable workflows; strong visualization; a large, active community and the KNIME Hub.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Can be slower on very large datasets; deep learning is more limited than in Python frameworks; a graphical design is less flexible than full code; node configuration and flow control take time to learn.</p></div>
+          </div>
+        </section>
+
+        <section id="recap">
+          <h2>Course recap</h2>
+          <p class="section-sub">Twenty-two sessions, one analytics life cycle</p>
+
+          <p>The course followed the analytics life cycle from start to finish: framing business problems (sessions 1–4), describing and exploring data (5, 9), probability and statistical inference (6–8, 10, 11, 20), predicting outcomes (12–14, 16), prescribing and simulating decisions (15, 17, 19), evaluating models honestly (18, 19), specialized kinds of data (21), and finally building it all as a workflow (22).</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>Session</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><a href="session-01.html">Business Analytics and the Analytics Life Cycle</a></td></tr>
+              <tr><td>2</td><td><a href="session-02.html">Approval, Installation, Acceptance and Operation</a></td></tr>
+              <tr><td>3</td><td><a href="session-03.html">Intelligent Data Analysis and Modern Analytic Tools</a></td></tr>
+              <tr><td>4</td><td><a href="session-04.html">Data Visualization and Data-Driven Decisions</a></td></tr>
+              <tr><td>5</td><td><a href="session-05.html">Descriptive Statistics</a></td></tr>
+              <tr><td>6</td><td><a href="session-06.html">Sampling, Probability and Bayes' Theorem</a></td></tr>
+              <tr><td>7</td><td><a href="session-07.html">Random Variables, Distributions and the Central Limit Theorem</a></td></tr>
+              <tr><td>8</td><td><a href="session-08.html">Sampling, Estimation and Statistical Inference</a></td></tr>
+              <tr><td>9</td><td><a href="session-09.html">Correlation, Covariance and Outliers</a></td></tr>
+              <tr><td>10</td><td><a href="session-10.html">Feature Selection, Hypothesis Testing and the Z-Test</a></td></tr>
+              <tr><td>11</td><td><a href="session-11.html">Chi-Square Test, Information Gain and Skewness</a></td></tr>
+              <tr><td>12</td><td><a href="session-12.html">Predictive Modelling and Analysis</a></td></tr>
+              <tr><td>13</td><td><a href="session-13.html">From Correlation to Supervised Segmentation</a></td></tr>
+              <tr><td>14</td><td><a href="session-14.html">Supervised Segmentation, Tree Rules and Probability Estimation</a></td></tr>
+              <tr><td>15</td><td><a href="session-15.html">Prescriptive Modelling and Analytics</a></td></tr>
+              <tr><td>16</td><td><a href="session-16.html">Regression Analysis and Forecasting Techniques</a></td></tr>
+              <tr><td>17</td><td><a href="session-17.html">Simulation, Risk Analysis and Optimization</a></td></tr>
+              <tr><td>18</td><td><a href="session-18.html">Overfitting, Generalization and Model Evaluation</a></td></tr>
+              <tr><td>19</td><td><a href="session-19.html">Decision Analytics, Classifier Evaluation and the Value of Data</a></td></tr>
+              <tr><td>20</td><td><a href="session-20.html">Evidence, Probability and Probabilistic Reasoning</a></td></tr>
+              <tr><td>21</td><td><a href="session-21.html">Factor Analysis, Directional Data and Functional Data Analysis</a></td></tr>
+              <tr><td>22</td><td><a href="session-22.html">KNIME Analytics Platform</a></td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="takeaways">
+            <h3>Session 22 in summary</h3>
+            <ul>
+              <li>KNIME is an open-source, no-code platform where analytics pipelines are built by connecting nodes.</li>
+              <li>Each node has input and output ports, a configuration dialog and a status light; data ports and model ports connect different kinds of output.</li>
+              <li>A typical workflow reads data, prepares it, splits it, trains and applies a model, scores it and reports the results.</li>
+              <li>The good habits from this course still apply: handle missing values, evaluate on data the model hasn't seen, and check results against a baseline.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="22"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-21.html">Previous: Session 21</a>
+      <span></span>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-22.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

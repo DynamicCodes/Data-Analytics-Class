@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 06: Sampling, Probability and Bayes' Theorem | Data-Class</title>
+  <meta name="description" content="Population and sample, univariate and bivariate sampling, resampling, sample spaces and events, joint, marginal and conditional probability, and Bayes' theorem." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>06</div>
+      <h1>Sampling, Probability and Bayes' Theorem</h1>
+      <p class="lead">How a sample stands in for a population, how resampling tests how much to trust it, and the probability rules that underpin every statistical model, ending with Bayes' theorem for updating beliefs with new evidence.</p>
+      <ul class="lesson-meta">
+        <li>7 topics</li>
+        <li>8 interactive visuals</li>
+        <li>About 45 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-06/hero.jpg" alt="A web of connected dots, like outcomes linked in a network" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#population">Population and sample</a></li>
+          <li><a href="#variables">Univariate and bivariate sampling</a></li>
+          <li><a href="#resampling">Resampling</a></li>
+          <li><a href="#sample-space">Sample spaces and events</a></li>
+          <li><a href="#probability">Probability of an event</a></li>
+          <li><a href="#jmc">Joint, marginal and conditional probability</a></li>
+          <li><a href="#bayes">Bayes' theorem</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="population">
+          <h2>Population and sample</h2>
+          <p class="section-sub">Studying the part to understand the whole</p>
+
+          <p>In statistics, data can come from an entire group or from a smaller part of it. Understanding populations, samples and sampling methods is what makes accurate analysis and inference possible.</p>
+
+          <div class="point-grid">
+            <div class="point">
+              <h4>Population</h4>
+              <p>The entire group of individuals, items or events you want to study: all patients in a hospital, all students in a school, all products from a factory.</p>
+            </div>
+            <div class="point">
+              <h4>Sample</h4>
+              <p>A subset of the population selected for study, used when studying everyone isn't possible. For example, 100 students surveyed out of 1,000.</p>
+            </div>
+          </div>
+
+          <p>A population can be <b>finite</b>, with countable members (1,000 students), or <b>infinite</b>, with uncountably many (atoms in the atmosphere).</p>
+
+          <h3>Population values and sample estimates</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Measure</th><th>Population</th><th>Sample</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td>Mean</td><td><b>μ</b> (mu)</td><td><b>x̄</b> (x-bar)</td><td>Average height of all 1,000 students vs. the 100 surveyed</td></tr>
+              <tr><td>Standard deviation</td><td><b>σ</b> (sigma)</td><td><b>s</b></td><td>Spread of all heights vs. spread within the sample</td></tr>
+            </tbody>
+          </table></div>
+          <p>Population values are usually unknown. We calculate x̄ and s from a sample and use them to estimate μ and σ. How good that estimate is depends on how the sample was chosen.</p>
+
+          <div class="viz" id="viz-sampling">
+            <div class="viz-head">
+              <h4>Draw a sample from 400 students</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Each dot is a student; darker dots are taller. Seniors (bottom rows) are taller on average than first-years (top rows). Choose a method and draw samples to see how close x̄ gets to μ.</p>
+            <div class="controls" role="group" aria-label="Sampling method">
+              <button class="btn" data-m="random" aria-pressed="true">Simple random</button>
+              <button class="btn" data-m="strat" aria-pressed="false">Stratified</button>
+              <button class="btn" data-m="conv" aria-pressed="false">Convenience</button>
+              <button class="btn" data-m="purp" aria-pressed="false">Purposive</button>
+            </div>
+            <div class="controls">
+              <label class="range">Sample size <span data-out="n">40</span><input type="range" min="10" max="120" step="10" value="40" data-in="n" /></label>
+              <button class="btn is-on" data-draw>Draw a sample</button>
+              <button class="btn ghost" data-draw20>Draw 20 samples</button>
+            </div>
+            <svg viewBox="0 0 640 330" role="img" aria-label="Population grid and sample means"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="mu">–</b><span>Population mean μ (cm)</span></div>
+              <div class="stat"><b data-stat="xbar">–</b><span>Latest sample mean x̄</span></div>
+              <div class="stat"><b data-stat="err">–</b><span>Error x̄ − μ</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="variables">
+          <h2>Univariate and bivariate sampling</h2>
+          <p class="section-sub">One variable at a time, or two together</p>
+
+          <div class="point-grid">
+            <div class="point">
+              <h4>Univariate sampling</h4>
+              <p>Sampling or studying one variable at a time to describe or summarize one feature, such as students' height or patients' blood pressure. Tools: mean, median, mode, variance, histogram.</p>
+            </div>
+            <div class="point">
+              <h4>Bivariate sampling</h4>
+              <p>Recording two variables for each observation to find relationships between them, such as height and weight, or age and wound healing time. Tools: correlation coefficient (r), regression, scatter plot.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Feature</th><th>Univariate</th><th>Bivariate</th></tr></thead>
+            <tbody>
+              <tr><th>Number of variables</th><td>One</td><td>Two</td></tr>
+              <tr><th>Type of analysis</th><td>Descriptive</td><td>Relationship or association</td></tr>
+              <tr><th>Example</th><td>Students' height</td><td>Height vs. weight</td></tr>
+              <tr><th>Visualization</th><td>Histogram</td><td>Scatter plot</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-uni-bi">
+            <div class="viz-head">
+              <h4>Study hours and exam scores for 30 students</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Look at one variable on its own, then at both together.</p>
+            <div class="controls" role="group" aria-label="Analysis type">
+              <button class="btn" data-v="uni" aria-pressed="true">Univariate: exam scores</button>
+              <button class="btn" data-v="bi" aria-pressed="false">Bivariate: hours vs. scores</button>
+              <button class="btn" data-v="line" aria-pressed="false" hidden>Show regression line</button>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Exam score chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="resampling">
+          <h2>Resampling</h2>
+          <p class="section-sub">Reusing the data you have to judge how far to trust it</p>
+
+          <div class="definition">
+            <strong>Resampling</strong>
+            A technique that repeatedly draws samples from existing data to assess variation or accuracy. It estimates the precision of sample statistics, improves model reliability, and tests hypotheses.
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Method</th><th>How it works</th><th>Used to</th></tr></thead>
+            <tbody>
+              <tr><td><b>Bootstrapping</b></td><td>Random sampling <i>with</i> replacement, many times</td><td>Estimate confidence intervals and standard errors</td></tr>
+              <tr><td><b>Jackknife</b></td><td>Leave one observation out at a time, systematically</td><td>Estimate the bias and variance of an estimator</td></tr>
+              <tr><td><b>Cross-validation</b></td><td>Split data into training and test sets, and rotate</td><td>Evaluate how well a model performs on new data</td></tr>
+              <tr><td><b>Permutation test</b></td><td>Shuffle group labels to see what chance alone produces</td><td>Test whether a difference between groups is real</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Example:</b> with data on 50 patients, bootstrapping resamples 50 values many times to estimate the mean wound healing time and its uncertainty; cross-validation trains a model on 80% of patients, tests it on the other 20%, and repeats to check accuracy.</p>
+
+          <div class="viz" id="viz-resample">
+            <div class="viz-head">
+              <h4>Resampling lab: wound healing times of 50 patients</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <div class="controls" role="tablist" aria-label="Resampling method">
+              <button class="btn" data-r="boot" aria-pressed="true">Bootstrap</button>
+              <button class="btn" data-r="jack" aria-pressed="false">Jackknife</button>
+              <button class="btn" data-r="cv" aria-pressed="false">Cross-validation</button>
+              <button class="btn" data-r="perm" aria-pressed="false">Permutation test</button>
+            </div>
+            <div class="controls" data-rcontrols></div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Resampling chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Why sampling concepts matter</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Cost-effective</h4><p>Study a part instead of everyone.</p></div>
+            <div class="point"><h4>Fast</h4><p>Quick insights from smaller data.</p></div>
+            <div class="point"><h4>Reliable models</h4><p>Resampling checks how well models hold up.</p></div>
+            <div class="point"><h4>Inference</h4><p>The foundation of inferential statistics.</p></div>
+          </div>
+        </section>
+
+        <section id="sample-space">
+          <h2>Sample spaces and events</h2>
+          <p class="section-sub">Listing what can happen, then picking out what we care about</p>
+
+          <p>Understanding sample spaces and events is the first step in analyzing random experiments. Together they define all possible outcomes and pick out specific occurrences within them.</p>
+
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>Random experiment</h4>
+              <p>An experiment whose outcome can't be predicted with certainty: tossing a coin, rolling a die, drawing a card from a deck.</p>
+            </div>
+            <div class="measure">
+              <h4>Sample space (S)</h4>
+              <p>The set of all possible outcomes.</p>
+              <div class="formula">One coin: S = {H, T}</div>
+              <div class="formula">Two coins: S = {HH, HT, TH, TT}</div>
+              <div class="formula">One die: S = {1, 2, 3, 4, 5, 6}</div>
+            </div>
+            <div class="measure">
+              <h4>Event (E)</h4>
+              <p>A subset of the sample space: one or more outcomes, written E ⊆ S.</p>
+              <div class="formula">Even number on a die: E = {2, 4, 6}</div>
+              <div class="formula">Heads on a coin: E = {H}</div>
+            </div>
+          </div>
+
+          <h3>Types of sample space</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Meaning</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Finite</b></td><td>A limited number of outcomes</td><td>Rolling a die: 6 outcomes</td></tr>
+              <tr><td><b>Infinite</b></td><td>An unlimited number of outcomes</td><td>Exact time until a light bulb fails</td></tr>
+              <tr><td><b>Discrete</b></td><td>Countable outcomes, even if endless</td><td>Tossing a coin until the first head: {H, TH, TTH, …}</td></tr>
+              <tr><td><b>Continuous</b></td><td>Any value within a range</td><td>A random time between 0 and 60 seconds</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Types of events</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Simple</b></td><td>Contains one outcome</td><td>Getting 4 on a die: {4}</td></tr>
+              <tr><td><b>Compound</b></td><td>Contains more than one outcome</td><td>Getting an even number: {2, 4, 6}</td></tr>
+              <tr><td><b>Sure (certain)</b></td><td>Occurs in every trial</td><td>Rolling any number from 1 to 6</td></tr>
+              <tr><td><b>Impossible</b></td><td>Never occurs</td><td>Getting 7 on a die</td></tr>
+              <tr><td><b>Mutually exclusive</b></td><td>Cannot happen together</td><td>Head and tail on one toss</td></tr>
+              <tr><td><b>Exhaustive</b></td><td>Together cover all outcomes</td><td>{H} and {T}</td></tr>
+              <tr><td><b>Complementary</b></td><td>One is the opposite of the other</td><td>E = {even}, E′ = {odd}</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Event operations</h3>
+          <div class="measure-grid">
+            <div class="measure"><h4>Union E₁ ∪ E₂</h4><p>Either E₁ or E₂ (or both) happens.</p><div class="formula">P(E₁ ∪ E₂) = P(E₁) + P(E₂) − P(E₁ ∩ E₂)</div></div>
+            <div class="measure"><h4>Intersection E₁ ∩ E₂</h4><p>Both E₁ and E₂ happen together.</p></div>
+            <div class="measure"><h4>Complement E′</h4><p>E does not happen.</p><div class="formula">P(E′) = 1 − P(E)</div></div>
+            <div class="measure"><h4>Difference E₁ − E₂</h4><p>E₁ happens but E₂ does not.</p></div>
+          </div>
+
+          <div class="viz" id="viz-events">
+            <div class="viz-head">
+              <h4>Build events on a die</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Choose which event you're editing, then tap faces to add or remove them. Or load an example. Every operation and event type updates live.</p>
+            <div class="controls" role="group" aria-label="Examples">
+              <button class="btn ghost" data-ex="slide">A even, B above 3</button>
+              <button class="btn ghost" data-ex="simple">Simple</button>
+              <button class="btn ghost" data-ex="comp">Complementary</button>
+              <button class="btn ghost" data-ex="mutex">Mutually exclusive</button>
+              <button class="btn ghost" data-ex="exh">Exhaustive</button>
+              <button class="btn ghost" data-ex="sure">Sure and impossible</button>
+            </div>
+            <div class="controls" role="group" aria-label="Editing event">
+              <button class="btn" data-edit="A" aria-pressed="true">Editing event A</button>
+              <button class="btn" data-edit="B" aria-pressed="false">Editing event B</button>
+            </div>
+            <div class="die-row" role="group" aria-label="Die faces"></div>
+            <div class="legend"><span><i style="background:#0e8c7f"></i>In A</span><span><i style="background:#6b5fd3"></i>In B</span><span><i style="background:linear-gradient(135deg,#0e8c7f 50%,#6b5fd3 50%)"></i>In both</span></div>
+            <div class="op-grid" aria-live="polite"></div>
+            <div class="flags"></div>
+          </div>
+        </section>
+
+        <section id="probability">
+          <h2>Probability of an event</h2>
+          <p class="section-sub">Measuring how likely an event is, from 0 to 1</p>
+
+          <div class="formula" style="text-align:center">P(E) = number of favorable outcomes ÷ total outcomes in the sample space</div>
+          <p>For example, P(even number on a die) = 3 ÷ 6 = 0.5. This formula assumes every outcome is equally likely.</p>
+
+          <div class="prob-scale" aria-hidden="true">
+            <span style="left:0%" data-v="0" data-l="Impossible"></span>
+            <span style="left:50%" data-v="0.5" data-l="Equal chance"></span>
+            <span style="left:100%" data-v="1" data-l="Certain"></span>
+          </div>
+
+          <h3>The three axioms of probability</h3>
+          <p>Every probability rule in this session follows from three basic axioms.</p>
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>1. Non-negativity</h4>
+              <div class="formula">P(E) ≥ 0</div>
+              <p>A probability can never be negative. The smallest possible value is 0, an impossible event.</p>
+            </div>
+            <div class="measure">
+              <h4>2. Normalization</h4>
+              <div class="formula">P(S) = 1</div>
+              <p>Something in the sample space must happen, so all probabilities lie between 0 and 1. It also gives the complement rule: P(E′) = 1 − P(E).</p>
+            </div>
+            <div class="measure">
+              <h4>3. Additivity</h4>
+              <div class="formula">P(A ∪ B) = P(A) + P(B)</div>
+              <p>When A and B are mutually exclusive. If they overlap, subtract P(A ∩ B) so the overlap isn't counted twice.</p>
+            </div>
+          </div>
+          <p class="note">Try the axioms in the die explorer above: the union rule always subtracts the overlap, and A plus its complement always sums to 1.</p>
+        </section>
+
+        <section id="jmc">
+          <h2>Joint, marginal and conditional probability</h2>
+          <p class="section-sub">Working with more than one event at a time</p>
+
+          <p>Real problems usually involve more than one variable or event. Take two events about a student: <b>A</b>, the student passes math, and <b>B</b>, the student passes science. Three kinds of probability describe them.</p>
+
+          <div class="measure-grid">
+            <div class="measure">
+              <h4>Joint probability</h4>
+              <div class="formula">P(A ∩ B)</div>
+              <p>Both events happen together. Outcomes common to A and B, divided by total outcomes. If P(A ∩ B) = 0.3, 30% of students passed both subjects.</p>
+            </div>
+            <div class="measure">
+              <h4>Marginal probability</h4>
+              <div class="formula">P(A) = Σ<sub>B</sub> P(A ∩ B)</div>
+              <p>One event on its own, regardless of the others. Found by adding up the joint probabilities that involve A: the probability of passing math, whatever the science result.</p>
+            </div>
+            <div class="measure">
+              <h4>Conditional probability</h4>
+              <div class="formula">P(A | B) = P(A ∩ B) ÷ P(B)</div>
+              <p>One event, given that another has already happened (P(B) must be above 0). If a student passed science, there's a 0.3 ÷ 0.5 = 60% chance they also passed math.</p>
+            </div>
+          </div>
+
+          <h3>How they connect</h3>
+          <div class="formula" style="text-align:center">P(A ∩ B) = P(A | B) × P(B) = P(B | A) × P(A)</div>
+          <p>This relationship lets you convert between joint, conditional and marginal probabilities, and it is exactly where Bayes' theorem comes from.</p>
+
+          <div class="viz" id="viz-table">
+            <div class="viz-head">
+              <h4>Explore a two-way probability table</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Tap any cell to see what it means. Then pick a condition: the table shrinks to that row or column, which becomes the new "universe" for a conditional probability.</p>
+            <div class="controls" role="group" aria-label="Dataset">
+              <button class="btn" data-ds="students" aria-pressed="true">Students: math and science</button>
+              <button class="btn" data-ds="patients" aria-pressed="false">Patients: disease and test</button>
+            </div>
+            <div class="controls" role="group" aria-label="Condition" data-conds></div>
+            <div class="table-wrap"><table class="two-way"></table></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Independence</h3>
+          <p>Events A and B are <b>independent</b> if knowing one happened tells you nothing about the other:</p>
+          <div class="formula" style="text-align:center">P(A ∩ B) = P(A) × P(B)</div>
+          <p>If the two sides aren't equal, the events are <b>dependent</b>. In the student table, P(A) = 0.6, P(B) = 0.5 and P(A ∩ B) = 0.3. Since 0.6 × 0.5 = 0.3, passing math and passing science are independent here, which is why P(A | B) equals P(A).</p>
+
+          <div class="viz" id="viz-venn">
+            <div class="viz-head">
+              <h4>Venn diagram: joint, marginal and conditional</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">The overlap is the joint probability, each circle is a marginal, and the conditional is the overlap's share of one circle. Adjust the values to see when events become independent.</p>
+            <div class="controls">
+              <label class="range">P(A) <span data-out="a">0.25</span><input type="range" min="5" max="70" value="25" data-in="a" /></label>
+              <label class="range">P(B) <span data-out="b">0.30</span><input type="range" min="5" max="70" value="30" data-in="b" /></label>
+              <label class="range">P(A ∩ B) <span data-out="ab">0.15</span><input type="range" min="0" max="70" value="15" data-in="ab" /></label>
+            </div>
+            <svg viewBox="0 0 640 250" role="img" aria-label="Venn diagram"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="aGb">–</b><span>P(A | B)</span></div>
+              <div class="stat"><b data-stat="bGa">–</b><span>P(B | A)</span></div>
+              <div class="stat"><b data-stat="aub">–</b><span>P(A ∪ B)</span></div>
+              <div class="stat"><b data-stat="prod">–</b><span>P(A) × P(B)</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Real-world example</h3>
+          <p>Let A be "a patient has diabetes" and B be "a patient has high blood pressure". Suppose P(A) = 0.25, P(B) = 0.30 and P(A ∩ B) = 0.15. Then:</p>
+          <div class="formula" style="text-align:center">P(A | B) = 0.15 ÷ 0.30 = 0.5</div>
+          <p>Half of the patients with high blood pressure also have diabetes, twice the 25% rate across all patients, so the two conditions are dependent. (These values are loaded in the Venn diagram above.)</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Meaning</th><th>Formula</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Joint</b></td><td>Both events occur</td><td>P(A ∩ B)</td><td>P(pass both)</td></tr>
+              <tr><td><b>Marginal</b></td><td>One event alone</td><td>P(A)</td><td>P(pass math)</td></tr>
+              <tr><td><b>Conditional</b></td><td>One event given another</td><td>P(A | B) = P(A ∩ B) ÷ P(B)</td><td>P(pass math, given passed science)</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="bayes">
+          <h2>Bayes' theorem</h2>
+          <p class="section-sub">Updating a belief when new evidence arrives</p>
+
+          <p>Bayes' theorem describes how to update the probability of a hypothesis when new evidence arrives. It links two conditional probabilities: the probability of A given B, and the probability of B given A.</p>
+
+          <div class="anatomy">
+            <div class="anatomy-formula">
+              <span class="t-post">P(A | B)</span> =
+              <span class="frac"><span><span class="t-like">P(B | A)</span> × <span class="t-prior">P(A)</span></span><span class="t-evid">P(B)</span></span>
+            </div>
+            <div class="anatomy-parts">
+              <div><b class="t-post">Posterior P(A | B)</b>What we believe now, after seeing the evidence.</div>
+              <div><b class="t-like">Likelihood P(B | A)</b>How likely the evidence is if the hypothesis is true.</div>
+              <div><b class="t-prior">Prior P(A)</b>What we believed before seeing the evidence.</div>
+              <div><b class="t-evid">Evidence P(B)</b>How likely the evidence is overall, across all hypotheses.</div>
+            </div>
+          </div>
+
+          <p>It comes straight from the relationship above: since P(A | B) × P(B) = P(B | A) × P(A), dividing both sides by P(B) gives the theorem. The evidence term is found with the law of total probability:</p>
+          <div class="formula" style="text-align:center">P(B) = P(B | A) × P(A) + P(B | A′) × P(A′)</div>
+
+          <h3>Worked example: a rare disease</h3>
+          <div class="viz" id="viz-stepper">
+            <div class="viz-head">
+              <h4>A 99% accurate test for a 1-in-100 disease</h4>
+              <span class="viz-tag">Step through</span>
+            </div>
+            <div class="controls">
+              <button class="btn" data-dir="-1">Back</button>
+              <button class="btn is-on" data-dir="1">Next step</button>
+              <div class="step-dots" aria-hidden="true"></div>
+            </div>
+            <div data-steps aria-live="polite"></div>
+          </div>
+
+          <h3>Try your own numbers</h3>
+          <div class="viz" id="viz-bayes">
+            <div class="viz-head">
+              <h4>Bayes calculator with a frequency tree</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Imagine 10,000 people. Adjust how common the disease is and how good the test is, and follow the tree to see where the positive results come from.</p>
+            <div class="controls">
+              <label class="range">Prevalence P(D) <span data-out="prev">1%</span><input type="range" min="1" max="500" value="10" data-in="prev" /></label>
+              <label class="range">Sensitivity P(+ | D) <span data-out="sens">99%</span><input type="range" min="50" max="100" value="99" data-in="sens" /></label>
+              <label class="range">Specificity P(− | D′) <span data-out="spec">99%</span><input type="range" min="50" max="100" value="99" data-in="spec" /></label>
+            </div>
+            <svg viewBox="0 0 640 250" role="img" aria-label="Frequency tree"></svg>
+            <div class="formula" data-formula></div>
+            <div class="controls" style="margin:.5rem 0 0">
+              <button class="btn" data-retest>Test positive again</button>
+              <button class="btn ghost" data-reset>Reset</button>
+              <span class="tree-note" data-chain></span>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <p>Each posterior becomes the prior for the next piece of evidence. This chain of updates is the basis of Bayesian machine learning, filtering and inference.</p>
+
+          <h3>Applications</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Medical diagnosis</h4><p>Predicting disease from test results.</p></div>
+            <div class="point"><h4>Spam detection</h4><p>The naive Bayes classifier.</p></div>
+            <div class="point"><h4>Machine learning and AI</h4><p>Bayesian networks and probabilistic models.</p></div>
+            <div class="point"><h4>Decisions under uncertainty</h4><p>Revising plans as information arrives.</p></div>
+            <div class="point"><h4>Risk assessment</h4><p>Updating risk estimates with new data.</p></div>
+          </div>
+
+          <div class="takeaways">
+            <h3>Session 6 in summary</h3>
+            <ul>
+              <li>A sample stands in for the population: x̄ and s estimate μ and σ, and random sampling keeps those estimates unbiased.</li>
+              <li>Univariate analysis describes one variable; bivariate analysis looks for relationships between two.</li>
+              <li>Resampling (bootstrap, jackknife, cross-validation) measures how reliable a statistic or model is.</li>
+              <li>A sample space lists every outcome; events are subsets of it, combined by union, intersection and complement.</li>
+              <li>Joint, marginal and conditional probabilities are linked by P(A ∩ B) = P(A | B) × P(B).</li>
+              <li>Bayes' theorem turns a prior into a posterior using evidence, and a rare condition stays fairly unlikely even after a positive result from a good test.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="6"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-05.html">Previous: Session 05</a>
+      <a href="session-07.html">Next: Session 07</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-06.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

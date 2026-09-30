@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 03: Intelligent Data Analysis and Modern Analytic Tools | Data-Class</title>
+  <meta name="description" content="The nature of data, analytic processes, analysis versus reporting, and modern data analytic tools." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>03</div>
+      <h1>Intelligent Data Analysis and Modern Analytic Tools</h1>
+      <p class="lead">How intelligent methods find knowledge in data, why the kind of data you have decides which methods work, how analysis differs from reporting, and the tools teams use today.</p>
+      <ul class="lesson-meta">
+        <li>6 topics</li>
+        <li>3 interactive visuals</li>
+        <li>About 30 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-03/hero.jpg" alt="Pen resting on a printed line chart of rising and falling values" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#ida">Intelligent data analysis</a></li>
+          <li><a href="#nature">The nature of data</a></li>
+          <li><a href="#why-nature">Why the nature of data matters</a></li>
+          <li><a href="#process">Analytic processes and tools</a></li>
+          <li><a href="#analysis-reporting">Analysis vs. reporting</a></li>
+          <li><a href="#modern-tools">Modern data analytic tools</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="ida">
+          <h2>Intelligent data analysis</h2>
+          <p class="section-sub">Letting machines help find knowledge in data</p>
+
+          <div class="split">
+            <img src="../assets/img/session-03/ai.jpg" alt="Circuit board shaped like a human brain" loading="lazy" />
+            <div>
+              <div class="definition" style="margin:0 0 1rem">
+                <strong>Intelligent data analysis (IDA)</strong>
+                The application of artificial intelligence (AI), machine learning (ML) and statistical methods to extract useful knowledge, patterns and insights from large, complex datasets.
+              </div>
+              <p>It goes beyond traditional analysis by emphasizing automation, learning and reasoning, so the data can be made sense of intelligently rather than only summarized.</p>
+            </div>
+          </div>
+
+          <h3>Objectives</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Discover</h4><p>Find hidden patterns and relationships in data.</p></div>
+            <div class="point"><h4>Predict</h4><p>Forecast future trends or outcomes.</p></div>
+            <div class="point"><h4>Improve</h4><p>Make decision-making processes better.</p></div>
+            <div class="point"><h4>Detect</h4><p>Spot anomalies and outliers.</p></div>
+            <div class="point"><h4>Support</h4><p>Back data-driven strategy in business, healthcare, engineering and more.</p></div>
+          </div>
+
+          <h3>Steps in intelligent data analysis</h3>
+          <ol class="steps">
+            <li><h4>Data collection</h4><p>Acquire relevant data from sensors, databases or manual entry.</p></li>
+            <li><h4>Data preprocessing</h4><p>Clean, transform and normalize the data.</p></li>
+            <li><h4>Feature selection and extraction</h4><p>Identify the most relevant variables.</p></li>
+            <li><h4>Model building</h4><p>Apply AI and ML algorithms that learn from the data.</p></li>
+            <li><h4>Pattern evaluation</h4><p>Measure the performance and significance of the results.</p></li>
+            <li><h4>Knowledge presentation</h4><p>Visualize and interpret the insights.</p></li>
+          </ol>
+        </section>
+
+        <section id="nature">
+          <h2>The nature of data</h2>
+          <p class="section-sub">What kind of data it is and how it behaves</p>
+
+          <p>Before applying any intelligent method, you need to understand the data itself. Data can be described along four independent dimensions: how it is measured, whether numbers are discrete or continuous, where it came from, and how it is structured.</p>
+
+          <h3>By measurement or representation</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td><b>Qualitative (categorical)</b></td><td>Non-numerical; describes qualities or categories</td><td>Gender, blood group, wound type</td></tr>
+              <tr><td><b>Quantitative (numerical)</b></td><td>Numeric values; measurable quantities</td><td>Age, temperature, wound size</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Quantitative subtypes</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Subtype</th><th>Description</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td><b>Discrete</b></td><td>Countable, whole-number values</td><td>Number of visits, patient count</td></tr>
+              <tr><td><b>Continuous</b></td><td>Measurable; can take any real value</td><td>Height, weight, healing time</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>By source or origin</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td><b>Primary</b></td><td>Collected directly for a specific purpose</td><td>Survey data, lab measurements</td></tr>
+              <tr><td><b>Secondary</b></td><td>Collected earlier for other purposes</td><td>Hospital records, government datasets</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>By structure</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td><b>Structured</b></td><td>Organized in rows and columns</td><td>SQL tables, Excel sheets</td></tr>
+              <tr><td><b>Unstructured</b></td><td>No fixed format</td><td>Images, text, audio, video</td></tr>
+              <tr><td><b>Semi-structured</b></td><td>Partial structure through tags or metadata</td><td>JSON, XML, medical reports</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-nature">
+            <div class="viz-head">
+              <h4>Profile the fields of a wound-care study</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A clinic is studying how wounds heal. Pick a field from its dataset to see how it is classified on all four dimensions, and what that means for analysis.</p>
+            <div class="controls" role="group" aria-label="Dataset fields"></div>
+            <div class="viz-out" aria-live="polite" style="margin-top:0"></div>
+          </div>
+        </section>
+
+        <section id="why-nature">
+          <h2>Why the nature of data matters</h2>
+          <p class="section-sub">It shapes every choice that follows</p>
+
+          <div class="point-grid">
+            <div class="point"><h4>Which algorithms apply</h4><p>Numeric targets point to regression; categorical targets point to classification.</p></div>
+            <div class="point"><h4>How to preprocess</h4><p>Numbers may need normalization; categories need encoding.</p></div>
+            <div class="point"><h4>How models perform</h4><p>It affects both model performance and how results are interpreted.</p></div>
+          </div>
+
+          <div class="takeaways">
+            <h3>In short</h3>
+            <ul>
+              <li>Intelligent data analysis combines human-like reasoning with computing power to uncover knowledge in data.</li>
+              <li>Its success depends on understanding the data's type, structure and quality first.</li>
+              <li>Knowing those characteristics leads to the right methods, and to accurate, reliable, actionable insight.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="process">
+          <h2>Analytic processes and tools</h2>
+          <p class="section-sub">From raw data to decisions</p>
+
+          <div class="definition">
+            <strong>Analytic processes and tools</strong>
+            Analytic processes are the systematic steps that turn raw data into insight that supports decisions. Analytic tools are the software and technologies that carry out those steps efficiently.
+          </div>
+
+          <h3>Main steps in the analytic process</h3>
+          <ol class="steps">
+            <li><h4>Data collection</h4><p>Gather data from databases, surveys, sensors or online platforms.</p></li>
+            <li><h4>Cleaning and preparation</h4><p>Remove inconsistencies, errors and missing values.</p></li>
+            <li><h4>Data exploration</h4><p>Understand the data through descriptive statistics and visuals.</p></li>
+            <li><h4>Model building</h4><p>Apply mathematical, statistical or machine learning models to find trends and relationships.</p></li>
+            <li><h4>Evaluation and validation</h4><p>Check the model's accuracy and reliability with test data or performance metrics.</p></li>
+            <li><h4>Interpretation and communication</h4><p>Present findings that support decisions, often as dashboards, charts or reports.</p></li>
+          </ol>
+
+          <h3>Common analytic tools</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Category</th><th>Tools</th><th>Used to</th></tr></thead>
+            <tbody>
+              <tr><td>Data management</td><td>SQL, Excel, Access</td><td>Store, query and manage structured data</td></tr>
+              <tr><td>Statistical analysis</td><td>R, SPSS, SAS</td><td>Run statistical models and hypothesis tests</td></tr>
+              <tr><td>Data visualization</td><td>Tableau, Power BI, Matplotlib</td><td>Build dashboards and interactive visuals</td></tr>
+              <tr><td>Machine learning and AI</td><td>Python (scikit-learn, TensorFlow), RapidMiner</td><td>Build predictive and intelligent models</td></tr>
+              <tr><td>Big data analytics</td><td>Hadoop, Spark</td><td>Analyze massive datasets efficiently</td></tr>
+              <tr><td>Business intelligence</td><td>QlikView, SAP BI</td><td>Support corporate reporting and decision systems</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="analysis-reporting">
+          <h2>Analysis vs. reporting</h2>
+          <p class="section-sub">What happened, and why</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Aspect</th><th>Analysis</th><th>Reporting</th></tr></thead>
+            <tbody>
+              <tr><th>Purpose</th><td>Understand, interpret and discover patterns or relationships</td><td>Present or summarize what has already happened</td></tr>
+              <tr><th>Focus</th><td>Why something happened, or what might happen next</td><td>What happened</td></tr>
+              <tr><th>Methods</th><td>Statistical modeling, predictive analytics, machine learning</td><td>Tables, charts, summaries, dashboards</td></tr>
+              <tr><th>Outcome</th><td>Insights, predictions, recommendations</td><td>Facts, summaries, descriptive results</td></tr>
+              <tr><th>Tools</th><td>Python, R, RapidMiner, SPSS, ML frameworks</td><td>Excel, Power BI, Tableau, Google Data Studio</td></tr>
+              <tr><th>Example</th><td>Using regression to find why sales dropped in a region</td><td>Showing monthly sales totals in a report</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-report">
+            <div class="viz-head">
+              <h4>Same sales data, two jobs</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A report shows the North region fell this quarter. Switch to analysis to see why.</p>
+            <div class="controls" role="group" aria-label="View">
+              <button class="btn" data-view="report" aria-pressed="true">Reporting: what happened</button>
+              <button class="btn" data-view="analysis" aria-pressed="false">Analysis: why it happened</button>
+            </div>
+            <svg viewBox="0 0 640 290" role="img" aria-label="Regional sales chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>How reporting and analysis work together</h3>
+          <p>Reporting usually comes first, giving descriptive summaries. Analysis goes deeper into causes, trends and future possibilities. Together they form a complete decision support system: reporting answers "What happened?", and analysis answers "Why did it happen?" and "What will happen next?"</p>
+          <p class="note">Reporting provides clarity; analysis provides direction. Using the right mix of analytic tools lets organizations turn raw data into actionable intelligence.</p>
+        </section>
+
+        <section id="modern-tools">
+          <h2>Modern data analytic tools</h2>
+          <p class="section-sub">Automation, AI and the cloud</p>
+
+          <p>Modern data analytic tools are platforms and technologies for collecting, processing, analyzing and visualizing data efficiently. They combine automation, AI and cloud capabilities to cope with the growing volume, variety and complexity of data, helping organizations turn it into better decisions, predictions and strategy.</p>
+
+          <figure class="figure">
+            <img src="../assets/img/session-03/tools.jpg" alt="Line chart glowing on a dark financial display" loading="lazy" />
+          </figure>
+
+          <div class="viz" id="viz-tools">
+            <div class="viz-head">
+              <h4>Explore the six tool categories</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Choose a category to see what it is for and the main tools in it.</p>
+            <div class="controls" role="group" aria-label="Tool categories"></div>
+            <div class="viz-out" aria-live="polite" style="margin-top:0"></div>
+          </div>
+
+          <h3>Features of modern analytic tools</h3>
+          <div class="point-grid">
+            <div class="point"><h4>Automation</h4><p>Less manual data preparation.</p></div>
+            <div class="point"><h4>Scalability</h4><p>Handles huge data volumes in the cloud.</p></div>
+            <div class="point"><h4>Integration</h4><p>Connects easily to many data sources.</p></div>
+            <div class="point"><h4>Visualization</h4><p>Turns data into clear dashboards and reports.</p></div>
+            <div class="point"><h4>AI and ML support</h4><p>Enables predictive and prescriptive analytics.</p></div>
+            <div class="point"><h4>User-friendly interfaces</h4><p>Non-technical users can run analyses too.</p></div>
+          </div>
+
+          <div class="takeaways">
+            <h3>Session 3 in summary</h3>
+            <ul>
+              <li>Intelligent data analysis uses AI, ML and statistics to discover, predict, improve, detect and support.</li>
+              <li>Data is classified by measurement, quantitative subtype, source and structure, and each choice affects the methods you can use.</li>
+              <li>Reporting tells you what happened; analysis explains why and what comes next.</li>
+              <li>Modern tools, from Tableau and Power BI to TensorFlow and Databricks, combine speed, intelligence and accessibility so more people can make data-driven decisions.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="3"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-02.html">Previous: Session 02</a>
+      <a href="session-04.html">Next: Session 04</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-03.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

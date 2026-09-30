@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 19: Decision Analytics, Classifier Evaluation and the Value of Data | Data-Class</title>
+  <meta name="description" content="Decision analytics, evaluating classifiers with confusion matrices, ROC and PR curves, analytical frameworks, evaluation, and baselines and return on data investments." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>19</div>
+      <h1>Decision Analytics, Classifier Evaluation and the Value of Data</h1>
+      <p class="lead">How analytics turns into decisions: choosing between alternatives under uncertainty, judging whether a classifier is good enough (and for what), structuring analysis with frameworks like CRISP-DM, and proving that data investments pay off against a baseline.</p>
+      <ul class="lesson-meta">
+        <li>5 topics</li>
+        <li>6 interactive visuals</li>
+        <li>About 55 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-19/hero.jpg" alt="Magnifying glass over a quarterly bar chart" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#decision">Decision analytics</a></li>
+          <li><a href="#classifiers">Evaluating classifiers</a></li>
+          <li><a href="#framework">Analytical frameworks</a></li>
+          <li><a href="#evaluation">Evaluation</a></li>
+          <li><a href="#investment">Baseline, performance and investment</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="decision">
+          <h2>Decision analytics</h2>
+          <p class="section-sub">From data to the best course of action</p>
+
+          <div class="definition">
+            <strong>Decision analytics</strong>
+            The process of applying quantitative methods, data and analytical reasoning to guide and improve decision-making under uncertainty. It combines data-driven insight with business context to identify the best course of action among alternatives.
+          </div>
+
+          <div class="point-grid">
+            <div class="point"><h4>Data collection and processing</h4><p>Gathering historical, transactional or real-time data.</p></div>
+            <div class="point"><h4>Modelling and simulation</h4><p>Mathematical and statistical models of the possible outcomes.</p></div>
+            <div class="point"><h4>Optimization and decision models</h4><p>Selecting the best strategy for the objectives.</p></div>
+            <div class="point"><h4>Evaluation and implementation</h4><p>Testing, validating and applying the chosen decision.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Descriptive</b></td><td>What happened, from historical data</td><td>Monthly sales reports</td></tr>
+              <tr><td><b>Predictive</b></td><td>Forecasts future outcomes with statistical models</td><td>Predicting customer churn</td></tr>
+              <tr><td><b>Prescriptive</b></td><td>Suggests actions to achieve the desired result</td><td>Optimizing supply chain routes</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>The decision-making framework</h3>
+          <ol class="steps">
+            <li><h4>Define the problem</h4><p>Clarify goals and constraints.</p></li>
+            <li><h4>Collect and prepare data</h4><p>Ensure accuracy and relevance.</p></li>
+            <li><h4>Model the decision</h4><p>Decision trees, regression, simulation or optimization.</p></li>
+            <li><h4>Analyze alternatives</h4><p>Weigh risks, returns and trade-offs.</p></li>
+            <li><h4>Decide and implement</h4><p>Select the best option and act on it.</p></li>
+            <li><h4>Monitor and refine</h4><p>Keep assessing performance.</p></li>
+          </ol>
+          <p><b>Tools and techniques:</b> decision trees, Monte Carlo simulation, linear and nonlinear optimization, what-if and sensitivity analysis, Bayesian networks, and risk analysis models.</p>
+
+          <h3>Example: choosing a marketing campaign with a decision tree</h3>
+          <p>A decision tree lays out each alternative, the uncertain outcomes that could follow, their probabilities and payoffs. The <b>expected monetary value (EMV)</b> of an alternative is the probability-weighted average of its payoffs minus its cost; the rational choice under this criterion is the highest EMV, though risk matters too.</p>
+
+          <div class="viz" id="viz-dtree">
+            <div class="viz-head">
+              <h4>Digital, TV, or no campaign?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A retailer is deciding on a festive campaign (₹ lakh). Each campaign's response could be high or low. Adjust the probabilities of a high response, which would come from a predictive model or market research, and see which choice has the highest expected value.</p>
+            <div class="controls">
+              <label class="range">P(high response), digital <span data-out="pd">0.60</span><input type="range" min="0" max="100" value="60" data-in="pd" /></label>
+              <label class="range">P(high response), TV <span data-out="pt">0.50</span><input type="range" min="0" max="100" value="50" data-in="pt" /></label>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Decision tree with expected values"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+          <p>The same decision could also be analyzed with <b>simulation</b> (Monte Carlo revenue projections under fluctuating market conditions) or <b>optimization</b> (linear programming to allocate a limited budget across channels), as in sessions 15 and 17.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Sector</th><th>Use case</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Finance</b></td><td>Portfolio optimization, risk analysis</td><td>Banks choosing investment mixes</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Treatment path optimization</td><td>Hospitals choosing care plans</td></tr>
+              <tr><td><b>Retail</b></td><td>Pricing and inventory optimization</td><td>Walmart adjusting prices dynamically</td></tr>
+              <tr><td><b>Transportation</b></td><td>Routing and scheduling</td><td>Uber deciding surge pricing and routes</td></tr>
+              <tr><td><b>E-commerce</b></td><td>Personalized recommendations</td><td>Amazon and Netflix suggesting products and content</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Benefits</h4><p>More accurate and consistent decisions, less bias and uncertainty, better efficiency and profitability, evidence-based justification, and real-time adaptive decisions.</p></div>
+            <div class="measure"><h4>Challenges</h4><p>Data quality and availability, model complexity and interpretability, changing environments, integration with business processes, and ethical and privacy concerns in automated decisions.</p></div>
+            <div class="measure"><h4>The future</h4><p>More AI and machine learning for adaptive decisions, IoT and real-time data streams, automated decision systems in business and government, and explainable AI for transparent, ethical decisions.</p></div>
+          </div>
+          <p class="note">Decision analytics bridges data and action: it turns raw data into strategic, evidence-based decisions in uncertain, complex environments.</p>
+        </section>
+
+        <section id="classifiers">
+          <h2>Evaluating classifiers</h2>
+          <p class="section-sub">How good is a model that predicts categories?</p>
+
+          <p>Once a classification model (logistic regression, a decision tree, an SVM, a random forest) is built, we must measure how accurately and effectively it predicts the correct class on unseen data. Evaluation shows whether the model generalizes, how many wrong predictions it makes and of which kind, and whether it performs well across all classes, especially in imbalanced datasets. It's how we compare models, detect over- or underfitting, understand the trade-off between false positives and false negatives, and guide tuning.</p>
+
+          <h3>The confusion matrix</h3>
+          <div class="table-wrap"><table class="error-grid">
+            <thead><tr><th></th><th>Predicted positive</th><th>Predicted negative</th></tr></thead>
+            <tbody>
+              <tr><th>Actual positive</th><td class="good"><b>True positive (TP)</b><br />Correctly flagged</td><td class="bad"><b>False negative (FN)</b><br />Missed: Type II error</td></tr>
+              <tr><th>Actual negative</th><td class="bad"><b>False positive (FP)</b><br />False alarm: Type I error</td><td class="good"><b>True negative (TN)</b><br />Correctly cleared</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Accuracy</h4><div class="formula">(TP + TN) ÷ (TP + TN + FP + FN)</div><p>Share of all predictions that are correct.</p></div>
+            <div class="measure"><h4>Precision (positive predictive value)</h4><div class="formula">TP ÷ (TP + FP)</div><p>Of everything flagged positive, how much really is.</p></div>
+            <div class="measure"><h4>Recall (sensitivity, true positive rate)</h4><div class="formula">TP ÷ (TP + FN)</div><p>Of all real positives, how many were caught.</p></div>
+            <div class="measure"><h4>Specificity (true negative rate)</h4><div class="formula">TN ÷ (TN + FP)</div><p>Of all real negatives, how many were correctly cleared.</p></div>
+            <div class="measure"><h4>F1 score</h4><div class="formula">2 × Precision × Recall ÷ (Precision + Recall)</div><p>The harmonic mean: high only when both are high.</p></div>
+          </div>
+
+          <h3>The precision–recall trade-off</h3>
+          <p>A classifier usually outputs a score, and a <b>threshold</b> turns it into a yes/no decision. Lowering the threshold catches more positives (higher recall) but raises more false alarms (lower precision), and vice versa. The right balance depends on the business context: medical diagnosis prioritizes recall (don't miss a sick patient), while spam filtering prioritizes precision (don't block a real email).</p>
+
+          <div class="viz" id="viz-cm">
+            <div class="viz-head">
+              <h4>Tune a classifier's threshold</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Pick a use case, then move the threshold. The histograms show the model's scores for real positives (rose) and negatives (teal); everything right of the line is flagged. Each use case has its own costs for a missed positive and a false alarm, and the dashed line marks the threshold with the lowest total cost.</p>
+            <div class="controls" role="group" aria-label="Use case">
+              <button class="btn" data-case="fraud" aria-pressed="true">Fraud detection</button>
+              <button class="btn" data-case="medical" aria-pressed="false">Medical screening</button>
+              <button class="btn" data-case="spam" aria-pressed="false">Spam filter</button>
+            </div>
+            <div class="controls">
+              <label class="range">Threshold <span data-out="t">0.50</span><input type="range" min="1" max="99" value="50" data-in="t" /></label>
+              <button class="btn ghost" data-lazy>Try the "flag nothing" model</button>
+              <button class="btn ghost" data-best>Go to the lowest-cost threshold</button>
+            </div>
+            <svg viewBox="0 0 640 210" role="img" aria-label="Score distributions and threshold"></svg>
+            <div class="table-wrap"><table data-matrix></table></div>
+            <div class="stat-row" data-metrics></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>ROC and precision–recall curves</h3>
+          <div class="measure-grid">
+            <div class="measure"><h4>ROC curve and AUC</h4><p>The receiver operating characteristic curve plots the true positive rate (recall) against the false positive rate (1 − specificity) at every threshold. The area under it (AUC) summarizes ranking ability: 1.0 is a perfect classifier, 0.5 is random guessing.</p></div>
+            <div class="measure"><h4>Precision–recall curve</h4><p>Plots precision against recall at every threshold. It is especially useful for imbalanced datasets, where the ROC curve can look reassuring even when most flagged cases are false alarms.</p></div>
+          </div>
+
+          <div class="viz" id="viz-roc">
+            <div class="viz-head">
+              <h4>Same model, rarer positives</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Keep the model the same and change only how common the positive class is. The ROC curve doesn't move, but the precision–recall curve collapses as positives get rarer. Model strength changes both.</p>
+            <div class="controls">
+              <label class="range">Share of positives <span data-out="pr">20%</span><input type="range" min="0" max="7" value="4" data-in="pr" /></label>
+              <label class="range">Model strength (class separation) <span data-out="s">1.5</span><input type="range" min="0" max="30" value="15" data-in="s" /></label>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="ROC and precision-recall curves"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <p>For reliable numbers, compute these metrics with <b>k-fold cross-validation</b> rather than a single test split (see session 18), so the evaluation doesn't depend on one particular split.</p>
+
+          <h3>Real-world example: fraud detection</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Metric</th><th>Importance</th></tr></thead>
+            <tbody>
+              <tr><td><b>Accuracy</b></td><td>Misleading: fraud is rare, so "never fraud" scores highly</td></tr>
+              <tr><td><b>Recall</b></td><td>Crucial: must catch as much fraud as possible</td></tr>
+              <tr><td><b>Precision</b></td><td>Important: too many false alarms frustrate customers</td></tr>
+              <tr><td><b>AUC</b></td><td>Measures how well the model ranks fraud above legitimate transactions</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note">Evaluating a classifier isn't about one metric; it's about choosing the combination that matches the business goals, the class balance, and the cost of each kind of error. Banks prefer high recall with good precision, not just accuracy.</p>
+        </section>
+
+        <section id="framework">
+          <h2>Analytical frameworks</h2>
+          <p class="section-sub">A roadmap from business question to action</p>
+
+          <div class="split">
+            <img src="../assets/img/session-19/teamwork.jpg" alt="Team around a table with laptops and printed charts" loading="lazy" />
+            <div>
+              <div class="definition" style="margin-top:0">
+                <strong>Analytical framework</strong>
+                A systematic structure that connects business problems, analytical techniques and data-driven insights to enable evidence-based decisions. It defines what data to analyze, how to analyze it, and how to interpret and act on the results.
+              </div>
+              <p>Its purpose is to organize the process from problem to solution, make analysis consistent and repeatable, align methods with business objectives, and turn data into actionable intelligence.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Step</th><th>Description</th><th>Churn example</th></tr></thead>
+            <tbody>
+              <tr><td><b>1. Problem definition</b></td><td>State the business question clearly</td><td>"Why is churn increasing?"</td></tr>
+              <tr><td><b>2. Data collection</b></td><td>Identify and gather relevant data</td><td>CRM data, transactions, feedback</td></tr>
+              <tr><td><b>3. Data preparation</b></td><td>Clean, transform and structure</td><td>Missing values, outliers, normalization</td></tr>
+              <tr><td><b>4. Data analysis</b></td><td>Statistical, ML or optimization techniques</td><td>Regression, clustering, classification</td></tr>
+              <tr><td><b>5. Interpretation</b></td><td>Turn results into insights</td><td>Identify churn drivers</td></tr>
+              <tr><td><b>6. Decision-making</b></td><td>Act on the insights</td><td>Design a retention campaign</td></tr>
+              <tr><td><b>7. Monitoring and feedback</b></td><td>Track outcomes and refine</td><td>Continuous improvement</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Stages in detail</h3>
+          <ol class="steps">
+            <li><h4>Define objectives</h4><p>Understand what must be achieved, align with organizational goals, and identify KPIs.</p></li>
+            <li><h4>Understand and prepare data</h4><p>Explore internal and external sources, run exploratory analysis, and clean, transform and engineer features.</p></li>
+            <li><h4>Model and analyze</h4><p>Pick descriptive (what happened?), predictive (what will happen?) or prescriptive (what should we do?) techniques, build models and validate them.</p></li>
+            <li><h4>Interpret and generate insight</h4><p>Translate outputs into business meaning, visualize patterns, identify actionable findings.</p></li>
+            <li><h4>Decide and implement</h4><p>Support management in choosing data-driven actions and build them into strategy.</p></li>
+            <li><h4>Evaluate and improve</h4><p>Measure the decisions' effectiveness and reassess models as new data arrives.</p></li>
+          </ol>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Framework type</th><th>Focus</th><th>Tools and techniques</th></tr></thead>
+            <tbody>
+              <tr><td><b>Descriptive</b></td><td>Summarizing past data</td><td>Dashboards, BI tools</td></tr>
+              <tr><td><b>Diagnostic</b></td><td>Finding causes</td><td>Correlation, hypothesis testing</td></tr>
+              <tr><td><b>Predictive</b></td><td>Forecasting outcomes</td><td>Regression, ML models</td></tr>
+              <tr><td><b>Prescriptive</b></td><td>Recommending actions</td><td>Optimization, simulation</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-frame">
+            <div class="viz-head">
+              <h4>Three industry frameworks</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Pick a framework, then click any stage to see what it means, illustrated with one running example: a telecom company tackling rising churn.</p>
+            <div class="controls" role="group" aria-label="Framework">
+              <button class="btn" data-fw="crisp" aria-pressed="true">CRISP-DM</button>
+              <button class="btn" data-fw="ooda" aria-pressed="false">OODA loop</button>
+              <button class="btn" data-fw="dikw" aria-pressed="false">DIKW pyramid</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Framework diagram"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Benefits</h4><p>Structure and clarity, consistency and repeatability, data-driven decisions, collaboration between business and analytics teams, and continuous improvement through feedback loops.</p></div>
+            <div class="measure"><h4>Challenges</h4><p>Poor data quality or availability, misalignment between analytics and business goals, misinterpreted results, difficulty with adoption, and model bias or overfitting.</p></div>
+          </div>
+        </section>
+
+        <section id="evaluation">
+          <h2>Evaluation</h2>
+          <p class="section-sub">Did the model, the process and the decision actually work?</p>
+
+          <div class="definition">
+            <strong>Evaluation</strong>
+            The systematic assessment of the performance, effectiveness and outcomes of a model, project or analytical solution: how well it meets its objectives, measured with defined metrics and validation techniques. It ensures the analysis is accurate and reliable, useful for decisions, and generalizes to new data.
+          </div>
+          <p>Its objectives are to verify accuracy and validate models, compare alternatives, ensure alignment with business goals, detect bias or errors, and refine the analytical system. As the final or iterative stage of frameworks like CRISP-DM, it answers: does the model achieve the business goal, is it reliable on unseen data, and should it be deployed, retrained or revised?</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>What it checks</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Model evaluation</b></td><td>Performance of analytical or predictive models</td><td>Accuracy, precision, recall</td></tr>
+              <tr><td><b>Process evaluation</b></td><td>Whether the process was carried out correctly</td><td>Was the data preprocessed properly?</td></tr>
+              <tr><td><b>Outcome evaluation</b></td><td>The impact achieved</td><td>Did the decision improve profit or efficiency?</td></tr>
+              <tr><td><b>Comparative evaluation</b></td><td>Which approach is better</td><td>Logistic regression vs. random forest</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Metrics</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Classification metric</th><th>Formula</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>Accuracy</b></td><td>(TP + TN) ÷ (TP + FP + TN + FN)</td><td>Overall correctness</td></tr>
+              <tr><td><b>Precision</b></td><td>TP ÷ (TP + FP)</td><td>Quality of positive predictions</td></tr>
+              <tr><td><b>Recall</b></td><td>TP ÷ (TP + FN)</td><td>Coverage of actual positives</td></tr>
+              <tr><td><b>F1 score</b></td><td>2 × P × R ÷ (P + R)</td><td>Balance of precision and recall</td></tr>
+              <tr><td><b>AUC-ROC</b></td><td>Area under the ROC curve</td><td>Ability to separate the classes</td></tr>
+            </tbody>
+          </table></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Regression metric</th><th>Formula</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>MAE</b></td><td>(1/n) Σ |yᵢ − ŷᵢ|</td><td>Average size of the errors</td></tr>
+              <tr><td><b>MSE</b></td><td>(1/n) Σ (yᵢ − ŷᵢ)²</td><td>Penalizes large errors</td></tr>
+              <tr><td><b>RMSE</b></td><td>√MSE</td><td>Typical error, in the target's units</td></tr>
+              <tr><td><b>R²</b></td><td>1 − SS<sub>res</sub> ÷ SS<sub>tot</sub></td><td>Share of variance explained</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>The evaluation process</h3>
+          <ol class="steps">
+            <li><h4>Define success criteria</h4><p>Accuracy, revenue, satisfaction, or something else?</p></li>
+            <li><h4>Select metrics</h4><p>Quantitative (accuracy, MSE) or qualitative (user feedback).</p></li>
+            <li><h4>Test with new data</h4><p>Holdout or cross-validation data.</p></li>
+            <li><h4>Compare models</h4><p>Against benchmark models or baselines.</p></li>
+            <li><h4>Interpret results</h4><p>Translate metrics into business insight.</p></li>
+            <li><h4>Refine and repeat</h4><p>Tune parameters or update the data.</p></li>
+          </ol>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>Purpose</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><b>Holdout</b></td><td>Simple train–test split</td><td>Evaluate on unseen data</td></tr>
+              <tr><td><b>k-fold cross-validation</b></td><td>Reliable evaluation</td><td>Average performance over k splits</td></tr>
+              <tr><td><b>Bootstrapping</b></td><td>Resampling with replacement</td><td>Estimates how much a metric varies</td></tr>
+              <tr><td><b>A/B testing</b></td><td>Compare two versions</td><td>Randomly split live users between models or decisions</td></tr>
+              <tr><td><b>Sensitivity analysis</b></td><td>Impact of changing inputs</td><td>Used in decision and optimization models</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>A/B testing a model in production</h3>
+          <div class="viz" id="viz-ab">
+            <div class="viz-head">
+              <h4>Is the new recommendation model really better?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">An online store shows half its visitors recommendations from the current model (A) and half from a new one (B), and counts purchases. Change the traffic and conversion rates to see when the difference is statistically convincing.</p>
+            <div class="controls">
+              <label class="range">Visitors per group <span data-out="n">2,000</span><input type="range" min="0" max="8" value="3" data-in="n" /></label>
+            </div>
+            <div class="controls">
+              <label class="range">Conversion rate A <span data-out="a">5.0%</span><input type="range" min="10" max="150" value="50" data-in="a" /></label>
+              <label class="range">Conversion rate B <span data-out="b">6.0%</span><input type="range" min="10" max="150" value="60" data-in="b" /></label>
+            </div>
+            <svg viewBox="0 0 640 200" role="img" aria-label="Conversion rates with confidence intervals"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <p><b>Evaluation in decision analytics:</b> it checks whether decisions made with analytics improve performance, reduce risk or cost, and align with strategy. A logistics company's route optimization model cut average delivery time from 3.5 hours to 2.8 hours, a 20% improvement, validating the model quantitatively.</p>
+          <p class="note">Evaluation is the bridge between analytics and decision-making. Without evaluation, analysis is just computation; with it, it becomes decision intelligence.</p>
+        </section>
+
+        <section id="investment">
+          <h2>Baseline, performance and investment</h2>
+          <p class="section-sub">Is our data initiative worth it?</p>
+
+          <p>Every analytics or AI project must be judged on business value, not just technical accuracy. Three concepts make that possible: the <b>baseline</b>, the <b>performance</b> achieved, and the <b>implications for investment</b>.</p>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Baseline: the starting point</h4><p>The benchmark before any data-driven change: identify the relevant KPIs, measure current performance with historical or operational data, and keep it as the control for comparison. It's what makes improvement, and ROI, measurable.</p></div>
+            <div class="measure"><h4>Performance: the improvement</h4><p>How much better the system performs afterwards: analytical performance (accuracy, precision, R²), operational performance (speed, efficiency, cost), and business performance (margins, retention, ROI).</p></div>
+            <div class="measure"><h4>Investment: what to do next</h4><p>Investment in data means the financial, technical and human resources for collecting, storing, processing, analyzing and governing data. Baseline and performance show whether it's worthwhile: scale up, optimize, or pause.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Category</th><th>Example metrics</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><b>Model performance</b></td><td>Accuracy, F1, AUC</td><td>Predictive capability</td></tr>
+              <tr><td><b>Business KPIs</b></td><td>ROI, conversion rate, sales growth</td><td>Real-world impact</td></tr>
+              <tr><td><b>Operational efficiency</b></td><td>Processing time, cost per transaction</td><td>Process improvement</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Example:</b> a retailer's demand forecast accuracy rose from a baseline of 70% to 88% with predictive analytics. That's a gain of 18 <b>percentage points</b>, or a 26% relative improvement (18 ÷ 70). The slides call it "+18% improvement"; saying "points" avoids confusing the two.</p>
+
+          <h3>Return on data investment (RODI)</h3>
+          <div class="formula" style="text-align:center">RODI = financial value of the performance improvement ÷ cost of the data initiative</div>
+          <p>If predictive analytics cut losses by ₹20M and cost ₹5M, RODI = 20 ÷ 5 = 4.0: each ₹1 invested generated ₹4 of value. Note that this ratio counts gross value; the <b>net</b> return, (20 − 5) ÷ 5 = 3.0, is the more common definition of ROI, so be clear which one you report.</p>
+
+          <div class="viz" id="viz-roi">
+            <div class="viz-head">
+              <h4>Should we keep investing?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Load one of the slides' examples or set your own baseline, performance, value and cost. The calculator separates percentage points from relative change and shows the return on the investment.</p>
+            <div class="controls" role="group" aria-label="Examples">
+              <button class="btn ghost" data-ex="ret">Customer retention 78% → 91%</button>
+              <button class="btn ghost" data-ex="fc">Forecast accuracy 65% → 86%</button>
+              <button class="btn ghost" data-ex="fraud">Fraud detection 60% → 95%</button>
+            </div>
+            <div class="controls">
+              <label class="range">Baseline <span data-out="b0">78%</span><input type="range" min="10" max="99" value="78" data-in="b0" /></label>
+              <label class="range">After analytics <span data-out="b1">91%</span><input type="range" min="10" max="99" value="91" data-in="b1" /></label>
+            </div>
+            <div class="controls">
+              <label class="range">Value of each point gained (₹M/year) <span data-out="v">1.5</span><input type="range" min="1" max="40" value="15" data-in="v" /></label>
+              <label class="range">Cost of the initiative (₹M) <span data-out="c">5</span><input type="range" min="1" max="40" value="5" data-in="c" /></label>
+            </div>
+            <svg viewBox="0 0 640 200" role="img" aria-label="Baseline, performance and return"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="pp">–</b><span>Gain in percentage points</span></div>
+              <div class="stat"><b data-stat="rel">–</b><span>Relative improvement</span></div>
+              <div class="stat"><b data-stat="rodi">–</b><span>RODI (value ÷ cost)</span></div>
+              <div class="stat"><b data-stat="pay">–</b><span>Payback period</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Evaluation stage</th><th>Key question</th><th>Decision implication</th></tr></thead>
+            <tbody>
+              <tr><td><b>Baseline</b></td><td>What is current performance?</td><td>Identify improvement potential</td></tr>
+              <tr><td><b>Performance measurement</b></td><td>How much value did analytics add?</td><td>Determine ROI and success</td></tr>
+              <tr><td><b>Investment decision</b></td><td>Scale, optimize or pause?</td><td>Strategic resource allocation</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="split reverse">
+            <img src="../assets/img/session-19/finance.jpg" alt="Analyst working on a laptop in front of large financial data screens" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">What drives the return</h3>
+              <ul class="plain">
+                <li><b>Data quality:</b> poor data reduces reliability and ROI.</li>
+                <li><b>Analytical maturity:</b> mature data infrastructure yields bigger gains.</li>
+                <li><b>Scalability:</b> investments pay off when systems scale across use cases.</li>
+                <li><b>Talent and culture:</b> skilled teams and a data-driven culture multiply impact.</li>
+                <li><b>Governance and security:</b> compliance, lower risk and trust.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>Strategic implications</h3>
+          <div class="point-grid">
+            <div class="point"><h4>From cost center to value driver</h4><p>Treat data as an investment asset that analytics turns into measurable outcomes.</p></div>
+            <div class="point"><h4>Performance-driven strategy</h4><p>Use baselines to prioritize the areas where improvement yields the greatest return.</p></div>
+            <div class="point"><h4>Continuous monitoring</h4><p>Evaluate initiatives against baselines regularly and adjust investment as performance changes.</p></div>
+            <div class="point"><h4>Evidence-based funding</h4><p>Proven, quantified improvements justify further investment in infrastructure, models and governance.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Metric</th><th>Baseline</th><th>After</th><th>Impact</th><th>Investment implication</th></tr></thead>
+            <tbody>
+              <tr><td><b>Customer retention</b></td><td>78%</td><td>91%</td><td>+13 points</td><td>CRM analytics raised retention → expand the project</td></tr>
+              <tr><td><b>Demand forecast accuracy</b></td><td>65%</td><td>86%</td><td>+21 points</td><td>Saved ₹10M in inventory → continue ML funding</td></tr>
+              <tr><td><b>Fraud detection</b></td><td>60%</td><td>95%</td><td>+35 points</td><td>Reduced losses → invest in real-time analytics</td></tr>
+            </tbody>
+          </table></div>
+
+          <p><b>Challenges:</b> data ROI is hard to quantify; results lag behind investment; technical metrics can overshadow business outcomes; and data maintenance costs are often underestimated.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Concept</th><th>Description</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><b>Baseline</b></td><td>The benchmark before change</td><td>Measure improvement</td></tr>
+              <tr><td><b>Performance</b></td><td>Outcomes after applying analytics</td><td>Quantify success</td></tr>
+              <tr><td><b>Investment implication</b></td><td>The decision about future data spending</td><td>Optimize ROI and resource allocation</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="takeaways">
+            <h3>Session 19 in summary</h3>
+            <ul>
+              <li>Decision analytics applies data and models to choose among alternatives under uncertainty; decision trees compare options by expected value and risk.</li>
+              <li>Classifiers are judged with the confusion matrix: accuracy, precision, recall, specificity and F1. The threshold trades precision against recall, and the right choice depends on the cost of each error.</li>
+              <li>ROC/AUC measures ranking ability regardless of class balance; precision–recall curves reveal problems with rare positives.</li>
+              <li>Analytical frameworks such as CRISP-DM, OODA and DIKW structure the path from question to action.</li>
+              <li>Evaluation covers models, processes and outcomes, using holdout, cross-validation, bootstrapping and A/B tests.</li>
+              <li>Baseline → performance → investment: measure the starting point, quantify the gain in points and in value, and fund what pays back.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="19"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-18.html">Previous: Session 18</a>
+      <a href="session-20.html">Next: Session 20</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-19.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

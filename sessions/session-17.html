@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 17: Simulation, Risk Analysis and Optimization | Data-Class</title>
+  <meta name="description" content="Simulation types and Monte Carlo risk analysis, risk metrics like VaR, and linear and nonlinear optimization." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>17</div>
+      <h1>Simulation, Risk Analysis and Optimization</h1>
+      <p class="lead">How to study uncertain systems by simulating thousands of possible futures, how to measure the resulting risk, and how linear and nonlinear optimization find the best decision under constraints.</p>
+      <ul class="lesson-meta">
+        <li>2 topics</li>
+        <li>7 interactive visuals</li>
+        <li>About 50 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-17/hero.jpg" alt="Office building overlaid with stock market charts" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#simulation">Simulation</a></li>
+          <li><a href="#types">Types of simulation</a></li>
+          <li><a href="#montecarlo">Monte Carlo and risk metrics</a></li>
+          <li><a href="#process">The risk analysis process</a></li>
+          <li><a href="#optimization">Optimization</a></li>
+          <li><a href="#linear">Linear optimization</a></li>
+          <li><a href="#nonlinear">Nonlinear optimization</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="simulation">
+          <h2>Simulation</h2>
+          <p class="section-sub">Experimenting on a model instead of the real world</p>
+
+          <div class="definition">
+            <strong>Simulation</strong>
+            Imitating a real-world system or process with a mathematical or computational model to study its behavior under different scenarios. It predicts outcomes, performance and variability without physical experiments, which is valuable when real-life testing is too costly, risky or slow.
+          </div>
+
+          <div class="definition">
+            <strong>Risk analysis</strong>
+            Identifying, assessing and quantifying the uncertainties that could affect a project or model. It asks: what could go wrong, how likely is it, and what would the impact be? Examples include financial risk in investment portfolios and uncertainty in demand forecasts.
+          </div>
+
+          <p>The two work together. <b>Risk analysis</b> defines the uncertainties, such as fluctuating costs or variable demand; <b>simulation</b> models how those uncertainties affect results. Together they let decision-makers quantify uncertainty, visualize possible outcomes, and choose strategies that hold up under risk.</p>
+
+          <h3>Example: how many bank tellers?</h3>
+          <div class="viz" id="viz-bank">
+            <div class="viz-head">
+              <h4>Simulate a day at a bank branch</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Customers arrive at random, and each takes a random amount of time to serve. Choose the number of tellers and the arrival rate, then simulate an 8-hour day. Run it several times: every day is different.</p>
+            <div class="controls">
+              <label class="range">Tellers <span data-out="k">2</span><input type="range" min="1" max="5" value="2" data-in="k" /></label>
+              <label class="range">Customers per hour <span data-out="lam">24</span><input type="range" min="6" max="60" step="2" value="24" data-in="lam" /></label>
+              <button class="btn is-on" data-run>Simulate another day</button>
+            </div>
+            <svg viewBox="0 0 640 240" role="img" aria-label="Queue length over the day"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="w">–</b><span>Average wait</span></div>
+              <div class="stat"><b data-stat="p">–</b><span>Waited over 10 minutes</span></div>
+              <div class="stat"><b data-stat="q">–</b><span>Longest queue</span></div>
+              <div class="stat"><b data-stat="u">–</b><span>Teller utilization</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="types">
+          <h2>Types of simulation</h2>
+          <p class="section-sub">Different models for different kinds of systems</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Description</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td><b>Monte Carlo</b></td><td>Repeats a calculation with random inputs to estimate the distribution of outcomes</td><td>Financial forecasting, portfolio risk</td></tr>
+              <tr><td><b>Discrete-event (DES)</b></td><td>Models a system as a sequence of events over time, like arrivals and service completions</td><td>Manufacturing processes, hospital patient flow, the bank above</td></tr>
+              <tr><td><b>System dynamics</b></td><td>Focuses on stocks, flows, feedback loops and delays</td><td>Supply chain dynamics, epidemic spread</td></tr>
+              <tr><td><b>Agent-based</b></td><td>Models individual agents and their interactions</td><td>Traffic systems, market behavior</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="split">
+            <img src="../assets/img/session-17/conveyor.jpg" alt="Parcels moving along a conveyor belt" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">System dynamics: feedback loops</h3>
+              <p>System dynamics models how quantities (stocks) change through flows that depend on each other. In an epidemic, more infected people cause more new infections (a reinforcing loop), while fewer susceptible people slow the spread (a balancing loop). The classic SIR model tracks Susceptible, Infected and Recovered people.</p>
+            </div>
+          </div>
+
+          <div class="viz" id="viz-sir">
+            <div class="viz-head">
+              <h4>An epidemic as a system dynamics model</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A city of 1,00,000 people with 10 initial cases. Change how many people each infected person contacts per day and how long an infection lasts, and see how the feedback loops shape the outbreak.</p>
+            <div class="controls">
+              <label class="range">Infectious contacts per day β <span data-out="b">0.30</span><input type="range" min="5" max="80" value="30" data-in="b" /></label>
+              <label class="range">Days infectious <span data-out="d">7</span><input type="range" min="2" max="14" value="7" data-in="d" /></label>
+            </div>
+            <svg viewBox="0 0 640 250" role="img" aria-label="Susceptible, infected and recovered over time"></svg>
+            <div class="legend"><span><i style="background:#3a8dde"></i>Susceptible</span><span><i style="background:#d94f70"></i>Infected</span><span><i style="background:#0e8c7f"></i>Recovered</span></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="montecarlo">
+          <h2>Monte Carlo and risk metrics</h2>
+          <p class="section-sub">The core of simulation-based risk analysis</p>
+
+          <ol class="steps">
+            <li><h4>Assign distributions</h4><p>Give each uncertain input a probability distribution.</p></li>
+            <li><h4>Sample randomly</h4><p>Draw one random value for every input.</p></li>
+            <li><h4>Repeat thousands of times</h4><p>Calculate the outcome for each set of draws.</p></li>
+            <li><h4>Aggregate</h4><p>Summarize the outcomes as a probability distribution.</p></li>
+          </ol>
+
+          <h3>Example: investment return</h3>
+          <p>Invest ₹1,00,000 for a year, with an annual return that is uncertain: Normal(10%, 5%). What profit should we expect, and how risky is it?</p>
+
+          <div class="viz" id="viz-invest">
+            <div class="viz-head">
+              <h4>Simulate the investment's profit</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Add simulations and watch the histogram of possible profits take shape. The rose area marks the worst 5% of outcomes, which is what Value at Risk measures.</p>
+            <div class="controls">
+              <label class="range">Expected return <span data-out="mu">10%</span><input type="range" min="0" max="20" value="10" data-in="mu" /></label>
+              <label class="range">Volatility (SD of return) <span data-out="sd">5%</span><input type="range" min="1" max="25" value="5" data-in="sd" /></label>
+            </div>
+            <div class="controls">
+              <button class="btn" data-add="100">+100 runs</button>
+              <button class="btn" data-add="1000">+1,000</button>
+              <button class="btn is-on" data-add="10000">+10,000</button>
+              <button class="btn ghost" data-add="0">Reset</button>
+            </div>
+            <svg viewBox="0 0 640 250" role="img" aria-label="Histogram of simulated profits"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="n">0</b><span>Simulations</span></div>
+              <div class="stat"><b data-stat="mean">–</b><span>Expected profit</span></div>
+              <div class="stat"><b data-stat="ci">–</b><span>Middle 95% of outcomes</span></div>
+              <div class="stat"><b data-stat="loss">–</b><span>Chance of a loss</span></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="var">–</b><span>VaR (95%)</span></div>
+              <div class="stat"><b data-stat="cvar">–</b><span>CVaR (95%)</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+          <p class="note">The slides say this example gives a 95% chance of earning between ₹8,000 and ₹12,000. With a 5% standard deviation on the return, the profit's standard deviation is ₹5,000, so the middle 95% of outcomes actually spans roughly ₹200 to ₹19,800. The ₹8,000–₹12,000 range would be the 95% interval for the <i>average</i> profit over many such investments, not for a single one.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Metric</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>Expected value (mean)</b></td><td>The average outcome</td></tr>
+              <tr><td><b>Variance / standard deviation</b></td><td>How uncertain or volatile the outcome is</td></tr>
+              <tr><td><b>Value at Risk (VaR)</b></td><td>The loss threshold at a confidence level: at 95%, outcomes are worse than this only 5% of the time</td></tr>
+              <tr><td><b>Conditional VaR (CVaR)</b></td><td>The average outcome in that worst 5%, beyond the VaR threshold</td></tr>
+              <tr><td><b>Sensitivity analysis</b></td><td>How the output changes as one input changes</td></tr>
+              <tr><td><b>Scenario analysis</b></td><td>Specific what-if cases, such as best and worst case</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="process">
+          <h2>The risk analysis process</h2>
+          <p class="section-sub">From problem to decision in six steps</p>
+
+          <ol class="steps">
+            <li><h4>Define the problem</h4><p>Objectives, variables and constraints.</p></li>
+            <li><h4>Develop the model</h4><p>A mathematical or computational representation, such as Profit = Revenue − Cost.</p></li>
+            <li><h4>Identify uncertainties</h4><p>Represent uncertain variables with distributions: Demand ~ Normal(μ, σ), Price ~ Triangular(min, mode, max).</p></li>
+            <li><h4>Run simulations</h4><p>Thousands of Monte Carlo iterations.</p></li>
+            <li><h4>Analyze results</h4><p>Output distributions, mean, variance, percentiles, confidence intervals.</p></li>
+            <li><h4>Decide</h4><p>Choose strategies that minimize risk or maximize expected return.</p></li>
+          </ol>
+
+          <h3>Example: profit risk for a startup</h3>
+          <p>Price is ₹100 ± 10%, unit cost ₹60 ± 5%, and demand 1,000 units ± 20%. Profit = (price − cost) × demand.</p>
+
+          <div class="viz" id="viz-startup">
+            <div class="viz-head">
+              <h4>Where could the startup's profit land?</h4>
+              <span class="viz-tag">Simulation</span>
+            </div>
+            <p class="viz-hint">Each input varies uniformly within its range. Widen or narrow the uncertainty on each input and see the profit distribution, its percentiles, and a tornado chart of which input drives the risk most.</p>
+            <div class="controls">
+              <label class="range">Price uncertainty ± <span data-out="up">10%</span><input type="range" min="0" max="30" value="10" data-in="up" /></label>
+              <label class="range">Cost uncertainty ± <span data-out="uc">5%</span><input type="range" min="0" max="30" value="5" data-in="uc" /></label>
+              <label class="range">Demand uncertainty ± <span data-out="ud">20%</span><input type="range" min="0" max="50" value="20" data-in="ud" /></label>
+            </div>
+            <svg viewBox="0 0 640 330" role="img" aria-label="Profit distribution and tornado chart"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="mean">–</b><span>Mean profit</span></div>
+              <div class="stat"><b data-stat="p5">–</b><span>5th percentile</span></div>
+              <div class="stat"><b data-stat="p95">–</b><span>95th percentile</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+          <p class="note">The slides quote a mean of ₹35,000 with 5th and 95th percentiles of ₹10,000 and ₹60,000. With the ranges as stated, the mean is (₹100 − ₹60) × 1,000 = ₹40,000, and a simulation gives percentiles of about ₹28,000 and ₹53,000. The slide's wider spread would need much larger input uncertainty, which you can try above.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Tool</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr><td><b>Excel with @Risk or Crystal Ball</b></td><td>Monte Carlo simulation</td></tr>
+              <tr><td><b>MATLAB / Python (NumPy, SimPy, PyMC)</b></td><td>Probabilistic modelling</td></tr>
+              <tr><td><b>R (SimDesign, riskSimul)</b></td><td>Statistical risk simulations</td></tr>
+              <tr><td><b>Arena / AnyLogic / Simul8</b></td><td>Discrete-event simulation</td></tr>
+              <tr><td><b>Tableau / Power BI</b></td><td>Risk dashboards</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Industry</th><th>Simulation use</th><th>Risk aspect</th></tr></thead>
+            <tbody>
+              <tr><td><b>Finance</b></td><td>Portfolio optimization</td><td>Market volatility, VaR</td></tr>
+              <tr><td><b>Manufacturing</b></td><td>Production line design</td><td>Machine failure, downtime</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Patient flow</td><td>Bed availability, treatment delay</td></tr>
+              <tr><td><b>Retail</b></td><td>Inventory management</td><td>Demand uncertainty</td></tr>
+              <tr><td><b>Energy</b></td><td>Power grid reliability</td><td>Equipment failure, cost</td></tr>
+              <tr><td><b>Transportation</b></td><td>Traffic optimization</td><td>Accidents, route delays</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Advantages</h4><p>Handles complex, nonlinear systems; quantifies uncertainty; improves decisions; enables scenario and sensitivity testing; cheaper than real-world trials.</p></div>
+            <div class="measure"><h4>Limitations</h4><p>Needs accurate data and assumptions; can be computationally intensive; wrong probability models lead to wrong conclusions; it measures uncertainty but doesn't remove it.</p></div>
+          </div>
+          <p>Simulation and risk analysis give a better understanding of uncertainty, quantified risk, and data-driven planning. They are essential to predictive and prescriptive analytics in finance, supply chains, healthcare and AI decision systems.</p>
+        </section>
+
+        <section id="optimization">
+          <h2>Optimization</h2>
+          <p class="section-sub">Finding the best decision under constraints</p>
+
+          <div class="formula" style="text-align:center">Optimize: min or max f(x) &nbsp; subject to &nbsp; gᵢ(x) ≤ 0 (inequality constraints), &nbsp; hⱼ(x) = 0 (equality constraints)</div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Objective and constraints</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td><b>Linear programming (LP)</b></td><td>Both linear</td><td>Resource allocation, diet planning</td></tr>
+              <tr><td><b>Nonlinear programming (NLP)</b></td><td>At least one nonlinear term</td><td>Portfolio optimization, machine learning</td></tr>
+              <tr><td><b>Integer / mixed-integer</b></td><td>Some or all variables must be whole numbers</td><td>Scheduling, facility location</td></tr>
+              <tr><td><b>Dynamic optimization</b></td><td>Decisions evolve over time</td><td>Inventory control, trajectories</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="linear">
+          <h2>Linear optimization</h2>
+          <p class="section-sub">Straight-line objectives and constraints</p>
+
+          <div class="formula" style="text-align:center">Maximize or minimize Z = c₁x₁ + c₂x₂ + … + cₙxₙ &nbsp; subject to &nbsp; a₁₁x₁ + a₁₂x₂ + … + a₁ₙxₙ ≤ b₁, …, &nbsp; xᵢ ≥ 0</div>
+          <p>With two variables you can solve it graphically: each constraint cuts off part of the plane, leaving a <b>feasible region</b>, and the optimum lies at one of its <b>corner points</b>.</p>
+
+          <div class="viz" id="viz-lp">
+            <div class="viz-head">
+              <h4>The slide's LP, solved graphically</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Maximize Z = 3x₁ + 5x₂ subject to 2x₁ + x₂ ≤ 100 and x₁ + 3x₂ ≤ 90. Slide the iso-profit line outward: the last feasible point it touches is the optimum. Change the objective coefficients to see the optimum jump between corners.</p>
+            <div class="controls">
+              <label class="range">Target Z (iso-profit line) <span data-out="z">120</span><input type="range" min="0" max="300" step="2" value="120" data-in="z" /></label>
+            </div>
+            <div class="controls">
+              <label class="range">c₁ (profit per x₁) <span data-out="c1">3</span><input type="range" min="1" max="12" step="0.5" value="3" data-in="c1" /></label>
+              <label class="range">c₂ (profit per x₂) <span data-out="c2">5</span><input type="range" min="1" max="12" step="0.5" value="5" data-in="c2" /></label>
+            </div>
+            <svg viewBox="0 0 640 320" role="img" aria-label="Feasible region with iso-profit line"></svg>
+            <div class="table-wrap"><table data-verts></table></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+          <p class="note">The slides give the solution as x₁ = 30, x₂ = 20 with Z = 190. That point is feasible, but it isn't a corner of the region and it isn't optimal: the true optimum is the corner x₁ = 42, x₂ = 16, where both constraints are binding, with Z = 3 × 42 + 5 × 16 = 206.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><b>Graphical method</b></td><td>For two-variable problems: draw the feasible region and check the corners</td></tr>
+              <tr><td><b>Simplex method</b></td><td>Moves from corner to better corner until no improvement is possible; works for large systems</td></tr>
+              <tr><td><b>Dual simplex</b></td><td>Handles infeasible starting points</td></tr>
+              <tr><td><b>Interior point</b></td><td>Travels through the inside of the region; efficient for large, sparse problems</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="nonlinear">
+          <h2>Nonlinear optimization</h2>
+          <p class="section-sub">Curves, local optima and iterative search</p>
+
+          <div class="formula" style="text-align:center">min or max f(x₁, x₂, …, xₙ) &nbsp; subject to &nbsp; gᵢ(x) ≤ 0, &nbsp; hⱼ(x) = 0, &nbsp; with f, g or h nonlinear</div>
+          <p>The objective or constraints may involve quadratic, exponential, logarithmic or trigonometric terms. Unlike LP, the solution may not lie on the boundary, and there may be several local minima or maxima.</p>
+
+          <h3>Example: Lagrange multipliers</h3>
+          <p>Minimize f(x₁, x₂) = x₁² + 3x₂² subject to x₁ + x₂ = 10. Form the Lagrangian L = x₁² + 3x₂² + λ(10 − x₁ − x₂) and set its derivatives to zero:</p>
+          <div class="formula" style="text-align:center">∂L/∂x₁ = 2x₁ − λ = 0, &nbsp; ∂L/∂x₂ = 6x₂ − λ = 0, &nbsp; x₁ + x₂ = 10 &nbsp;⇒&nbsp; x₁ = 3x₂ &nbsp;⇒&nbsp; x₁ = 7.5, x₂ = 2.5</div>
+
+          <div class="viz" id="viz-lagrange">
+            <div class="viz-head">
+              <h4>See why the Lagrange solution works</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">The ellipses are contours of f: every point on one ellipse has the same value. Slide along the constraint line x₁ + x₂ = 10. The minimum is where the line just touches a contour, so the gradient of f points the same way as the constraint's gradient.</p>
+            <div class="controls">
+              <label class="range">Position on the constraint: x₁ <span data-out="x">4.0</span><input type="range" min="0" max="10" step="0.1" value="4" data-in="x" /></label>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Contour plot with constraint line"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Iterative methods and local optima</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Method</th><th>Concept</th><th>Used when</th></tr></thead>
+            <tbody>
+              <tr><td><b>Gradient descent / ascent</b></td><td>Step repeatedly in the direction of steepest decrease (or increase)</td><td>Smooth, differentiable functions</td></tr>
+              <tr><td><b>Newton's method</b></td><td>Uses second derivatives (the Hessian) for faster convergence</td><td>Well-behaved convex problems</td></tr>
+              <tr><td><b>Lagrange multipliers</b></td><td>Handles equality constraints analytically</td><td>Small constrained problems</td></tr>
+              <tr><td><b>Sequential quadratic programming</b></td><td>Solves a series of quadratic approximations</td><td>Complex constrained problems</td></tr>
+              <tr><td><b>Genetic / evolutionary algorithms</b></td><td>Bio-inspired search for global optima</td><td>Non-convex, non-differentiable functions</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="viz" id="viz-gd">
+            <div class="viz-head">
+              <h4>Gradient descent and the local-minimum trap</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A cost curve with several valleys. Choose a starting point and a learning rate, then step downhill. Where you start decides which valley you end up in, and a learning rate that's too large overshoots.</p>
+            <div class="controls">
+              <label class="range">Starting point <span data-out="s">1.0</span><input type="range" min="0" max="10" step="0.1" value="1" data-in="s" /></label>
+              <label class="range">Learning rate <span data-out="lr">0.05</span><input type="range" min="1" max="40" value="5" data-in="lr" /></label>
+            </div>
+            <div class="controls">
+              <button class="btn is-on" data-step>Take 1 step</button>
+              <button class="btn" data-run>Run 50 steps</button>
+              <button class="btn ghost" data-reset>Reset</button>
+              <button class="btn" data-multi>Try 10 random starts</button>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Gradient descent on a cost curve"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Aspect</th><th>Linear optimization</th><th>Nonlinear optimization</th></tr></thead>
+            <tbody>
+              <tr><th>Objective and constraints</th><td>Linear</td><td>At least one nonlinear</td></tr>
+              <tr><th>Feasible region</th><td>Convex polygon</td><td>Possibly non-convex</td></tr>
+              <tr><th>Solution</th><td>A global optimum (when one exists)</td><td>Possibly several local optima</td></tr>
+              <tr><th>Computation</th><td>Simpler, faster</td><td>Complex, iterative</td></tr>
+              <tr><th>Example</th><td>Resource allocation</td><td>A machine learning cost function</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Linear</th><th>Nonlinear</th></tr></thead>
+            <tbody>
+              <tr><td><b>Finance</b></td><td>Portfolio balancing with linear constraints</td><td>Risk-return optimization</td></tr>
+              <tr><td><b>Supply chain</b></td><td>Transportation and assignment problems</td><td>Routing with fuel dynamics</td></tr>
+              <tr><td><b>Engineering</b></td><td>Material cutting, blending</td><td>Aerodynamic and circuit design</td></tr>
+              <tr><td><b>Machine learning</b></td><td>Linear regression</td><td>Neural network training</td></tr>
+              <tr><td><b>Economics</b></td><td>Production planning</td><td>Utility maximization</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Linear: strengths and limits</h4><p>Easy to interpret and compute, with guaranteed global optimality. But it assumes proportionality and additivity and can't capture curved effects.</p></div>
+            <div class="measure"><h4>Nonlinear: strengths and limits</h4><p>Models real-world complexity: curvature, thresholds, diminishing returns. But it may stop at a local optimum, needs good starting points, and is computationally expensive.</p></div>
+            <div class="measure"><h4>In modern analytics</h4><p>AI and machine learning (loss minimization, hyperparameter tuning), operations research (supply chain and logistics), econometrics (parameter estimation), and prescriptive analytics (recommending the best actions).</p></div>
+          </div>
+
+          <div class="takeaways">
+            <h3>Session 17 in summary</h3>
+            <ul>
+              <li>Simulation imitates a system to study its behavior; risk analysis defines the uncertainties it explores.</li>
+              <li>Monte Carlo, discrete-event, system dynamics and agent-based simulations suit different kinds of systems.</li>
+              <li>Monte Carlo turns uncertain inputs into a distribution of outcomes, summarized by the mean, percentiles, VaR and CVaR; sensitivity analysis shows which input matters most.</li>
+              <li>Linear programs have their optimum at a corner of the feasible region and are solved by the graphical or simplex method.</li>
+              <li>Nonlinear problems can have optima inside the region and multiple local optima; Lagrange multipliers handle equality constraints, and gradient methods search iteratively.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="17"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-16.html">Previous: Session 16</a>
+      <a href="session-18.html">Next: Session 18</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-17.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

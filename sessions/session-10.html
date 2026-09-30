@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 10: Feature Selection, Hypothesis Testing and the Z-Test | Data-Class</title>
+  <meta name="description" content="Filter, wrapper and embedded feature selection methods, the formal feature selection procedure, hypothesis testing and the Z-test." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>10</div>
+      <h1>Feature Selection, Hypothesis Testing and the Z-Test</h1>
+      <p class="lead">How to pick the features that actually help a model predict, using statistical tests, model-driven search and built-in regularization, followed by the hypothesis testing and Z-test machinery that filter methods rely on.</p>
+      <ul class="lesson-meta">
+        <li>6 topics</li>
+        <li>5 interactive visuals</li>
+        <li>About 40 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-10/hero.jpg" alt="Circuit board shaped like a human brain" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#feature-selection">What feature selection is</a></li>
+          <li><a href="#filter">Filter methods</a></li>
+          <li><a href="#wrapper">Wrapper methods</a></li>
+          <li><a href="#embedded">Embedded methods</a></li>
+          <li><a href="#hypothesis">Hypothesis testing</a></li>
+          <li><a href="#z-test">The Z-test</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="feature-selection">
+          <h2>What feature selection is</h2>
+          <p class="section-sub">Keeping the inputs that matter</p>
+
+          <div class="definition">
+            <strong>Feature selection</strong>
+            The process of identifying the most relevant and significant features (independent variables) that contribute to predicting the target variable. Statistical hypothesis tests such as the Z-test, t-test, ANOVA and chi-square are often used in filter-based feature selection to check whether a feature is significantly related to the target.
+          </div>
+
+          <p>Fewer, better features make models faster to train, easier to interpret and less likely to overfit.</p>
+
+          <h3>A formal procedure</h3>
+          <ol class="steps">
+            <li><h4>Define the objective</h4><p>Specify the prediction task, the target variable and the problem type: classifying churn, predicting a stock price, forecasting temperature.</p></li>
+            <li><h4>Prepare the data</h4><p>Handle missing values, outliers and noise; encode categorical variables; normalize or scale numerical features.</p></li>
+            <li><h4>Identify feature and target types</h4><p>Numerical/continuous, categorical/discrete, or binary/ordinal. The types decide which statistical test to use.</p></li>
+            <li><h4>Apply feature selection techniques</h4><p>Filter, wrapper or embedded methods; for filters, run the appropriate test and rank features by p-value or score.</p></li>
+            <li><h4>Evaluate model performance</h4><p>Train on the reduced feature set, compare metrics (accuracy, RMSE, F1-score) and check for overfitting or underfitting.</p></li>
+            <li><h4>Finalize the feature subset</h4><p>Choose the smallest subset with the best generalization performance and interpretability.</p></li>
+          </ol>
+
+          <div class="viz" id="viz-map">
+            <div class="viz-head">
+              <h4>Which statistical test fits?</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Choose the type of feature and the type of target to see the test used to judge their relationship.</p>
+            <div class="controls" role="group" aria-label="Feature type">
+              <b style="font-size:.9rem;min-width:5rem">Feature</b>
+              <button class="btn" data-f="num" aria-pressed="true">Numerical</button>
+              <button class="btn" data-f="cat" aria-pressed="false">Categorical</button>
+            </div>
+            <div class="controls" role="group" aria-label="Target type">
+              <b style="font-size:.9rem;min-width:5rem">Target</b>
+              <button class="btn" data-t="num" aria-pressed="false">Numerical</button>
+              <button class="btn" data-t="bin" aria-pressed="true">Two categories</button>
+              <button class="btn" data-t="multi" aria-pressed="false">Three or more categories</button>
+            </div>
+            <div class="viz-out" aria-live="polite" style="margin-top:0"></div>
+          </div>
+        </section>
+
+        <section id="filter">
+          <h2>Filter methods</h2>
+          <p class="section-sub">Rank features with statistics, before any model is trained</p>
+
+          <p>Filter methods rely on statistical tests and properties of the data, independent of any model.</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>What it does</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Correlation test</b></td><td>Keep features highly correlated with the target but not with each other</td><td>Pearson / Spearman correlation</td></tr>
+              <tr><td><b>Chi-square test</b></td><td>Tests independence between a categorical feature and the target</td><td><code>scipy.stats.chi2_contingency()</code></td></tr>
+              <tr><td><b>ANOVA F-test</b></td><td>Compares a numeric feature's mean across target classes</td><td><code>f_classif</code> (scikit-learn)</td></tr>
+              <tr><td><b>Mutual information</b></td><td>Measures dependency between feature and target using entropy</td><td><code>mutual_info_classif()</code></td></tr>
+            </tbody>
+          </table></div>
+          <div class="point-grid">
+            <div class="point"><h4>Advantages</h4><p>Fast, simple, and independent of the model.</p></div>
+            <div class="point"><h4>Limitations</h4><p>Looks at one feature at a time, so it ignores interactions between features.</p></div>
+          </div>
+
+          <div class="viz" id="viz-filter">
+            <div class="viz-head">
+              <h4>Filter the features of a churn dataset</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">500 telecom customers, 8 candidate features, and a yes/no target: did the customer churn? Each feature is tested against churn (t-test for numbers, chi-square for categories). Features with p below α are kept.</p>
+            <div class="controls">
+              <label class="range">Significance level α <span data-out="a">0.05</span><input type="range" min="0" max="3" step="1" value="1" data-in="a" /></label>
+              <button class="btn" data-corr aria-pressed="false">Check redundancy</button>
+            </div>
+            <svg viewBox="0 0 640 310" role="img" aria-label="Feature significance chart"></svg>
+            <div class="table-wrap"><table data-tbl></table></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="wrapper">
+          <h2>Wrapper methods</h2>
+          <p class="section-sub">Let a model judge each subset of features</p>
+
+          <p>Wrapper methods use a predictive model to evaluate feature subsets, searching for the combination that performs best.</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>How it works</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Forward selection</b></td><td>Start with no features and add one at a time until there's no improvement</td><td>Recursive search</td></tr>
+              <tr><td><b>Backward elimination</b></td><td>Start with all features and remove the least significant one at a time</td><td>Stepwise regression</td></tr>
+              <tr><td><b>Recursive feature elimination (RFE)</b></td><td>Repeatedly drop the least important features according to model weights</td><td><code>sklearn.feature_selection.RFE</code></td></tr>
+            </tbody>
+          </table></div>
+          <div class="point-grid">
+            <div class="point"><h4>Advantages</h4><p>Accounts for feature interactions; driven by the actual model.</p></div>
+            <div class="point"><h4>Limitations</h4><p>Computationally expensive, and can overfit on small datasets.</p></div>
+          </div>
+
+          <div class="viz" id="viz-wrap">
+            <div class="viz-head">
+              <h4>Forward selection and backward elimination</h4>
+              <span class="viz-tag">Step through</span>
+            </div>
+            <p class="viz-hint">At each step the model is retrained with every candidate change, and the best one is kept. Validation accuracy is shown after each step.</p>
+            <div class="controls" role="group" aria-label="Direction">
+              <button class="btn" data-dir="fwd" aria-pressed="true">Forward selection</button>
+              <button class="btn" data-dir="bwd" aria-pressed="false">Backward elimination</button>
+            </div>
+            <div class="controls">
+              <button class="btn is-on" data-step>Next step</button>
+              <button class="btn" data-all>Run to the end</button>
+              <button class="btn ghost" data-reset>Reset</button>
+            </div>
+            <div class="chips" data-chips></div>
+            <svg viewBox="0 0 640 220" role="img" aria-label="Validation accuracy by step"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="embedded">
+          <h2>Embedded methods</h2>
+          <p class="section-sub">Selection happens while the model trains</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Technique</th><th>How it works</th><th>Used with</th></tr></thead>
+            <tbody>
+              <tr><td><b>LASSO (L1 regularization)</b></td><td>Shrinks less important coefficients all the way to zero, removing those features</td><td>Linear models</td></tr>
+              <tr><td><b>Ridge (L2 regularization)</b></td><td>Penalizes large coefficients; keeps every feature but reduces its impact</td><td>Linear models</td></tr>
+              <tr><td><b>Tree-based importance</b></td><td>Decision trees, random forests and XGBoost measure importance as they split</td><td><code>feature_importances_</code></td></tr>
+            </tbody>
+          </table></div>
+          <div class="point-grid">
+            <div class="point"><h4>Advantages</h4><p>Built in, efficient, and handles complex relationships.</p></div>
+            <div class="point"><h4>Limitations</h4><p>The selection depends on the model used.</p></div>
+          </div>
+
+          <div class="viz" id="viz-lasso">
+            <div class="viz-head">
+              <h4>Watch regularization shrink the coefficients</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Standardized coefficients of a churn model. Increase the penalty strength λ and compare how LASSO and Ridge respond.</p>
+            <div class="controls" role="group" aria-label="Method">
+              <button class="btn" data-m="lasso" aria-pressed="true">LASSO (L1)</button>
+              <button class="btn" data-m="ridge" aria-pressed="false">Ridge (L2)</button>
+              <button class="btn" data-m="tree" aria-pressed="false">Tree importance</button>
+            </div>
+            <div class="controls" data-lam>
+              <label class="range">Penalty λ <span data-out="l">0.20</span><input type="range" min="0" max="100" value="20" data-in="l" /></label>
+            </div>
+            <svg viewBox="0 0 640 310" role="img" aria-label="Coefficient bar chart"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Comparing the three families</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Category</th><th>Basis</th><th>Common algorithms</th><th>Evaluation</th></tr></thead>
+            <tbody>
+              <tr><td><b>Filter</b></td><td>Statistics</td><td>Chi-square, ANOVA, mutual information</td><td>Independent of the model</td></tr>
+              <tr><td><b>Wrapper</b></td><td>Search over subsets</td><td>RFE, forward/backward selection</td><td>Uses the model</td></tr>
+              <tr><td><b>Embedded</b></td><td>Built into the model</td><td>LASSO, decision trees</td><td>During training</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note"><b>Practical tip:</b> use filter methods first to remove obviously irrelevant features, then wrapper or embedded methods for fine-grained selection, and finally validate with cross-validation or a held-out test set.</p>
+        </section>
+
+        <section id="hypothesis">
+          <h2>Hypothesis testing</h2>
+          <p class="section-sub">The engine behind filter methods</p>
+
+          <p>Hypothesis testing uses sample data to make decisions about a population parameter. You start with two opposing statements, then use the data to decide whether to reject or fail to reject the null hypothesis.</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Type</th><th>Symbol</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>Null hypothesis</b></td><td>H₀</td><td>No effect, no difference, the status quo</td></tr>
+              <tr><td><b>Alternative hypothesis</b></td><td>H₁ or Hₐ</td><td>There is an effect or difference</td></tr>
+            </tbody>
+          </table></div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><b>Population</b></td><td>The entire set, such as all customers</td></tr>
+              <tr><td><b>Sample</b></td><td>The subset used for testing</td></tr>
+              <tr><td><b>Parameter</b></td><td>A numerical property of the population, such as its mean or variance</td></tr>
+              <tr><td><b>Statistic</b></td><td>A value computed from the sample</td></tr>
+              <tr><td><b>Significance level α</b></td><td>The threshold for rejecting H₀, often 0.05</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Steps</h3>
+          <ol class="steps">
+            <li><h4>State the hypotheses</h4><p>H₀: μ = μ₀ (no difference); H₁: μ ≠ μ₀ (a difference).</p></li>
+            <li><h4>Set the significance level</h4><p>Commonly α = 0.05.</p></li>
+            <li><h4>Choose the test statistic</h4><p>Z-test when the population variance is known or the sample is large; t-test when the variance is unknown or the sample small; chi-square for categorical data; ANOVA to compare more than two groups.</p></li>
+            <li><h4>Compute the p-value</h4><p>The probability of data at least this extreme if H₀ is true.</p></li>
+            <li><h4>Apply the decision rule</h4><p>If p ≤ α, reject H₀; if p &gt; α, fail to reject H₀.</p></li>
+          </ol>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Test</th><th>Purpose</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Z-test</b></td><td>Compare a sample mean to a population mean (large n, known σ)</td><td>Churners' monthly bill vs. the company average</td></tr>
+              <tr><td><b>t-test</b></td><td>Compare means when σ is unknown or n is small</td><td>Two drugs' effects</td></tr>
+              <tr><td><b>Chi-square test</b></td><td>Compare categorical frequencies</td><td>Gender vs. product preference</td></tr>
+              <tr><td><b>ANOVA (F-test)</b></td><td>Compare more than two group means</td><td>Three teaching methods</td></tr>
+              <tr><td><b>Correlation test</b></td><td>Relationship between two variables</td><td>Height vs. weight</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="z-test">
+          <h2>The Z-test</h2>
+          <p class="section-sub">Does a sample mean differ from a known population mean?</p>
+
+          <div class="split">
+            <img src="../assets/img/session-10/model.jpg" alt="Connected cubes forming a network" loading="lazy" />
+            <div>
+              <p>The Z-test compares a <b>sample mean</b> with a <b>population mean</b> when the population standard deviation σ is known and the sample is large (n &gt; 30). It tells you whether the sample differs significantly from the population assumption.</p>
+              <div class="formula">Z = (X̄ − μ₀) ÷ (σ / √n)</div>
+              <p>X̄ is the sample mean, μ₀ the hypothesized population mean, σ the population standard deviation, and n the sample size.</p>
+            </div>
+          </div>
+
+          <h3>Example</h3>
+          <p>A telecom company's customers pay ₹700 a month on average, with σ = ₹150. A sample of 64 customers who churned paid an average of ₹742. Do churners pay differently from the typical customer?</p>
+          <div class="formula">Z = (742 − 700) ÷ (150 / √64) = 42 ÷ 18.75 = 2.24</div>
+          <p>For a two-tailed test at α = 0.05 the critical value is ±1.96. Since 2.24 &gt; 1.96 (p ≈ 0.025), we reject H₀: churners pay significantly more. In feature selection terms, <b>monthly charges</b> is a feature worth keeping.</p>
+
+          <div class="viz" id="viz-z">
+            <div class="viz-head">
+              <h4>Try the Z-test yourself</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">μ₀ = ₹700 and σ = ₹150. Change the churners' sample mean, sample size and α. The shaded area is the p-value.</p>
+            <div class="controls">
+              <label class="range">Sample mean X̄ (₹) <span data-out="x">742</span><input type="range" min="640" max="780" value="742" data-in="x" /></label>
+              <label class="range">Sample size n <span data-out="n">64</span><input type="range" min="31" max="200" value="64" data-in="n" /></label>
+              <label class="range">α <span data-out="a">0.05</span><input type="range" min="0" max="2" step="1" value="1" data-in="a" /></label>
+            </div>
+            <svg viewBox="0 0 640 230" role="img" aria-label="Standard normal curve with p-value"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="z">–</b><span>Z</span></div>
+              <div class="stat"><b data-stat="p">–</b><span>p-value (two-tailed)</span></div>
+              <div class="stat"><b data-stat="d">–</b><span>Decision</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="takeaways">
+            <h3>Session 10 in summary</h3>
+            <ul>
+              <li>Feature selection keeps the features that genuinely help prediction, following a procedure from objective to final subset.</li>
+              <li>Filter methods rank features with statistical tests (correlation, t-test/ANOVA, chi-square, mutual information); they are fast but ignore interactions.</li>
+              <li>Wrapper methods search subsets with a model (forward, backward, RFE); embedded methods select during training (LASSO, trees).</li>
+              <li>Hypothesis tests decide between H₀ and H₁ by comparing the p-value with α; the choice of test depends on the data types.</li>
+              <li>The Z-test, Z = (X̄ − μ₀) ÷ (σ/√n), compares a sample mean with a known population mean when σ is known and n is large.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="10"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-09.html">Previous: Session 09</a>
+      <a href="session-11.html">Next: Session 11</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-10.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>

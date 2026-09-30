@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 12: Predictive Modelling and Analysis | Data-Class</title>
+  <meta name="description" content="What predictive modelling is, its applications, model types, the modelling workflow, benefits, challenges, limitations, tools and future." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html" aria-label="Data-Class home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        Data-Class
+      </a>
+      <a class="back-link" href="../index.html">All sessions</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <header class="lesson-head">
+      <div class="session-num"><small>Session</small>12</div>
+      <h1>Predictive Modelling and Analysis</h1>
+      <p class="lead">How historical data is turned into forecasts: the main families of predictive models, the step-by-step workflow for building one, and what makes predictions go right or wrong.</p>
+      <ul class="lesson-meta">
+        <li>7 topics</li>
+        <li>5 interactive visuals</li>
+        <li>About 40 minutes of reading</li>
+      </ul>
+    </header>
+
+    <figure class="lesson-banner">
+      <img src="../assets/img/session-12/hero.jpg" alt="Glowing financial chart on a digital display" />
+    </figure>
+
+    <div class="reader">
+      <details class="toc">
+        <summary>In this session</summary>
+        <ol>
+          <li><a href="#intro">What predictive modelling is</a></li>
+          <li><a href="#applications">Applications</a></li>
+          <li><a href="#types">Types of predictive models</a></li>
+          <li><a href="#workflow">The modelling workflow</a></li>
+          <li><a href="#benefits">Benefits and challenges</a></li>
+          <li><a href="#tools">Tools</a></li>
+          <li><a href="#future">Limitations and the future</a></li>
+          <li><a href="#quiz">Check your understanding</a></li>
+        </ol>
+      </details>
+
+      <article class="lesson">
+        <section id="intro">
+          <h2>What predictive modelling is</h2>
+          <p class="section-sub">Using past patterns to anticipate the future</p>
+
+          <div class="definition">
+            <strong>Predictive modelling</strong>
+            The use of statistical techniques, machine learning algorithms and data mining methods to forecast future outcomes from historical data. The core idea: use past patterns to make informed predictions about future events.
+          </div>
+
+          <div class="point-grid">
+            <div class="point"><h4>Examples</h4><p>Predicting customer churn, forecasting stock market trends, estimating next quarter's sales, predicting disease risk.</p></div>
+            <div class="point"><h4>Key components</h4><p><b>Data:</b> past records or observations. <b>Algorithms:</b> statistical or machine learning models. <b>Output:</b> probabilities, forecasts or classifications.</p></div>
+          </div>
+
+          <h3>The mathematical idea</h3>
+          <div class="formula" style="text-align:center">Y = f(X₁, X₂, …, Xₙ) + ε</div>
+          <p>Y is the outcome we want to predict, X₁ … Xₙ are the predictors (features), f is the relationship the model learns from data, and ε is random error that no model can explain. A good model captures f without also memorizing ε.</p>
+        </section>
+
+        <section id="applications">
+          <h2>Applications</h2>
+          <p class="section-sub">Data-driven decisions across industries</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Domain</th><th>Application</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Finance</b></td><td>Credit scoring, risk assessment, fraud detection</td><td>Predicting loan defaults</td></tr>
+              <tr><td><b>Marketing</b></td><td>Customer segmentation, churn prediction</td><td>Which customers are likely to leave?</td></tr>
+              <tr><td><b>Healthcare</b></td><td>Disease prediction, treatment outcomes</td><td>Diabetes or heart disease risk</td></tr>
+              <tr><td><b>Retail</b></td><td>Demand forecasting, inventory management</td><td>Estimating product demand</td></tr>
+              <tr><td><b>Manufacturing</b></td><td>Predictive maintenance</td><td>Spotting equipment failure before it happens</td></tr>
+              <tr><td><b>Education</b></td><td>Student performance prediction</td><td>Predicting dropout rates</td></tr>
+              <tr><td><b>Government</b></td><td>Policy impact forecasting</td><td>Predicting tax revenue or crime trends</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="types">
+          <h2>Types of predictive models</h2>
+          <p class="section-sub">Grouped by the kind of output and method</p>
+
+          <div class="viz" id="viz-types">
+            <div class="viz-head">
+              <h4>Model families at a glance</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Pick a family to see what it predicts, its common algorithms and a small example of how it works.</p>
+            <div class="controls" role="group" aria-label="Model family"></div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Model family illustration"></svg>
+            <div class="controls" data-extra></div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Family</th><th>Predicts</th><th>Common algorithms</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><b>Regression</b></td><td>A continuous number</td><td>Linear, polynomial regression</td><td>House price = β₀ + β₁ × area + β₂ × bedrooms + ε</td></tr>
+              <tr><td><b>Classification</b></td><td>A category or label</td><td>Logistic regression, decision trees, random forests, SVM, naive Bayes</td><td>Will the customer buy? (Yes/No)</td></tr>
+              <tr><td><b>Time series</b></td><td>Future values of a sequence</td><td>ARIMA, exponential smoothing, LSTM networks</td><td>Monthly electricity demand</td></tr>
+              <tr><td><b>Clustering</b></td><td>Groups, when there is no target</td><td>K-means, hierarchical clustering</td><td>Customer segmentation</td></tr>
+              <tr><td><b>Ensemble</b></td><td>Combines models to improve accuracy</td><td>Bagging (random forest), boosting (XGBoost, AdaBoost, LightGBM), stacking</td><td>Credit risk scoring</td></tr>
+              <tr><td><b>Deep learning</b></td><td>Complex, large-scale problems</td><td>Neural networks (ANN, CNN, RNN)</td><td>Image recognition, language processing</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>Regression in practice: pricing a house</h3>
+          <div class="viz" id="viz-house">
+            <div class="viz-head">
+              <h4>A house price model</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">A linear regression was fitted to 40 recent sales. Set a house's area and bedrooms to get a prediction, and check how well the model fits.</p>
+            <div class="controls">
+              <label class="range">Area <span data-out="a">1,200 sq ft</span><input type="range" min="500" max="2500" step="50" value="1200" data-in="a" /></label>
+              <label class="range">Bedrooms <span data-out="b">2</span><input type="range" min="1" max="5" step="1" value="2" data-in="b" /></label>
+            </div>
+            <svg viewBox="0 0 640 280" role="img" aria-label="Predicted vs actual prices"></svg>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="pred">–</b><span>Predicted price</span></div>
+              <div class="stat"><b data-stat="r2">–</b><span>R² (share of variation explained)</span></div>
+              <div class="stat"><b data-stat="rmse">–</b><span>RMSE (typical error)</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Time series in practice: forecasting demand</h3>
+          <div class="split">
+            <img src="../assets/img/session-12/timeseries.jpg" alt="Line chart glowing on a dark display" loading="lazy" />
+            <div>
+              <p>Time series models use the order of observations. <b>Exponential smoothing</b> forecasts the next value as a weighted average of the past, giving recent months more weight. The smoothing factor α controls how quickly it reacts: close to 1, it follows the latest value; close to 0, it averages over a long history.</p>
+              <div class="formula">Forecast<sub>t+1</sub> = α × Actual<sub>t</sub> + (1 − α) × Forecast<sub>t</sub></div>
+            </div>
+          </div>
+          <div class="viz" id="viz-smooth">
+            <div class="viz-head">
+              <h4>Forecast monthly electricity demand</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Two years of demand for a city (GWh). Adjust α and compare the one-step-ahead forecasts with what actually happened.</p>
+            <div class="controls">
+              <label class="range">Smoothing factor α <span data-out="al">0.30</span><input type="range" min="5" max="95" step="5" value="30" data-in="al" /></label>
+              <button class="btn" data-trend aria-pressed="false">Add trend (Holt's method)</button>
+            </div>
+            <svg viewBox="0 0 640 260" role="img" aria-label="Demand and forecast"></svg>
+            <div class="legend"><span><i style="background:#1b2a41"></i>Actual demand</span><span><i style="background:#0e8c7f"></i>Forecast</span><span><i style="background:#d98a0b"></i>Next 3 months</span></div>
+            <div class="stat-row">
+              <div class="stat"><b data-stat="mae">–</b><span>Mean absolute error</span></div>
+              <div class="stat"><b data-stat="next">–</b><span>Forecast for next month</span></div>
+            </div>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+
+          <h3>Ensembles: why many models beat one</h3>
+          <div class="viz" id="viz-ensemble">
+            <div class="viz-head">
+              <h4>Majority vote of many models</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Each model is right with some probability. If the models make independent mistakes, a majority vote is right far more often than any single model. Real models share mistakes, which limits the gain.</p>
+            <div class="controls">
+              <label class="range">Accuracy of each model <span data-out="p">65%</span><input type="range" min="51" max="90" value="65" data-in="p" /></label>
+              <label class="range">Error overlap between models <span data-out="rho">0%</span><input type="range" min="0" max="90" step="10" value="0" data-in="rho" /></label>
+            </div>
+            <svg viewBox="0 0 640 240" role="img" aria-label="Ensemble accuracy vs number of models"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="workflow">
+          <h2>The modelling workflow</h2>
+          <p class="section-sub">Eight steps from question to production</p>
+
+          <ol class="steps">
+            <li><h4>Problem definition</h4><p>Identify the goal: what do we want to predict?</p></li>
+            <li><h4>Data collection</h4><p>Gather historical, structured and unstructured data.</p></li>
+            <li><h4>Data cleaning and preprocessing</h4><p>Handle missing values and outliers; normalize and encode.</p></li>
+            <li><h4>Feature engineering</h4><p>Select important predictors using correlation, information gain or feature importance.</p></li>
+            <li><h4>Model selection</h4><p>Choose an algorithm suited to the problem type.</p></li>
+            <li><h4>Model training</h4><p>Fit the model to training data and tune hyperparameters.</p></li>
+            <li><h4>Model evaluation</h4><p>Use metrics such as accuracy, R², RMSE, precision, recall and AUC-ROC.</p></li>
+            <li><h4>Deployment and monitoring</h4><p>Integrate the model into real systems and monitor for drift or declining accuracy.</p></li>
+          </ol>
+
+          <h3>Training vs. testing: the overfitting trap</h3>
+          <div class="viz" id="viz-overfit">
+            <div class="viz-head">
+              <h4>Find the right model complexity</h4>
+              <span class="viz-tag">Interactive</span>
+            </div>
+            <p class="viz-hint">Fit polynomials of increasing degree to 15 training points (teal). Rose points are new test data the model never saw. Watch training error keep falling while test error eventually rises.</p>
+            <div class="controls">
+              <label class="range">Polynomial degree <span data-out="d">3</span><input type="range" min="1" max="12" value="3" data-in="d" /></label>
+              <button class="btn ghost" data-newdata>New random data</button>
+            </div>
+            <svg viewBox="0 0 640 300" role="img" aria-label="Model fit and error curves"></svg>
+            <div class="viz-out" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="benefits">
+          <h2>Benefits and challenges</h2>
+          <p class="section-sub">What predictive modelling offers, and what gets in the way</p>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Strategic benefits</h4><p>Data-driven decisions, more accurate forecasts, and better customer personalization.</p></div>
+            <div class="measure"><h4>Operational benefits</h4><p>Automates complex tasks such as risk scoring, cuts costs by anticipating failures or churn, and improves logistics and resource allocation.</p></div>
+            <div class="measure"><h4>Analytical benefits</h4><p>Reveals hidden patterns and trends, and supports real-time decisions.</p></div>
+          </div>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Challenge</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><b>Data quality</b></td><td>Missing, inconsistent or biased data distorts results</td></tr>
+              <tr><td><b>Overfitting</b></td><td>Performs well on training data but poorly on unseen data</td></tr>
+              <tr><td><b>Interpretability</b></td><td>Complex models such as deep networks are hard to explain</td></tr>
+              <tr><td><b>Dynamic environments</b></td><td>Accuracy declines as conditions change</td></tr>
+              <tr><td><b>Computational cost</b></td><td>Large datasets and complex models need a lot of processing power</td></tr>
+              <tr><td><b>Ethics and privacy</b></td><td>Predictive use of personal data can violate privacy norms</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="tools">
+          <h2>Tools</h2>
+          <p class="section-sub">From code libraries to drag-and-drop platforms</p>
+
+          <div class="table-wrap"><table>
+            <thead><tr><th>Tool</th><th>Description</th><th>Example use</th></tr></thead>
+            <tbody>
+              <tr><td><b>Python</b> (scikit-learn, TensorFlow, PyTorch)</td><td>Open-source, versatile machine learning libraries</td><td>Regression, classification, deep learning</td></tr>
+              <tr><td><b>R</b></td><td>Strong in statistical modelling and visualization</td><td>Forecasting, time series analysis</td></tr>
+              <tr><td><b>SAS</b></td><td>Enterprise-grade analytics suite</td><td>Risk modelling, healthcare</td></tr>
+              <tr><td><b>RapidMiner / KNIME</b></td><td>Drag-and-drop predictive analytics platforms</td><td>Prototyping and visualization</td></tr>
+              <tr><td><b>IBM SPSS Modeler</b></td><td>GUI-based data mining software</td><td>Predictive analytics for business users</td></tr>
+              <tr><td><b>Azure ML / AWS SageMaker / Google Vertex AI</b></td><td>Cloud-based predictive modelling</td><td>Scalable, production-ready models</td></tr>
+              <tr><td><b>Tableau / Power BI</b></td><td>Visualization with built-in trend forecasting</td><td>Data-driven dashboards</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="future">
+          <h2>Limitations and the future</h2>
+          <p class="section-sub">Where predictive modelling falls short, and where it is heading</p>
+
+          <div class="measure-grid">
+            <div class="measure"><h4>Depends on history</h4><p>Can't anticipate sudden, unprecedented events, such as COVID-19.</p></div>
+            <div class="measure"><h4>Assumption bias</h4><p>Models inherit the patterns, and the biases, in their training data.</p></div>
+            <div class="measure"><h4>Over- and underfitting</h4><p>Models that are too complex or too simple distort predictions.</p></div>
+            <div class="measure"><h4>Black boxes</h4><p>Neural networks and other complex models lack transparency.</p></div>
+            <div class="measure"><h4>Constant change</h4><p>Models need regular updates as new data arrives.</p></div>
+            <div class="measure"><h4>Ethical risks</h4><p>Can lead to discrimination or unfair predictions, as with biased hiring models.</p></div>
+          </div>
+
+          <div class="split reverse">
+            <img src="../assets/img/session-12/operation.jpg" alt="Boxes moving along a network of roller conveyors" loading="lazy" />
+            <div>
+              <h3 style="margin-top:0">The future of predictive modelling</h3>
+              <ul class="plain">
+                <li><b>Automation and AutoML:</b> automated model selection, tuning and deployment (Google AutoML, H2O.ai).</li>
+                <li><b>AI integration:</b> combining prediction with language processing, computer vision and generative AI.</li>
+                <li><b>Real-time systems:</b> predictions at the edge, in IoT devices and autonomous vehicles.</li>
+                <li><b>Explainable AI:</b> tools like SHAP and LIME that explain complex models' decisions.</li>
+                <li><b>Responsible AI:</b> a focus on bias detection, fairness and transparency.</li>
+                <li><b>Predictive + prescriptive:</b> moving from "what will happen?" to "what should we do next?"</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="takeaways">
+            <h3>Session 12 in summary</h3>
+            <ul>
+              <li>Predictive modelling learns Y = f(X) + ε from historical data to forecast outcomes.</li>
+              <li>Model families match the output: regression for numbers, classification for labels, time series for sequences, clustering for groups, plus ensembles and deep learning.</li>
+              <li>The workflow runs from problem definition through data preparation, feature engineering, training and evaluation, to deployment and monitoring.</li>
+              <li>The central risk is overfitting: judge models on unseen data, not training data.</li>
+              <li>Data quality, interpretability, changing conditions and ethics limit what models can do; AutoML, explainable AI and responsible AI are shaping what comes next.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="quiz">
+          <h2>Check your understanding</h2>
+          <p class="section-sub">Ten questions covering this session. Pick an answer to see the explanation.</p>
+          <div class="mcq" data-session="12"></div>
+        </section>
+
+      </article>
+    </div>
+
+    <nav class="page-nav" aria-label="Session navigation">
+      <a href="session-11.html">Previous: Session 11</a>
+      <a href="session-13.html">Next: Session 13</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Data-Class</div>
+  </footer>
+
+  <script src="../assets/js/reader.js"></script>
+  <script src="../assets/js/session-12.js"></script>
+  <script src="../assets/js/quizzes.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+</body>
+</html>
